@@ -23,6 +23,16 @@ namespace WEB2021Apr_P01_T01
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Adding a default in-memory implementation of distributed cache
+            services.AddDistributedMemoryCache();
+
+            // Adding the Session Service
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -45,7 +55,7 @@ namespace WEB2021Apr_P01_T01
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
