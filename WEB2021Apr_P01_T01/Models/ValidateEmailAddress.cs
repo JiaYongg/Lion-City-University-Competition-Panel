@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB2021Apr_P01_T01.DAL;
 
 namespace WEB2021Apr_P01_T01.Models
 {
     public class ValidateEmailAddress : ValidationAttribute
     {
         // Change later need database
-        private StaffDAL staffContext = new StaffDAL();
+        private LoginDAL loginContext = new LoginDAL();
 
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
