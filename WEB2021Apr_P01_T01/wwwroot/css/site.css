@@ -1,7 +1,39 @@
-﻿.title-font {
+﻿h1, h2, h3, h4, h5, h6  {
     font-family: 'DM Serif Display', serif;
 }
 
+.gold {
+    color: #a98f64;
+}
+
+.background-gold {
+    background-color: #a98f64;
+}
+
+.background-blue {
+    background-color: #647ea9;
+}
+
+.black {
+    color: #3b3b3b;
+}
+
 body {
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    color: #3b3b3b;
+}
+
+.btn-180 {
+    font-family: 'DM Serif Display', serif;
+    width: 180px;
+    height: 45px;
+    font-weight: 500;
+    color: #fff;
+}
+
+@media only screen and (min-width: 769px) 
+{
+    .vh65 {
+        height: 65vh;
+    }
 }
