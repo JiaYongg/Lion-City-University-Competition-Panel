@@ -9,9 +9,9 @@ namespace WEB2021Apr_P01_T01.Models
 {
     public class ValidateEmailAddress : ValidationAttribute
     {
-        // Change later need database
         private JudgeDAL judgeContext = new JudgeDAL();
-        /*
+        private CompetitorDAL competitorContext = new CompetitorDAL();
+
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
         {
@@ -19,11 +19,18 @@ namespace WEB2021Apr_P01_T01.Models
             string email = Convert.ToString(value);
 
             // Casting the validation context to the "Staff" model class
-            Login login = (Login)validationContext.ObjectInstance;
+            Competitor competitor = (Competitor)validationContext.ObjectInstance;
+            Judge judge = (Judge)validationContext.ObjectInstance;
+
             // Get the Staff Id from the staff instance
-            /*
-            int staffId = staff.StaffId;
-            if (judgeContext.IsEmailExist(email, staffId))
+            int competitorId = competitor.CompetitorId;
+            int judgeId = judge.JudgeId;
+
+            if (competitorContext.IsEmailExist(email, competitorId))
+                // validation failed
+                return new ValidationResult
+                ("Email address already exists!");
+            else if (judgeContext.IsEmailExist(email, judgeId))
                 // validation failed
                 return new ValidationResult
                 ("Email address already exists!");
@@ -31,6 +38,6 @@ namespace WEB2021Apr_P01_T01.Models
                 // validation passed
                 return ValidationResult.Success;
            
-        }*/
+        }
     }
 }

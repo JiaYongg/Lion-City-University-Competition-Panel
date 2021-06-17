@@ -38,10 +38,10 @@ namespace WEB2021Apr_P01_T01.DAL
             //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
             //Read all records until the end, save data into a staff list
-            List<Judge> staffList = new List<Judge>();
+            List<Judge> judgeList = new List<Judge>();
             while (reader.Read())
             {
-                staffList.Add(
+                judgeList.Add(
                 new Judge
                 {
                     JudgeId = reader.GetInt32(0),
@@ -53,6 +53,41 @@ namespace WEB2021Apr_P01_T01.DAL
                 }
                 );
             }
+            //Close DataReader
+            reader.Close();
+            //Close the database connection
+            conn.Close();
+            return judgeList;
+        }
+
+        public bool IsEmailExist(string email, int judgeId)
+        {
+            bool emailFound = false;
+            //Create a SqlCommand object and specify the SQL statement
+            //to get a staff record with the email address to be validated
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT JudgeID FROM Judge WHERE EmailAddr=@selectedEmail";
+            cmd.Parameters.AddWithValue("@selectedEmail", email);
+            //Open a database connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    if (reader.GetInt32(0) != judgeId)
+                        //The email address is used by another staff
+                        emailFound = true;
+                }
+            }
+            else
+            { //No record
+                emailFound = false; // The email address given does not exist
+            }
+            reader.Close();
+            conn.Close();
+
+            return emailFound;
         }
     }
 }
