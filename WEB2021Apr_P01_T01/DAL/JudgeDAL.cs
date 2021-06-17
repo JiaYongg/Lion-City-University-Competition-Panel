@@ -27,7 +27,7 @@ namespace WEB2021Apr_P01_T01.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public List<Judge> GetAllCompetitor()
+        public List<Judge> GetAllJudge()
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
