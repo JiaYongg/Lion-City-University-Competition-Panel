@@ -10,57 +10,65 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <div class="col-md-4 col-sm-8">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="lcu-logo" src="~/images/logo.png" width="150" /></a><span style="font-family: 'DM Serif Display', serif;">Competition Panel</span>
-                </div>
-                <div class="col-sm-4">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="d-lg-flex justify-content-lg-center navbar-nav flex-grow-1 text-center">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Competition</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Contact</a>
-                            </li>
-                        </ul>
+    <div class="container-fluid bg-light">
+        <header class="container">
+            <!-- A grey navbar that expands horizontally at medium device -->
+            <nav class="navbar navbar-expand-md bg-light navbar-light">
+                <div class="col-12 col-lg-4 col-md-4 col-sm-12 d-flex justify-content-sm-between align-items-center">
+                    <!-- The brand(or icon) of the navbar -->
+                    <div class="col-8 col-md-12">
+                        <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img id="lcu-logo" src="~/images/logo.png" width="130" /></a><span class="d-none d-lg-inline" style="font-family: 'DM Serif Display', serif;">Competition Panel</span>
+                    </div>
+                    <div class="col-4">
+                        <!-- Toggle/collapsible Button, also known as hamburger button -->
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#staffNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="d-lg-flex justify-content-lg-end navbar-nav flex-grow-1 text-center">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Competition</a>
-                            </li>
-                        </ul>
-                    </div>
+
+
+                <!-- Links in the navbar, displayed as drop-down list when collapsed -->
+                <div class="collapse navbar-collapse" id="staffNavbar">
+                    <!-- Links that are aligned to the left, mr-auto: right margin auto-adjusted -->
+                    <ul class="navbar-nav mr-auto text-right text-md-left">
+                        <li class="nav-item">
+                            <!-- A link for logging out user -->
+                            <a class="nav-link disabled" asp-controller="Home" asp-action="LogOut">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- A link for logging out user -->
+                            <a class="nav-link" asp-controller="Home" asp-action="LogOut">Competitions</a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- A link for logging out user -->
+                            <a class="nav-link disabled" asp-controller="Home" asp-action="LogOut">Contact</a>
+                        </li>
+
+                    </ul>
+                    <!-- Links that are aligned to the right ml-auto: left margin auto-adjusted -->
+                    <ul class="navbar-nav ml-auto text-right text-md-left">
+                        <li class="nav-item">
+                            <!-- A link for logging out user -->
+                            <a class="nav-link" asp-controller="Home" asp-action="LogOut">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- A link for logging out user -->
+                            <a class="nav-link" asp-controller="Home" asp-action="LogOut">Sign Up</a>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container-fluid text-center">
+    <footer class="border-top footer text-muted d-flex align-items-center" style="height: 60px;">
+        <div class="container-fluid text-center mt-auto mb-auto">
             &copy; Lion City University (LCU) 2021, All Rights Reserved | Powered by TeamPK of Ngee Ann Polytechnic
         </div>
     </footer>

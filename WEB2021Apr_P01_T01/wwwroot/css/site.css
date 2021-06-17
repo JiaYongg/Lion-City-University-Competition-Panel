@@ -2,7 +2,7 @@
     font-family: 'DM Serif Display', serif;
 }
 
-.gold {
+.gold, .navbar-light .navbar-nav .nav-link {
     color: #a98f64;
 }
 
@@ -33,7 +33,7 @@ body {
 
 @media only screen and (min-width: 769px) 
 {
-    .vh65 {
-        height: 65vh;
+    .vh70 {
+        height: 70vh;
     }
 }
