@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 
 namespace WEB2021Apr_P01_T01.Controllers
 {
-    public class SignUpController : Controller
+    public class LoginController : Controller
     {
-        // GET: SignUpController
+        // GET: LoginController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: SignUpController/Details/5
+        // GET: LoginController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: SignUpController/Create
+        // GET: LoginController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: SignUpController/Create
+        // POST: LoginController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -42,13 +42,13 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
         }
 
-        // GET: SignUpController/Edit/5
+        // GET: LoginController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: SignUpController/Edit/5
+        // POST: LoginController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -63,13 +63,13 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
         }
 
-        // GET: SignUpController/Delete/5
+        // GET: LoginController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: SignUpController/Delete/5
+        // POST: LoginController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
