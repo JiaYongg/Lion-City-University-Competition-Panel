@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\images\Lion.png" />
+  </ItemGroup>
+
 </Project>
