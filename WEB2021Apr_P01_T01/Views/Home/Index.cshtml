@@ -1,8 +1,44 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Competition Panel";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibity -->
+    <meta charset="utf-8">
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Competition Panel - Lion City University</title>
+    <!-- Reference to customized styling for this website -->
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <!-- 1st row -->
+        <div class="col-12">
+            <!-- Flexbox for logo, auto-expand in the container -->
+            <div style="flex:auto;">
+                <img id="lcu-logo" src="~/images/logo.png" width="150" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="border: 1px solid red;">
+        <!-- 2nd row -->
+        <div class="col-md-8 col-sm-12" style="border: 1px solid blue;">
+            <h1 class="title-font">Lion City University</h1>
+            <h2 class="title-font">Competition Panel</h2>
+            <p>
+                The competition web portal for Lion City University.<br />
+                Unleash your competitive spirit and strive for gold.
+            </p>
+            <div class="d-flex flex-row justify-content-around">
+                <button class="btn btn-dark">View Competitions</button>
+                <button class="btn btn-primary">Login</button>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 text-center" style="border: 1px solid black;">
+            <img id="greetImg" src="~/images/Lion.png" style="width: 350px" />
+        </div>
+    </div>
+</body>
+</html>
