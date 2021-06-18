@@ -4,15 +4,64 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB2021Apr_P01_T01.DAL;
+using WEB2021Apr_P01_T01.Models;
 
 namespace WEB2021Apr_P01_T01.Controllers
 {
     public class SignUpController : Controller
     {
+        private SignUpDAL signUpContext = new SignUpDAL();
+        private List<string> userTypes = new List<string> {"Judge Registration", "Competitor Registration"};
+
         // GET: SignUpController
         public ActionResult Index()
         {
             return View();
+        }
+
+        // When "Sign Up" button on nav bar is clicked
+        public ActionResult SignUp()
+        {
+            ViewData["UserType"] = userTypes;
+            SignUp signup = new SignUp
+            {
+                // Set the default value to "Judge Registration" for the radio button
+                userType = userTypes[0]
+            };
+            return View(signup);
+        }
+
+        // Form submission for Sign Up
+        [HttpPost]
+        public ActionResult SignUp(SignUp signUp, Judge judge, Competitor competitor)
+        {
+            ViewData["UserType"] = userTypes;
+
+            int selection = userTypes.IndexOf(signUp.userType);
+
+            if (userTypes[selection] == "Judge Registration")
+            {
+                // if statement to check if the email contains @lcu.edu.sg
+                if (signUp.emailAddress.Contains("@lcu.edu.sg"))
+                {
+                    // needs another if statement here to check if email already exist in the database
+                    judge.JudgeId = signUpContext.AddJudge(judge); // <--- Eddie's part of code, Yet to implement
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(judge);
+                }
+            }
+            else // Competitor registration
+            {
+                // needs another if statement here to check if email already exist in the database
+                // adds competitor account to database
+                competitor.CompetitorId = signUpContext.AddCompetitor(competitor);
+                return RedirectToAction("Index");
+            }
+
         }
 
         // GET: SignUpController/Details/5
