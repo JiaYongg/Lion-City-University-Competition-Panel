@@ -45,7 +45,6 @@ namespace WEB2021Apr_P01_T01.Controllers
                 // if statement to check if the email contains @lcu.edu.sg
                 if (signUp.emailAddress.Contains("@lcu.edu.sg"))
                 {
-                    // needs another if statement here to check if email already exist in the database
                     judge.JudgeId = signUpContext.AddJudge(judge); // <--- Eddie's part of code, Yet to implement
                     return RedirectToAction("Index");
                 }
@@ -56,7 +55,6 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
             else // Competitor registration
             {
-                // needs another if statement here to check if email already exist in the database
                 // adds competitor account to database
                 competitor.CompetitorId = signUpContext.AddCompetitor(competitor);
                 return RedirectToAction("Index");

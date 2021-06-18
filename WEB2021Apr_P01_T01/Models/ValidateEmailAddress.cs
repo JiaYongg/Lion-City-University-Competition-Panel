@@ -9,8 +9,7 @@ namespace WEB2021Apr_P01_T01.Models
 {
     public class ValidateEmailAddress : ValidationAttribute
     {
-        private JudgeDAL judgeContext = new JudgeDAL();
-        private CompetitorDAL competitorContext = new CompetitorDAL();
+        private SignUpDAL signUpContext = new SignUpDAL();
 
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
@@ -26,18 +25,17 @@ namespace WEB2021Apr_P01_T01.Models
             int competitorId = competitor.CompetitorId;
             int judgeId = judge.JudgeId;
 
-            if (competitorContext.IsEmailExist(email, competitorId))
+            if (signUpContext.isCompetitorEmailExist(email, competitorId))
                 // validation failed
                 return new ValidationResult
                 ("Email address already exists!");
-            else if (judgeContext.IsEmailExist(email, judgeId))
+            else if (signUpContext.isJudgeEmailExist(email, judgeId))
                 // validation failed
                 return new ValidationResult
                 ("Email address already exists!");
             else
                 // validation passed
                 return ValidationResult.Success;
-           
         }
     }
 }
