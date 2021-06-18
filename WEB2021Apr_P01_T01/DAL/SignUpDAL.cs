@@ -71,7 +71,7 @@ namespace WEB2021Apr_P01_T01.DAL
             return judge.JudgeId;
         }
 
-        public bool isCompetitorEmailExist(string email, int competitorId)
+        public bool IsCompetitorEmailExist(string email, int competitorId)
         {
             bool emailFound = false;
 
@@ -100,7 +100,7 @@ namespace WEB2021Apr_P01_T01.DAL
             return emailFound;
         }
 
-        public bool isJudgeEmailExist(string email, int judgeId)
+        public bool IsJudgeEmailExist(string email, int judgeId)
         {
             bool emailFound = false;
 
