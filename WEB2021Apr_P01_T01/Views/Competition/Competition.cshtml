@@ -1,5 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Competitions";
 }
+<div class="container-fluid d-flex flex-column flex-md-row">
+    <div class="left-panel col-12 col-md-6 d-flex justify-content-center flex-column">
+        <div class="pl-4">
+            <h1>Ongoing & Future Competitions</h1>
+            <p>View all ongoing & future competitions.</p>
+            <a class="mt-5 btn background-gold btn-180" asp-controller="Competition" asp-action="Index">View</a>
+        </div>
+    </div>
+    <div class="right-panel col-12 col-md-6 d-flex justify-content-center flex-column">
+        <div class="pl-4">
+            <h1>Completed Competitions</h1>
+            <p>View past competitions that has already concluded.</p>
+            <a class="mt-5 btn background-blue btn-180" asp-action="Index">View</a>
+        </div>
+</div>

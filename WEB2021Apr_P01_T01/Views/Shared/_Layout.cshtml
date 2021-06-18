@@ -8,6 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        .container-fluid {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid bg-light">
@@ -61,8 +67,8 @@
             </nav>
         </header>
     </div>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container-fluid">
+        <main role="main">
             @RenderBody()
         </main>
     </div>

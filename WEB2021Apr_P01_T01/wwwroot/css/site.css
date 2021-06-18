@@ -6,6 +6,20 @@
     color: #a98f64;
 }
 
+.left-panel, .right-panel {
+    height: 70vh;
+}
+
+.left-panel {
+    background-image: url("../images/left-panel-bg.jpg");
+    background-size: 100% 100%;
+}
+
+.right-panel {
+    background-image: url("../images/right-panel-bg2.jpg");
+    background-size: 100% 100%;
+}
+
 .background-gold {
     background-color: #a98f64;
 }
@@ -26,7 +40,6 @@ body {
 .btn-180 {
     font-family: 'DM Serif Display', serif;
     width: 180px;
-    height: 45px;
     font-weight: 500;
     color: #fff;
 }
@@ -35,5 +48,12 @@ body {
 {
     .vh70 {
         height: 70vh;
+    }
+}
+
+@media only screen and (max-width: 767px)
+{
+    .left-panel, .right-panel {
+        height: 50vh;
     }
 }
