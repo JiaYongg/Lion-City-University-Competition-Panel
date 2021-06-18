@@ -51,10 +51,25 @@ namespace WEB2021Apr_P01_T01.DAL
             return competitor.CompetitorId;
         }
 
-        //public int AddJudge()
-        //{
+        public int AddJudge(Judge judge)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"INSERT INTO Judge (JudgeName, Salutation, EmailAddr, Password)
+            OUTPUT INSERTED.JudgeId VALUES(@name, @salutation, @email, @password)";
 
-        //}
+            cmd.Parameters.AddWithValue("@name", judge.Name);
+            cmd.Parameters.AddWithValue("@salutation", judge.Salutation);
+            cmd.Parameters.AddWithValue("@email", judge.EmailAddr);
+            cmd.Parameters.AddWithValue("@password", judge.Password);
+
+            conn.Open();
+
+            judge.JudgeId = (int)cmd.ExecuteScalar();
+
+            conn.Close();
+
+            return judge.JudgeId;
+        }
 
         public bool isCompetitorEmailExist(string email, int competitorId)
         {
