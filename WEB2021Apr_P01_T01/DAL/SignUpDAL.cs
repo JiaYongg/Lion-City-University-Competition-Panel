@@ -13,6 +13,8 @@ namespace WEB2021Apr_P01_T01.DAL
     {
         private IConfiguration Configuration { get; set; }
         private SqlConnection conn;
+
+        private SignUp signUp = new SignUp();
         //Constructor
         public SignUpDAL()
         {
@@ -53,5 +55,63 @@ namespace WEB2021Apr_P01_T01.DAL
         //{
 
         //}
+
+        public bool isCompetitorEmailExist(string email, int competitorId)
+        {
+            bool emailFound = false;
+
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT CompetitorID FROM Competitor WHERE EmailAddr=@selectedEmail";
+            cmd.Parameters.AddWithValue("@selectedEmail", email);
+            //Open a database connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    if (reader.GetInt32(0) != competitor.CompetitorId)
+                        //The email address is used by another staff
+                        emailFound = true;
+                }
+            }
+            else
+            { //No record
+                emailFound = false; // The email address given does not exist
+            }
+            reader.Close();
+            conn.Close();
+
+            return emailFound;
+        }
+
+        public bool isJudgeEmailExist(string email, int competitorId)
+        {
+            bool emailFound = false;
+
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT JudgeID FROM Judge WHERE EmailAddr=@selectedEmail";
+            cmd.Parameters.AddWithValue("@selectedEmail", email);
+            //Open a database connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    if (reader.GetInt32(0) != judge.JudgeId)
+                        //The email address is used by another staff
+                        emailFound = true;
+                }
+            }
+            else
+            { //No record
+                emailFound = false; // The email address given does not exist
+            }
+            reader.Close();
+            conn.Close();
+
+            return emailFound;
+        }
     }
 }
