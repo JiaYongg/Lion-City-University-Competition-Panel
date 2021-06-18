@@ -1,0 +1,54 @@
+﻿@model WEB2021Apr_P01_T01.Models.Login
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibity -->
+    <meta charset="utf-8">
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Competition Panel - Lion City University</title>
+    <!-- Reference to customized styling for this website -->
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+</head>
+<body>
+    <form asp-controller="Login" asp-action="Login" method="post">
+        <fieldset class="FormContent">
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+            <div class="form-group row">
+                <label asp-for="Email"
+                       class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8 col-md-4">
+                    <input asp-for="Email" class="form-control"
+                           required />
+                    <span asp-validation-for="Email"
+                          class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Password"
+                       class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8 col-md-4">
+                    <input asp-for="Password" class="form-control"
+                           required />
+                    <span asp-validation-for="Password"
+                          class="text-danger"></span>
+                </div>
+            </div>
+            <!-- login button -->
+            <div class="form-group row">
+                <div class="col-sm-8 offset-sm-4">
+                    <input type="submit" value="Login"
+                           class="btn btn-primary" />
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</body>
+</html>
+

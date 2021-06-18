@@ -45,7 +45,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 // if statement to check if the email contains @lcu.edu.sg
                 if (signUp.emailAddress.Contains("@lcu.edu.sg"))
                 {
-                    judge.JudgeId = signUpContext.AddJudge(judge); // <--- Eddie's part of code, Yet to implement
+                    //judge.JudgeId = signUpContext.AddJudge(judge); // <--- Eddie's part of code, Yet to implement
                     return RedirectToAction("Index");
                 }
                 else

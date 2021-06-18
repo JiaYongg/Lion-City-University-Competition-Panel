@@ -70,7 +70,7 @@ namespace WEB2021Apr_P01_T01.DAL
             { //Records found
                 while (reader.Read())
                 {
-                    if (reader.GetInt32(0) != competitor.CompetitorId)
+                    if (reader.GetInt32(0) != competitorId)
                         //The email address is used by another staff
                         emailFound = true;
                 }
@@ -85,7 +85,7 @@ namespace WEB2021Apr_P01_T01.DAL
             return emailFound;
         }
 
-        public bool isJudgeEmailExist(string email, int competitorId)
+        public bool isJudgeEmailExist(string email, int judgeId)
         {
             bool emailFound = false;
 
@@ -99,7 +99,7 @@ namespace WEB2021Apr_P01_T01.DAL
             { //Records found
                 while (reader.Read())
                 {
-                    if (reader.GetInt32(0) != judge.JudgeId)
+                    if (reader.GetInt32(0) != judgeId)
                         //The email address is used by another staff
                         emailFound = true;
                 }

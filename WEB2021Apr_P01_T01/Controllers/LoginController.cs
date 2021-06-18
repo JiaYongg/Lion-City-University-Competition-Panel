@@ -15,8 +15,20 @@ namespace WEB2021Apr_P01_T01.Controllers
         private JudgeDAL judgeContext = new JudgeDAL();
         private CompetitorDAL competitorContext = new CompetitorDAL();
 
+        // GET: LoginController
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        // GET: LoginController/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
         [HttpPost]
-        public ActionResult login(IFormCollection formData)
+        public ActionResult Login(IFormCollection formData)
         {
             // Read inputs from textboxes
             string loginEmail = formData["userEmail"].ToString();
@@ -26,7 +38,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             List<Judge> judgeList = judgeContext.GetAllJudge();
             foreach (Judge judge in judgeList)
             {
-                if(loginEmail == judge.EmailAddr && password == judge.Password)
+                if (loginEmail == judge.EmailAddr && password == judge.Password)
                 {
                     HttpContext.Session.SetString("Name", judge.Name);
                     HttpContext.Session.SetString("Role", "LCU Judge");
@@ -67,11 +79,68 @@ namespace WEB2021Apr_P01_T01.Controllers
                 return RedirectToAction("Index");
             }
         }
-        // Find out a way to know if it is a admin, competitor or judge
-        // user = admin, competitor or judge depending on who logged in
-        public ActionResult user()
-        {
 
+        // GET: LoginController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: LoginController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: LoginController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: LoginController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: LoginController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: LoginController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
