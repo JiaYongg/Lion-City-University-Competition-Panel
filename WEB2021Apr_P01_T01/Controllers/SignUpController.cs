@@ -46,6 +46,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 if (signUp.emailAddress.Contains("@lcu.edu.sg"))
                 {
                     //judge.JudgeId = signUpContext.AddJudge(judge); // <--- Eddie's part of code, Yet to implement
+                    judge.JudgeId = signUpContext.AddJudge(judge);
                     return RedirectToAction("Index");
                 }
                 else
