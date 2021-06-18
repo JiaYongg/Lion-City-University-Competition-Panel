@@ -25,11 +25,11 @@ namespace WEB2021Apr_P01_T01.Models
             int competitorId = competitor.CompetitorId;
             int judgeId = judge.JudgeId;
 
-            if (signUpContext.isCompetitorEmailExist(email, competitorId))
+            if (signUpContext.IsCompetitorEmailExist(email, competitorId))
                 // validation failed
                 return new ValidationResult
                 ("Email address already exists!");
-            else if (signUpContext.isJudgeEmailExist(email, judgeId))
+            else if (signUpContext.IsJudgeEmailExist(email, judgeId))
                 // validation failed
                 return new ValidationResult
                 ("Email address already exists!");

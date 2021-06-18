@@ -14,7 +14,7 @@ namespace WEB2021Apr_P01_T01.Controllers
         private CompetitionDAL competitionContext = new CompetitionDAL();
         public ActionResult Index()
         {
-            return View();
+            return View("Competition");
         }
     }
 }
