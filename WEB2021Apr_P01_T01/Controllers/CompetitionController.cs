@@ -22,5 +22,11 @@ namespace WEB2021Apr_P01_T01.Controllers
             List<Competition> competitionList = competitionContext.GetCurrentCompetitions();
             return View("CurrentCompetitions", competitionList);
         }
+
+        public ActionResult PastCompetitions()
+        {
+            List<Competition> pastCompetitionList = competitionContext.GetPastCompetitions();
+            return View("PastCompetitions", pastCompetitionList);
+        }
     }
 }

@@ -5,8 +5,8 @@
     <div class="card-group">
         @foreach (var competition in Model)
         {
-            <div class="card shadow-sm p-3 m-3 bg-white rounded">
-                <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="col-12 col-md-4 card shadow-sm p-4 m-4 bg-white rounded">
+                <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title gold">@competition.CompetitionName</h5>
                     <p class="card-text">@competition.Aoi.ToString()</p>
