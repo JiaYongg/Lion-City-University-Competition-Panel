@@ -12,9 +12,12 @@ namespace WEB2021Apr_P01_T01.Models
         public int CompetitionId { get; set; }
         
         [Required]
-        [Display(Name = "Area of Interest")]
-        public int Aoi { get; set; }
+        [Display(Name = "Interest ID")]
+        public int AoiId { get; set; }
         //public AreaInterest Aoi { get; set; }
+
+        [Display(Name = "Area of Interest")]
+        public string? AoiName { get; set; }
 
         [Required]
         [Display(Name = "Competition Name")]

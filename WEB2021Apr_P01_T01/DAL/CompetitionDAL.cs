@@ -32,7 +32,6 @@ namespace WEB2021Apr_P01_T01.DAL
             SqlCommand cmd = conn.CreateCommand();
 
             // Specify the SELECT SQL Statement
-
             cmd.CommandText = @"SELECT * FROM Competition WHERE EndDate > @today ORDER BY CompetitionId";
             cmd.Parameters.AddWithValue("@today", DateTime.Today);
 
@@ -47,7 +46,7 @@ namespace WEB2021Apr_P01_T01.DAL
                     new Competition
                     {
                         CompetitionId = reader.GetInt32(0),
-                        Aoi = reader.GetInt32(1),
+                        AoiId = reader.GetInt32(1),
                         CompetitionName = reader.GetString(2),
                         StartDate = reader.GetDateTime(3),
                         EndDate = reader.GetDateTime(4),
@@ -84,7 +83,7 @@ namespace WEB2021Apr_P01_T01.DAL
                     new Competition
                     {
                         CompetitionId = reader.GetInt32(0),
-                        Aoi = reader.GetInt32(1),
+                        AoiId = reader.GetInt32(1),
                         CompetitionName = reader.GetString(2),
                         StartDate = reader.GetDateTime(3),
                         EndDate = reader.GetDateTime(4),
