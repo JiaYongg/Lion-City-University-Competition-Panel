@@ -43,7 +43,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                     HttpContext.Session.SetString("Name", judge.Name);
                     HttpContext.Session.SetString("Role", "LCU Judge");
                     // go to judge panel
-                    return RedirectToAction("Judge");
+                    return RedirectToAction("Index","Judge");
                 }
             }
             //Finding of competitor email address && password, accessing database
@@ -55,7 +55,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                     HttpContext.Session.SetString("Name", competitor.Name);
                     HttpContext.Session.SetString("Role", "Competitor");
                     // go to competitor panel
-                    return RedirectToAction("Competitor");
+                    return RedirectToAction("Index", "Competitor");
                 }
             }
 
@@ -68,7 +68,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 HttpContext.Session.SetString("Role", "LCU Admin");
 
                 // Redirect user to admin panel.
-                return RedirectToAction("Competition");
+                return RedirectToAction("Index", "Admin");
             }
             else
             {
