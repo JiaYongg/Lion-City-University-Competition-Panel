@@ -1,0 +1,27 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Competition>
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="card-group">
+        @foreach (var competition in Model)
+        {
+            <div class="card shadow-sm p-3 m-3 bg-white rounded">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title gold">@competition.CompetitionName</h5>
+                    <p class="card-text">@competition.Aoi.ToString()</p>
+                    <p class="card-text">Begins on <span class="gold">@competition.StartDate.ToString()</span></p>
+                    <p class="card-text">Ends on <span class="gold">@competition.EndDate.ToString()</span></p>
+                    <p class="card-text">Result releases on <span class="gold">@competition.ResultsReleaseDate.ToString()</span></p>
+                </div>
+                <div class="text-center">
+                    <a class="btn background-blue btn-180">View Competition</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <span style="color:red;">There are no ongoing competitions presently.</span>
+}

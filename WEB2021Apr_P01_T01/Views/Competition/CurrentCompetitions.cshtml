@@ -1,0 +1,20 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Competition>
+
+@{
+    ViewData["Title"] = "Ongoing Competitions";
+}
+<div class="container-fluid">
+    <h2 class="gold">All Competitions</h2>
+    <div class="ml-auto mr-auto d-flex justify-content-center flex-column mb-5">
+        <p class="text-center">Filter by Area of Interest</p>
+        <div class="text-center">
+            <button class="btn background-gold">AOI 1</button>
+            <button class="btn background-gold">AOI 2</button>
+            <button class="btn background-gold">AOI 3</button>
+            <button class="btn background-gold">AOI 4</button>
+            <button class="btn background-gold">AOI 5</button>
+        </div>
+    </div>
+    <partial name="~/Views/Competition/_ViewCurrentCompetitions.cshtml"/>
+</div>
+
