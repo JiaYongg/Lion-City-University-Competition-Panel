@@ -9,7 +9,8 @@ namespace WEB2021Apr_P01_T01.Models
     public class Login
     {
         [Display(Name = "Email Address")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
+        [EmailAddress]
+        //[RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
         [Required]
 
         public string Email { get; set; }

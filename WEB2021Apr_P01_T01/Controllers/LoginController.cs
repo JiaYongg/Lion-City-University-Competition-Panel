@@ -31,8 +31,8 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult Login(IFormCollection formData)
         {
             // Read inputs from textboxes
-            string loginEmail = formData["userEmail"].ToString();
-            string password = formData["userPassword"].ToString();
+            string loginEmail = formData["Email"].ToString();
+            string password = formData["Password"].ToString();
 
             // Finding of judge email address && password, accessing database
             List<Judge> judgeList = judgeContext.GetAllJudge();
@@ -46,7 +46,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                     return RedirectToAction("Judge");
                 }
             }
-            // Finding of competitor email address && password, accessing database
+            //Finding of competitor email address && password, accessing database
             List<Competitor> competitorList = competitorContext.GetAllCompetitor();
             foreach (Competitor competitor in competitorList)
             {
@@ -68,7 +68,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 HttpContext.Session.SetString("Role", "LCU Admin");
 
                 // Redirect user to admin panel.
-                return RedirectToAction("Admin");
+                return RedirectToAction("Competition");
             }
             else
             {

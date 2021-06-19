@@ -32,7 +32,7 @@ namespace WEB2021Apr_P01_T01.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement
-            cmd.CommandText = @"SELECT * FROM Judge ORDER BY JudgeID";
+            cmd.CommandText = @"SELECT * FROM Judge";
             //Open a database connection
             conn.Open();
             //Execute the SELECT SQL through a DataReader
