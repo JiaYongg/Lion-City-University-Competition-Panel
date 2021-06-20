@@ -1,0 +1,14 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.AreaInterest>
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="ml-auto mr-auto d-flex justify-content-center flex-column mb-5">
+        <p class="text-center">Filter by Area of Interest</p>
+        <div class="text-center">
+            @foreach (var aoi in Model)
+            {
+                <button class="btn background-gold">@aoi.Name</button>
+            }
+        </div>
+    </div>
+}

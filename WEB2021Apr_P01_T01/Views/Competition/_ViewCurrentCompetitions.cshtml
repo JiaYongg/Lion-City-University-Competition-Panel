@@ -5,7 +5,7 @@
     <div class="card-group">
         @foreach (var competition in Model)
         {
-            <div class="col-12 col-md-4 card shadow-sm p-4 m-4 bg-white rounded">
+            <div class="col-12 col-lg-4 card shadow-sm p-2 ml-lg-2 mr-lg-2 mb-4 ml-auto mr-auto bg-white rounded">
                 <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title gold">@competition.CompetitionName</h5>
@@ -14,8 +14,8 @@
                     <p class="card-text">Ends on <span class="gold">@competition.EndDate.ToString()</span></p>
                     <p class="card-text">Result releases on <span class="gold">@competition.ResultsReleaseDate.ToString()</span></p>
                 </div>
-                <div class="text-center">
-                    <a class="btn background-blue btn-180">View Competition</a>
+                <div class="text-center pb-4">
+                    <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
                 </div>
             </div>
         }
@@ -23,5 +23,5 @@
 }
 else
 {
-    <span style="color:red;">There are no ongoing competitions presently.</span>
+    <span style="color:red;" class="text-center">There are no ongoing competitions presently.</span>
 }
