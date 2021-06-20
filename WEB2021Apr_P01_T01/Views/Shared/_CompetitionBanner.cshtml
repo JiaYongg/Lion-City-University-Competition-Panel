@@ -1,0 +1,25 @@
+﻿@{ 
+    string imagePath = (string) ViewData["BgImgUrl"];
+
+    string bgColor = "#FFFFFF";
+    if (ViewData["PageTitle"] == "Ongoing & Future Competitions")
+    {
+        bgColor = "#3b3b3b";
+    }
+    else
+    {
+        bgColor = "#f7f7f7";
+    }
+}
+
+<div class="container-fluid" style='height: 80vh; background: @bgColor url("@imagePath"); background-repeat: no-repeat; background-size: 50% 70%; background-position: right bottom; padding-left: 0px !important; padding-right: 0px !important;'>
+    <div class="container pt-5">
+        <div class="col-12 mt-5 pt-5">
+            <h1 class="gold">@ViewData["PageTitle"]</h1>
+            <p class="gold">@ViewData["Subtitle"]</p>
+        </div>
+        <div class="solid">
+
+        </div>
+    </div>
+</div>

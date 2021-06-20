@@ -22,6 +22,11 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult CurrentCompetitions()
         {
             List<Competition> competitionList = competitionContext.GetCurrentCompetitions();
+            ViewData["PageTitle"] = "Ongoing & Future Competitions";
+            ViewData["Subtitle"] = "Unleash your competitive spirits and participate in one of our competition now!";
+            ViewData["BgImgUrl"] = "../images/10163.png";
+            List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
+            ViewData["AreaInterest"] = aoiList;
 
             foreach (Competition comp in competitionList)
             {
@@ -34,6 +39,13 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult PastCompetitions()
         {
             List<Competition> pastCompetitionList = competitionContext.GetPastCompetitions();
+
+            ViewData["PageTitle"] = "Past Competitions";
+            ViewData["Subtitle"] = "View the past competition, its entries and the award winners.";
+            ViewData["BgImgUrl"] = "../images/66732.png";
+            List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
+            ViewData["AreaInterest"] = aoiList;
+
             foreach (Competition comp in pastCompetitionList)
             {
                 comp.AoiName = aoiContext.GetAoiName(comp.AoiId);

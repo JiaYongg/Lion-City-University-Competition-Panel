@@ -2,17 +2,20 @@
 
 @{
     ViewData["Title"] = "Past Competitions";
+    List<AreaInterest> aoiList = (List<AreaInterest>) ViewData["AreaInterest"];
 }
-<div class="container-fluid">
-    <h2 class="gold p-3 m-3">All Competitions</h2>
+
+<partial name="~/Views/Shared/_CompetitionBanner.cshtml" />
+<div class="container">
+    <h2 class="gold mt-4">All Competitions</h2>
     <div class="ml-auto mr-auto d-flex justify-content-center flex-column mb-5">
         <p class="text-center">Filter by Area of Interest</p>
         <div class="text-center">
-            <button class="btn background-gold">AOI 1</button>
-            <button class="btn background-gold">AOI 2</button>
-            <button class="btn background-gold">AOI 3</button>
-            <button class="btn background-gold">AOI 4</button>
-            <button class="btn background-gold">AOI 5</button>
+            <button class="btn background-gold">All</button>
+            @foreach (AreaInterest aoi in aoiList)
+            {
+                <button class="btn background-gold m-2">@aoi.Name</button>
+            }
         </div>
     </div>
     <partial name="~/Views/Competition/_ViewCurrentCompetitions.cshtml" />
