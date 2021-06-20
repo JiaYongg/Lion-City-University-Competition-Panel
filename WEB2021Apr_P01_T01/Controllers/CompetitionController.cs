@@ -52,5 +52,15 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
             return View("PastCompetitions", pastCompetitionList);
         }
+
+        public ActionResult Details(int id)
+        {
+            Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
+            if (competitionDetails == null)
+            {
+                RedirectToAction("Error", "Home");
+            }
+            return View(competitionDetails);
+        }
     }
 }

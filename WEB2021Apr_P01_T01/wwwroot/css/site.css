@@ -6,10 +6,6 @@
     color: #a98f64;
 }
 
-.left-panel, .right-panel {
-    height: 70vh;
-}
-
 .left-panel {
     background-image: url("../images/left-panel-bg.jpg");
     background-size: 100% 100%;
@@ -76,15 +72,25 @@ hr.solid {
     display: inline-block;
 }
 
+.container-fluid {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+
 @media only screen and (min-width: 769px) {
     .vh70 {
         height: 70vh;
     }
+
+    .left-panel, .right-panel {
+        height: 70vh;
+    }
+
+
 }
 
-@media screen and (max-width: 767px)
+@media only screen and (max-width: 767px)
 {
-    .left-panel, .right-panel {
-        height: 100%;
-    }
+
 }
