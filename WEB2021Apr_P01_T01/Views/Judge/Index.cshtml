@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Judge Panel";
+}
+
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibity -->
+    <meta charset="utf-8">
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Competition Panel - Lion City University</title>
+    <!-- Reference to customized styling for this website -->
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+</head>
+<body>
+    <div class="container vh70 d-flex flex-column flex-md-row justify-content-center align-items-center">
+        <div class=" flex-column flex-md-column">
+            <p>Judge Panel</p>
+            <h2>Welcome,</h2>
+            <h1 class="gold">LCU Judge</h1>
+        </div>
+        <div class="col-12 col-md-8">
+            <p>View Competitor</p>
+            <p>Current competitors to be judged.<br />Grade submission and edit ranking or marks.</p>
+        </div>
+        <div class="col-12 col-md-4">
+            <a class="judge-right-panel" asp-controller="Judge" asp-action="JudgeCriteria"></a>
+            <div class="judge-content">
+                <p>Create Judging Criteria</p>
+                <p>Create the criterions and its weightage</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

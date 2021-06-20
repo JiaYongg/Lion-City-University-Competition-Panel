@@ -64,6 +64,27 @@ form {
     background-color: #E5E5E5;
 }
 
+.judge-left-panel {
+    background-image: url(../images/)
+}
+
+.judge-right-panel {
+    background-image: url(../images/judge-hammer.png)
+}
+
+.judge-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.judge-images {
+
+}
+
+.judge-content {
+
+}
+
 hr.solid {
     border-top: 3px solid #a98f64;
     width: 10vw;
