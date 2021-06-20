@@ -68,6 +68,27 @@ form {
     background-color: #E5E5E5;
 }
 
+.judge-left-panel {
+    background-image: url(../images/)
+}
+
+.judge-right-panel {
+    background-image: url(../images/judge-hammer.png)
+}
+
+.judge-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.judge-images {
+
+}
+
+.judge-content {
+
+}
+
 @media only screen and (min-width: 769px) {
     .vh70 {
         height: 70vh;
