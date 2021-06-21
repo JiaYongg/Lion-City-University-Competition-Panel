@@ -20,17 +20,18 @@
             <h2>Welcome,</h2>
             <h1 class="gold">LCU Judge</h1>
         </div>
-        <div class="container d-flex flex-column flex-md-row justify-content-center align-items-center">
-            <div class="col-12 col-md-8">
-                <p>View Competitor</p>
-                <p>Current competitors to be judged.<br />Grade submission and edit ranking or marks.</p>
-            </div>
-            <div class="col-12 col-md-4">
-                <a class="judge-right-panel" asp-controller="Judge" asp-action="JudgeCriteria">
-                    <img class="judge-right-panel" alt="judge-right-panel-img" />
-                </a>
+        <div class="judge-container">
+            <div class="col-sm-6">
+                <img class="judge-image" src="~/images/judge-left-panel.jpg" />
                 <div class="judge-content">
-                    <p>Create Judging Criteria</p>
+                    <h4>View Competitor</h4>
+                    <p>Current competitors to be judged.<br />Grade submission and edit ranking or marks.</p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <img class="judge-image" src="~/images/judge-hammer.png" />
+                <div class="judge-content">
+                    <h4>Create Judging Criteria</h4>
                     <p>Create the criterions and its weightage</p>
                 </div>
             </div>

@@ -64,29 +64,28 @@ form {
     background-color: #E5E5E5;
 }
 
-.judge-left-panel {
-    background-image: url(../images/)
-}
-
-.judge-right-panel {
-    background-image: url(../images/judge-hammer.png);
-    position: absolute;
-    z-index: -1;
-}
-
 .judge-container {
     display: flex;
-    flex-direction: column;
-}
-
-.judge-images {
-
 }
 
 .judge-content {
     position: absolute;
-    z-index: 1
+    z-index: -1;
+    padding: 20px;
 }
+
+.judge-image {
+    position: absolute;
+    opacity: 0.3;
+    z-index: 1;
+    width: 85%;
+    height: 300px;
+}
+
+/*.judge-left-panel:link, .judge-left-panel:visited, .judge-left-panel:hover, .judge-left-panel:active, .judge-right-panel:link, .judge-right-panel:visited, .judge-right-panel:hover, .judge-right-panel:active {
+    text-decoration: none;
+}*/
+
 
 hr.solid {
     border-top: 3px solid #a98f64;

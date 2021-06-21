@@ -15,6 +15,16 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View();
         }
 
+        public ActionResult JudgeCompetitor()
+        {
+            return View();
+        }
+
+        public ActionResult JudgeCriteria()
+        {
+            return View();
+        }
+
         // GET: JudgeController/Details/5
         public ActionResult Details(int id)
         {
