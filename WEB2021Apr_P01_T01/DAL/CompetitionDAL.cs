@@ -13,6 +13,7 @@ namespace WEB2021Apr_P01_T01.DAL
     {
         private IConfiguration Configuration { get; }
         private SqlConnection conn;
+        private AoiDAL aoiContext = new AoiDAL();
 
         // Constructor
         public CompetitionDAL()
@@ -97,6 +98,53 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Close();
 
             return pastCompetitionList;
+        }
+
+        public Competition GetCompetitionDetails(int competitionId)
+        {
+            Competition compy = new Competition();
+
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify the SELECT SQL statement that retrieves all attributes of a competition records.
+            cmd.CommandText = @"SELECT * FROM Competition WHERE CompetitionId = @selectedCompetitionID";
+
+            // Define the parameter used in SQL Statement, value for the parameter is retrieved from the method parameter "competitionId".
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+
+            // Open a database connection.
+            conn.Open();
+
+            // Execute SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                // Read the retrieved record from the database.
+                while (reader.Read())
+                {
+                    // Fill Competition object with values from the data reader
+                    compy.CompetitionId = competitionId;
+                    compy.AoiId = reader.GetInt32(1);
+                    compy.AoiName = aoiContext.GetAoiName(compy.AoiId);
+                    compy.CompetitionName = !reader.IsDBNull(2) ? reader.GetString(2) : null;
+                    compy.StartDate = reader.GetDateTime(3);
+                    compy.EndDate = reader.GetDateTime(4);
+                    compy.ResultsReleaseDate = reader.GetDateTime(5);
+                    compy.SubmissionList = new List<CompetitionSubmission>();
+
+                    // To add loop to call CompetitionSubmissionDAL to get competitionSubmissions and add into list.
+                }
+            }
+
+            // Close Data Reader
+            reader.Close();
+
+            // Close Database Connection
+            conn.Close();
+
+            return compy;
         }
     }
 }
