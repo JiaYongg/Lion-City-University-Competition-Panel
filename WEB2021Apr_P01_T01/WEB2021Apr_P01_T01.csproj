@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="Views\AreaInterest\" />
     <Folder Include="Views\SignUp\" />
+    <Folder Include="wwwroot\competitionfiles\" />
   </ItemGroup>
 
 </Project>

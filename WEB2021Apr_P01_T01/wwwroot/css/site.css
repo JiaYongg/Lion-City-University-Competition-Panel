@@ -44,6 +44,12 @@ body {
     width: 100%;
 }
 
+.login-background {
+    background-image: url('../images/bg-login.jpg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 form {
     display: flex;
     align-items: center;
