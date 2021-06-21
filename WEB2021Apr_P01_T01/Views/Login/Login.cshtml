@@ -15,42 +15,43 @@
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
 </head>
 <body style="background-image: url('../images/bg-login.jpg'); background-size: 100% auto">
-    <form asp-controller="Login" asp-action="Login" method="post">
-        <fieldset class="FormContent">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" style="text-align: center;">
-                <div class="col-sm-12">
-                    <h3 class="gold">Sign In</h3>
-                </div>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 75vh;">
+        <div class="FormContent d-flex flex-column col-md-6 col-12">
+            <h3 class="gold text-center">Sign In</h3>
+            <div class="align-self-center justify-content-center">
+                <form asp-controller="Login" asp-action="Login" method="post">
+                    <fieldset>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input asp-for="Email" class="form-control" placeholder="Email Address" required />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input asp-for="Password" class="form-control" autocomplete="off" placeholder="Password" required />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- login button -->
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="submit" value="Login" class="btn background-gold btn-180 btn-login" />
+                            </div>
+                        </div>
+                        <!-- Error message-->
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <span style="color:red;">@TempData["Message"]</span>
+                            </div>
+                        </div>
+                        <p class="mt-5">Don't have an account? <a style="text-decoration: underline;" asp-controller="SignUp" asp-action="Index">Sign Up Now.</a></p>
+                    </fieldset>
+                </form>
             </div>
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <input asp-for="Email" class="form-control" placeholder="Email Address" required />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <input asp-for="Password" class="form-control" autocomplete="off" placeholder="Password" required />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- login button -->
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <input type="submit" value="Login" class="btn background-gold btn-180 btn-login" />
-                </div>
-            </div>
-
-            <!-- Error message-->
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <span style="color:red;">@TempData["Message"]</span>
-                </div>
-            </div>
-            <p>Don't have an account? <a style="text-decoration: underline;" asp-controller="SignUp" asp-action="Index">Sign Up Now.</a></p>
-        </fieldset>
-    </form>
+        </div>
+    </div>
+    
 </body>
 </html>
