@@ -13,6 +13,8 @@ namespace WEB2021Apr_P01_T01.Controllers
     {
         private CompetitionDAL competitionContext = new CompetitionDAL();
         private AoiDAL aoiContext = new AoiDAL();
+        private CriteriaDAL criteriaContext = new CriteriaDAL();
+        private JudgeDAL judgeContext = new JudgeDAL();
 
         public ActionResult Index()
         {
@@ -55,12 +57,28 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult Details(int id)
         {
+            ViewData["JudgeList"] = GetCompetitionJudges(id);
+            ViewData["CriteriaList"] = GetCompetitionCriterias(id);
             Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
             if (competitionDetails == null)
             {
                 RedirectToAction("Error", "Home");
             }
             return View(competitionDetails);
+        }
+
+        private List<Criteria> GetCompetitionCriterias(int id)
+        {
+            // Get the list of criteria objects for a specific competition
+            List<Criteria> criteriaList = criteriaContext.GetCompetitionCriteria(id);
+            return criteriaList;
+        }
+
+        private List<Judge> GetCompetitionJudges(int id)
+        {
+            // Get the list of judge objects for a specific competition
+            List<Judge> judgeList = judgeContext.GetCompetitionJudges(id);
+            return judgeList;
         }
     }
 }
