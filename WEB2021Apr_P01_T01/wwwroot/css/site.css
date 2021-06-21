@@ -89,6 +89,58 @@ form {
     text-decoration: none;
 }*/
 
+/* Start of Admin Panel */
+
+.admin-container {
+    display: flex;
+}
+
+.admin-left-container {
+    height: 300px;
+    width: 100%;
+}
+
+.admin-image {
+    width: 95%;
+    position: absolute;
+    z-index: -1;
+    height: 300px;
+    opacity: .3;
+    border-radius: 25px;
+
+}
+
+.admin-left-text {
+    padding: 40px 0 0 40px;
+}
+
+.admin-right-container {
+   
+}
+
+.admin-upper-container {
+    height: 140px;
+    background: rgba(170, 193, 213, 0.3);
+    border-radius: 25px;
+    margin-bottom: 20px;
+}
+
+.admin-upper-text {
+    padding: 20px 0 0 20px;
+}
+
+.admin-lower-container {
+    height: 140px;
+    background: rgba(176, 209, 203, 0.3);
+    border-radius: 25px;
+    margin-top: 20px;
+}
+
+.admin-lower-text {
+    padding: 20px 0 0 20px;
+}
+
+/* End of Admin Panel */
 
 hr.solid {
     border-top: 3px solid #a98f64;
