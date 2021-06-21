@@ -74,8 +74,19 @@
                 <div class="card-body">
                     <h5 class="card-title gold">Untitled Submission #@i</h5>
                     <p class="card-text">by <span class="gold">@csList[i].CompetitorName</span></p>
-                    <p class="card-text">Submitted on <span class="gold">@csList[i].FileUploadDateTime.ToString()</span></p>
-                    <p class="card-text"><a href="~/competitionfile/@csList[i].FileUrl" target="_blank">@csList[i].FileUrl</a>
+                    <p class="card-text"><span class="gold">@csList[i].VoteCount votes</span></p>
+                    @if (csList[i].FileUploadDateTime != null && csList[i].FileUploadDateTime != null)
+                    {
+                        <p class="card-text">Submitted on <span class="gold">@csList[i].FileUploadDateTime.ToString()</span></p>
+                        <p class="card-text">
+                            <a href="~/competitionfile/@csList[i].FileUrl" target="_blank">@csList[i].FileUrl</a>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-text">File is not yet submitted.</p>
+                    }
+
                 </div>
                 <div class="text-center pb-4">
                     <a class="btn background-blue btn-180" asp-controller="" asp-action="">Vote</a>
