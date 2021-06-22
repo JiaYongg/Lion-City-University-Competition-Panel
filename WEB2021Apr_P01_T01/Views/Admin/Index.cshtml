@@ -13,30 +13,6 @@
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
 </head>
 <body>
-    @*<div class="container vh70">
-        <div class="">
-            <p>Judge Panel</p>
-            <h2>Welcome,</h2>
-            <h1 class="gold">LCU Judge</h1>
-        </div>
-        <div class="judge-container">
-            <div class="col-sm-6">
-                <img class="judge-image" src="~/images/judge-left-panel.jpg" />
-                <div class="judge-content">
-                    <h4>View Competitor</h4>
-                    <p>Current competitors to be judged.<br />Grade submission and edit ranking or marks.</p>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <img class="judge-image" src="~/images/judge-hammer.png" />
-                <div class="judge-content">
-                    <h4>Create Judging Criteria</h4>
-                    <p>Create the criterions and its weightage</p>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
     <div class="container vh70">
         <div class="">
             <p>Administrator Panel</p>
@@ -45,26 +21,32 @@
         </div>
         <div class="admin-container">
             <div class="col-sm-6 admin-left-container">
-                <img class="admin-image" src="~/images/judge-left-panel.jpg" />
-                <div class="admin-left-text">
-                    <h4>View Judges</h4>
-                    <p>Assign or Unassign judges to a competition</p>
-                </div>
+                <a asp-action="ViewJudges">
+                    <img class="admin-image" src="~/images/judge-left-panel.jpg" /> @* asp action to be added. (eddie) *@
+                    <div class="admin-left-text">
+                        <h4>View Judges</h4>
+                        <p>Assign or Unassign judges to a competition</p>
+                    </div>
+                </a>
             </div>
 
             <div class="col-sm-6 admin-right-container">
                 <div class="admin-upper-container">
-                    <div class="admin-upper-text">
-                        <h4>Create New Competition</h4>
-                        <p>Organise and create a new competition</p>
-                    </div>
+                    <a asp-action="CreateCompetition">
+                        <div class="admin-upper-text">
+                            <h4>Create New Competition</h4>
+                            <p>Organise and create a new competition</p>
+                        </div>
+                    </a> @* asp action to be added (eddie) *@
                 </div>
 
                 <div class="admin-lower-container">
-                    <div class="admin-lower-text">
-                        <h4>Manage Area of Interest</h4>
-                        <p>Create & Delete Area of Interest</p>
-                    </div>
+                    <a asp-action="AreaOfInterest">
+                        <div class="admin-lower-text">
+                            <h4>Manage Area of Interest</h4>
+                            <p>Create & Delete Area of Interest</p>
+                        </div>
+                    </a> @* asp action to be added (eddie) *@
                 </div>
             </div>
         </div>

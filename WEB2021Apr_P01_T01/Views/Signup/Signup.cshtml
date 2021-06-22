@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <input asp-for="emailAddress" class="form-control" autocomplete="off" placeholder="Email" required />
-                                <span asp-validation-for="emailAddress" class="text-danger"></span>
+                                <span asp-validation-for="emailAddress" class="text-danger">@TempData["Error"]</span>
                             </div>
                         </div>
                         <div class="form-group">

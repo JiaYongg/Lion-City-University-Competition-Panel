@@ -16,15 +16,15 @@ namespace WEB2021Apr_P01_T01.Controllers
         }
 
         // GET: AdminController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult CreateCompetition()
         {
-            return View();
+            return View("CreateCompetition");
         }
 
         // GET: AdminController/Create
-        public ActionResult Create()
+        public ActionResult AreaOfInterest()
         {
-            return View();
+            return View("AreaOfInterest");
         }
 
         // POST: AdminController/Create
