@@ -99,5 +99,29 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return rankList;
         }
+
+        public int Vote(int? competitorId, int? competitionId)
+        {
+            // Create a SQLCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify an UPDATE SQL Statement
+            cmd.CommandText = @"UPDATE CompetitionSubmission SET VoteCount = VoteCount + 1 WHERE CompetitionID = @selectedCompetitionId AND CompetitorID = @selectedCompetitorId";
+
+            // Define the parameters used in SQL statement, value for each parameters is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@selectedCompetitionId", competitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorId", competitorId);
+
+            // Open a Database Connection
+            conn.Open();
+
+            // Execute Query is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+
+            // Close the Database connection
+            conn.Close();
+
+            return count;
+        }
     }
 }

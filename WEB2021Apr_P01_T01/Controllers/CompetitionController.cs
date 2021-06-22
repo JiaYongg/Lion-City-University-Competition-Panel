@@ -80,6 +80,15 @@ namespace WEB2021Apr_P01_T01.Controllers
                 ViewData["ShowResults"] = "false";
             }
 
+            if (HttpContext.Session.GetString("Voted") != "true" && (competitionDetails.StartDate <= DateTime.Now && competitionDetails.EndDate >= DateTime.Now))
+            {
+                ViewData["DisableVote"] = "false";
+            }
+            else
+            {
+                ViewData["DisableVote"] = "true";
+            }
+
             return View(competitionDetails);
         }
 
@@ -97,6 +106,18 @@ namespace WEB2021Apr_P01_T01.Controllers
             };
             
             commentsContext.AddComments(cmmts);
+            return RedirectToAction("Details", new { id = competitionId });
+        }
+
+        [HttpPost]
+        public ActionResult Vote(int? competitorId, int? competitionId)
+        {
+            if (HttpContext.Session.GetString("Voted") != "true")
+            {
+                AddVoteCount((int)competitorId, (int)competitionId);
+                HttpContext.Session.SetString("Voted", "true");
+            }
+
             return RedirectToAction("Details", new { id = competitionId });
         }
 
@@ -131,6 +152,12 @@ namespace WEB2021Apr_P01_T01.Controllers
         {
             List<CompetitionSubmission> rankList = csContext.GetTopThree(id);
             return rankList;
+        }
+
+        private int AddVoteCount(int competitorId, int competitionId)
+        {
+            int count = csContext.Vote(competitorId, competitionId);
+            return count;
         }
     }
 }

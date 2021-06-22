@@ -95,9 +95,6 @@
                         }
 
                     </div>
-                    <div class="text-center pb-4">
-                        <a class="btn background-blue disabled btn-180" asp-controller="" asp-action="">Vote</a>
-                    </div>
                 </div>
             }
         </div>
@@ -140,12 +137,21 @@
                         }
                         else
                         {
-                    <p class="card-text">There is no file submitted at the moment.</p>
+                            <p class="card-text">There is no file submitted at the moment.</p>
                         }
 
                     </div>
                     <div class="text-center pb-4">
-                        <a class="btn background-blue btn-180" asp-controller="" asp-action="">Vote</a>
+                        <form asp-controller="Competition" asp-action="Vote" asp-route-competitorId="@csList[i].CompetitorId" asp-route-competitionId="@csList[i].CompetitionId" method="post">
+                            @if (ViewData["DisableVote"] == "true")
+                            {
+                                <input type="submit" class="btn background-blue btn-180" disabled="disabled" value="Voted" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn background-blue btn-180" value="Vote" />
+                            }
+                        </form>
                     </div>
                 </div>
             }
