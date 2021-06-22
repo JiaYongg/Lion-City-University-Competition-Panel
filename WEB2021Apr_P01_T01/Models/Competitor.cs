@@ -19,9 +19,8 @@ namespace WEB2021Apr_P01_T01.Models
         [StringLength(5)]
         public string? Salutation { get; set; }
 
-        [Display(Name = "Email Address")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")] // <- [EmailAddress]
-        [Required(ErrorMessage = "This field is required.")]
+        [Required]
+        [StringLength(50)]
         public string EmailAddr { get; set; }
 
         [Required]
