@@ -18,7 +18,6 @@ namespace WEB2021Apr_P01_T01.Models
         [Display(Name = "Email Address")]
         [EmailAddress]
         [Required(ErrorMessage = "This field is required.")]
-        //[ValidateEmailAddress]
         public string emailAddress { get; set; }
 
         [Display(Name = "Password")]

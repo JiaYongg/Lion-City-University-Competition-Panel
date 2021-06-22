@@ -14,8 +14,13 @@ namespace WEB2021Apr_P01_T01.Controllers
     {
         private SignUpDAL signUpContext = new SignUpDAL();
         private AoiDAL aoiContext = new AoiDAL();
+
+        private Competitor competitor = new Competitor();
+        private Judge judge = new Judge();
+
         private List<SelectListItem> salutationDropDown = new List<SelectListItem>();
         private List<string> salutation = new List<string> {"", "Mr", "Mrs", "Dr", "Mdm", "Ms" };
+
         private List<SelectListItem> aoiDropDown = new List<SelectListItem>();
         private List<string> userTypes = new List<string> {"Judge Registration", "Competitor Registration"};
 
@@ -61,6 +66,7 @@ namespace WEB2021Apr_P01_T01.Controllers
         [HttpPost]
         public ActionResult SignUp(SignUp signUp, Judge judge, Competitor competitor)
         {
+
             ViewData["UserType"] = userTypes;
             ViewData["Salutation"] = salutation;
 
@@ -69,30 +75,42 @@ namespace WEB2021Apr_P01_T01.Controllers
             string chosenEmail = signUp.emailAddress;
             string password = signUp.password;
 
-            int selection = userTypes.IndexOf(signUp.userType);
-
-            if (userTypes[selection] == "Judge Registration")
+            if (signUpContext.IsCompetitorEmailExist(chosenEmail, competitor.CompetitorId) == true)
             {
-                // if statement to check if the email contains @lcu.edu.sg
-                if (signUp.emailAddress.Contains("@lcu.edu.sg"))
+                TempData["Error"] = "Email already exists.";
+                return RedirectToAction("Index");
+            }
+            else if (signUpContext.IsJudgeEmailExist(chosenEmail, judge.JudgeId) == true)
+            {
+                TempData["Error"] = "Email already exists.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                // Email does not exist add to database
+                int selection = userTypes.IndexOf(signUp.userType);
+
+                if (userTypes[selection] == "Judge Registration")
                 {
-                    int aoiid = signUp.AreaInterestId;
-                    //judge.JudgeId = signUpContext.AddJudge(judge); // <--- Eddie's part of code, Yet to implement
-                    judge.JudgeId = signUpContext.AddJudge(name, chosenSalutation, aoiid, chosenEmail, password);
-                    return View("Login", judge);
+                    // if statement to check if the email contains @lcu.edu.sg
+                    if (signUp.emailAddress.Contains("@lcu.edu.sg"))
+                    {
+                        int aoiid = signUp.AreaInterestId;
+                        judge.JudgeId = signUpContext.AddJudge(name, chosenSalutation, aoiid, chosenEmail, password);
+                        return View("Login", judge);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
-                else
+                else // Competitor registration
                 {
-                    return RedirectToAction("Index");
+                    // adds competitor account to database
+                    competitor.CompetitorId = signUpContext.AddCompetitor(name, chosenSalutation, chosenEmail, password);
+                    return View("Login", competitor);
                 }
             }
-            else // Competitor registration
-            {
-                // adds competitor account to database
-                competitor.CompetitorId = signUpContext.AddCompetitor(name, chosenSalutation, chosenEmail, password);
-                return View("Login", competitor);
-            }
-
         }
 
         // GET: SignUpController/Details/5
