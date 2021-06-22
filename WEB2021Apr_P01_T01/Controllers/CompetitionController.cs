@@ -15,6 +15,7 @@ namespace WEB2021Apr_P01_T01.Controllers
         private AoiDAL aoiContext = new AoiDAL();
         private CriteriaDAL criteriaContext = new CriteriaDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
+        private CompetitionSubmissionDAL csContext = new CompetitionSubmissionDAL();
 
         public ActionResult Index()
         {
@@ -59,6 +60,8 @@ namespace WEB2021Apr_P01_T01.Controllers
         {
             ViewData["JudgeList"] = GetCompetitionJudges(id);
             ViewData["CriteriaList"] = GetCompetitionCriterias(id);
+            ViewData["CompetitionSubmissionList"] = GetCompetitionSubmissions(id);
+
             Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
             if (competitionDetails == null)
             {
@@ -79,6 +82,13 @@ namespace WEB2021Apr_P01_T01.Controllers
             // Get the list of judge objects for a specific competition
             List<Judge> judgeList = judgeContext.GetCompetitionJudges(id);
             return judgeList;
+        }
+
+        private List<CompetitionSubmission> GetCompetitionSubmissions(int id)
+        {
+            // Get the list of competition submissions for a specific competition
+            List<CompetitionSubmission> csList = csContext.GetCompetitionSubmissions(id);
+            return csList;
         }
     }
 }

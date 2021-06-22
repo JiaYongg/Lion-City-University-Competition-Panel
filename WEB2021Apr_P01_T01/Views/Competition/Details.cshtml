@@ -4,6 +4,7 @@
     ViewData["Title"] = Model.CompetitionName + " | Competitions";
     List<Criteria> criteriaList = (List<Criteria>) ViewData["CriteriaList"];
     List<Judge> judgeList = (List<Judge>) ViewData["JudgeList"];
+    List<CompetitionSubmission> csList = (List<CompetitionSubmission>) ViewData["CompetitionSubmissionList"];
 }
 
 @*
@@ -11,7 +12,7 @@
     background-repeat: no-repeat; background-size: 50% 70%; background-position: right bottom;
 *@
 
-<div class="container-fluid min-vh-100" style='height: 100%; padding-left: 0px !important; padding-right: 0px !important;'>
+<div class="container-fluid" style='height: 100%; padding-left: 0px !important; padding-right: 0px !important;'>
     <div class="container pt-3">
         <div class="col-12 mt-5 pt-5">
             <h1 class="gold">@Model.CompetitionName</h1>
@@ -56,58 +57,48 @@
         </div>
     </div>
 </div>
-
-@*<h1>Details</h1>
-
-    <div>
-        <h4>Competition</h4>
-        <hr />
-        <dl class="row">
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.CompetitionId)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.CompetitionId)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.AoiId)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.AoiId)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.AoiName)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.AoiName)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.CompetitionName)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.CompetitionName)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.StartDate)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.EndDate)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.EndDate)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.ResultsReleaseDate)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.ResultsReleaseDate)
-            </dd>
-        </dl>
+<div class="container" style='height: 100%; padding-left: 0px !important; padding-right: 0px !important;'>
+    <div class="col-6 col-md-6">
+        <h4 class="gold">Competition Entries</h4>
     </div>
-    <div>
-        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        <a asp-action="Index">Back to List</a>
-    </div>*@
+    <div class="col-12 col-md-6 text-center text-md-right">
+        <span class="gold">@csList.Count participants</span> has joined this competition
+    </div>
+    @if (csList.Count > 0)
+    {
+    <div class="card-group">
+        @for (int i = 0; i < csList.Count; i++)
+        {
+            <div class="col-12 col-md-4 card shadow-sm p-2 ml-md-2 mr-md-2 mb-4 ml-auto mr-auto bg-white rounded">
+                <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title gold">Untitled Submission #@i</h5>
+                    <p class="card-text">by <span class="gold">@csList[i].CompetitorName</span></p>
+                    <p class="card-text"><span class="gold">@csList[i].VoteCount votes</span></p>
+                    @if (csList[i].FileUploadDateTime != null && csList[i].FileUploadDateTime != null)
+                    {
+                        <p class="card-text">Submitted on <span class="gold">@csList[i].FileUploadDateTime.ToString()</span></p>
+                        <p class="card-text">
+                            <a href="~/competitionfile/@csList[i].FileUrl" target="_blank">@csList[i].FileUrl</a>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-text">File is not yet submitted.</p>
+                    }
+
+                </div>
+                <div class="text-center pb-4">
+                    <a class="btn background-blue btn-180" asp-controller="" asp-action="">Vote</a>
+                </div>
+            </div>
+        }
+    </div>
+    }
+    else
+    {
+        <div class="col-12 text-center p-5">
+            <h5>There are currently no participants for this competition.</h5>
+        </div>
+    }
+</div>
