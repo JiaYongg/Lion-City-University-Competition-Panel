@@ -58,5 +58,29 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return commentsList;
         }
+
+        public int AddComments(Comments cmmts)
+        {
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify an INSERT SQL Statement which will return the auto-generated CommentID after insertion
+            cmd.CommandText = @"INSERT INTO Comment (CompetitionID, Description, DateTimePosted) OUTPUT INSERTED.CommentID VALUES(@competitionId, @commentDesc, @datetimePosted)";
+            cmd.Parameters.AddWithValue("@competitionId", cmmts.CompetitionID);
+            cmd.Parameters.AddWithValue("@commentDesc", cmmts.CommentDesc);
+            cmd.Parameters.AddWithValue("@datetimePosted", cmmts.DateTimePosted);
+
+            // A connection to database must be opened before any operations made.
+            conn.Open();
+
+            // ExecuteScalar is used to retrieve the auto-generated CommentID after executing the INSERT SQL Statement
+            cmmts.CommentId = (int) cmd.ExecuteScalar();
+
+            // Close the connection to the database after operations
+            conn.Close();
+
+            // Return the id when no error occurs.
+            return (int) cmmts.CommentId;
+        }
     }
 }

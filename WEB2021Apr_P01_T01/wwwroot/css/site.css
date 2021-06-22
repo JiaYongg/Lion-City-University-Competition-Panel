@@ -16,6 +16,25 @@
     background-size: 100% 100%;
 }
 
+.competition-details {
+    background-image: url("../images/24783.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.bg-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: inherit;
+}
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.min-vh-80 {
+    min-height: 80vh;
+}
+
 .background-gold {
     background-color: #a98f64;
 }
@@ -26,6 +45,19 @@
 
 .black {
     color: #3b3b3b;
+}
+
+.comments {
+    border-bottom: 1px solid #ebebeb;
+}
+
+.padding-override {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.font-dm {
+    font-family: 'DM Serif Display', serif;
 }
 
 body {

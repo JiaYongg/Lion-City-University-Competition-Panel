@@ -72,6 +72,23 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View(competitionDetails);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddComments(IFormCollection formData, int? competitionId)
+        {
+            string comments = formData["Comments"].ToString();
+
+            Comments cmmts = new Comments
+            {
+                CompetitionID = (int) competitionId,
+                CommentDesc = comments,
+                DateTimePosted = DateTime.Now
+            };
+
+            commentsContext.AddComments(cmmts);
+            return RedirectToAction("Details", new { id = competitionId });
+        }
+
         private List<Criteria> GetCompetitionCriterias(int id)
         {
             // Get the list of criteria objects for a specific competition

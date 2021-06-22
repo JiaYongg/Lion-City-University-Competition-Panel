@@ -26,20 +26,20 @@ namespace WEB2021Apr_P01_T01.Models
 
         [Required]
         [Display(Name = "Competition Start Date: ")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime StartDate { get; set; }
 
         [Required]
         [Display(Name = "Competition End Date: ")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime EndDate { get; set; }
 
         [Required]
         [Display(Name = "Results will be released on ")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime ResultsReleaseDate { get; set; }
 
         public List<CompetitionSubmission> SubmissionList { get; set; }

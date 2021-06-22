@@ -5,71 +5,75 @@
     List<Criteria> criteriaList = (List<Criteria>) ViewData["CriteriaList"];
     List<Judge> judgeList = (List<Judge>) ViewData["JudgeList"];
     List<CompetitionSubmission> csList = (List<CompetitionSubmission>) ViewData["CompetitionSubmissionList"];
+    List<Comments> commentsList = (List<Comments>) ViewData["Comments"];
 }
 
-@*
-    css attribute for first div - to add later
-    background-repeat: no-repeat; background-size: 50% 70%; background-position: right bottom;
-*@
-
-<div class="container-fluid" style='height: 100%; padding-left: 0px !important; padding-right: 0px !important;'>
-    <div class="container pt-3">
-        <div class="col-12 mt-5 pt-5">
-            <h1 class="gold">@Model.CompetitionName</h1>
-            <p class="gold">@Model.AoiName</p>
-        </div>
-        <div class="row mt-5">
-            <div class="col-12 col-md-8" style="padding-left: 30px;">
-                <p>
-                    <label asp-for="StartDate"></label><span class="gold"> @Model.StartDate</span><br />
-                    <label asp-for="EndDate"></label><span class="gold"> @Model.EndDate</span><br />
-                </p>
-                <p><label asp-for="ResultsReleaseDate"></label><span class="gold"> @Model.ResultsReleaseDate</span></p>
-                <br />
-                <div>
-                    <h4 class="gold">Jury</h4>
-                    <div class="mt-3">
-                        @foreach (Judge judge in judgeList)
-                        {
-                            <span class="mr-2" style="font-family: 'DM Serif Display', serif; font-weight: 500;">@judge.Salutation @judge.Name •</span>
-                        }
+<div class="container-fluid min-vh-80 competition-details padding-override">
+    <div class="container-fluid min-vh-80 bg-overlay">
+        <div class="container pt-3">
+            <div class="col-12 mt-5 pt-5 padding-override gold">
+                <h1>@Model.CompetitionName</h1>
+                <p>@Model.AoiName</p>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 col-md-8 pl-3">
+                    <p>
+                        <label asp-for="StartDate"></label><span class="gold"> @Html.DisplayFor(model => model.StartDate) </span><br />
+                        <label asp-for="EndDate"></label><span class="gold"> @Html.DisplayFor(model => model.EndDate)</span><br />
+                    </p>
+                    <p>
+                        <label asp-for="ResultsReleaseDate"></label><span class="gold"> @Html.DisplayFor(model => model.ResultsReleaseDate)</span>
+                    </p>
+                    <br />
+                    <div class="text-center text-md-left">
+                        <h4 class="gold">Jury</h4>
+                        <div class="mt-3">
+                            @foreach (Judge judge in judgeList)
+                            {
+                                <span class="mr-2 font-dm font-weight-bold">@judge.Salutation @judge.Name</span><large class="font-weight-bolder mr-2">•</large>
+                            }
+                        </div>
                     </div>
                 </div>
+                <div class="col-12 col-md-4 text-md-right text-center mt-3 mt-md-0">
+                    <h4 class="gold">Rubrics Based On:</h4>
+                    <!-- Add Loop for display of competition's criteria after DAL is set up-->
+                    @foreach (Criteria criteria in criteriaList)
+                    {
+                        <p>@criteria.CriteriaName</p>
+                    }
+                </div>
             </div>
-            <div class="col-12 col-md-4 text-md-right text-left">
-                <h4 class="gold">Rubrics Based On:</h4>
-                <!-- Add Loop for display of competition's criteria after DAL is set up-->
-                @foreach (Criteria criteria in criteriaList)
-                {
-                    <p>@criteria.CriteriaName</p>
-                }
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-12 col-md-9" style="padding-left: 30px;">
-                <input type="button" asp-action="Index" asp-controller="Home" class="background-gold btn" value="Join Competition"/>
-            </div>
-            <div class="col-12 col-md-3 text-md-right text-center">
-                <a href="#" class="m-2" target="_blank"><img src="~/images/023-facebook.png" alt="Facebook" width="30" /></a>
-                <a href="#" class="m-2" target="_blank"><img src="~/images/096-twitter.png" alt="Twitter" width="30" /></a>
-                <a href="#" class="m-2" target="_blank"><img src="~/images/044-instagram.png" alt="Instagram" width="30" /></a>
+            <div class="row mt-4">
+                <div class="col-12 col-md-9 pl-3 text-center text-md-left">
+                    <input type="button" asp-action="Index" asp-controller="Home" class="background-gold btn font-dm" value="Join Competition" />
+                </div>
+                <div class="col-12 col-md-3 text-md-right text-center pt-3 pb-3 pt-md-0 pb-md-0">
+                    <a href="https://www.facebook.com/" class="m-2" target="_blank"><img src="~/images/021-facebook.png" alt="Facebook" width="30" /></a>
+                    <a href="https://www.twitter.com/" class="m-2" target="_blank"><img src="~/images/043-twitter.png" alt="Twitter" width="30" /></a>
+                    <a href="https://www.instagram.com/" class="m-2" target="_blank"><img src="~/images/025-instagram.png" alt="Instagram" width="30" /></a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="container" style='height: 100%; padding-left: 0px !important; padding-right: 0px !important;'>
-    <div class="col-6 col-md-6">
-        <h4 class="gold">Competition Entries</h4>
+
+<div class="container pt-5 pb-5">
+    <div class="row pt-2 pb-2">
+        <div class="col-6 col-md-6">
+            <h4 class="gold">Competition Entries</h4>
+        </div>
+        <div class="col-6 col-md-6 text-center text-md-right">
+            <span class="gold">@csList.Count participants</span> has joined this competition
+        </div>
     </div>
-    <div class="col-12 col-md-6 text-center text-md-right">
-        <span class="gold">@csList.Count participants</span> has joined this competition
-    </div>
+
     @if (csList.Count > 0)
     {
-    <div class="card-group">
+    <div class="row">
         @for (int i = 0; i < csList.Count; i++)
         {
-            <div class="col-12 col-md-4 card shadow-sm p-2 ml-md-2 mr-md-2 mb-4 ml-auto mr-auto bg-white rounded">
+            <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
                 <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title gold">Untitled Submission #@i</h5>
@@ -101,4 +105,46 @@
             <h5>There are currently no participants for this competition.</h5>
         </div>
     }
+</div>
+<div class="container-fluid bg-light min-vh-80">
+    <div class="container pt-5">
+        <h4 class="gold">Comments</h4>
+        <div class="row">
+            <form class="col-md-12" asp-controller="Competition" asp-action="AddComments" asp-route-competitionId="@Model.CompetitionId" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group col-md-12">
+                    <textarea required name="Comments" class="form-control" id="" placeholder="Add a Comment" rows="5"></textarea>
+                    <div class="form-group col-md-12 mt-4 padding-override">
+                        <input type="submit" class="btn background-blue w-100" value="Post" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        @if (commentsList.Count > 0)
+        {
+            <table class="table table-striped">
+                <tbody>
+                    @foreach (Comments cmmts in commentsList)
+                    {
+                        <tr>
+                            <td class="text-center"><img src="~/images/img_avatar.png" width="80" style="border-radius: 40px"/></td>
+                            <td>
+                                <h6 class="gold">Anonymous<br /></h6>
+                                <small>Posted on @cmmts.DateTimePosted</small>
+                                <p>@cmmts.CommentDesc</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="col-12 text-center p-5">
+                <h5>There are currently no comments for this competition.</h5>
+            </div>
+        }
+    </div>
 </div>
