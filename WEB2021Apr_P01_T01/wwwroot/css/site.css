@@ -122,11 +122,17 @@ form {
 
 .admin-container {
     display: flex;
+    margin-top: 50px;
 }
 
 .admin-left-container {
     height: 300px;
     width: 100%;
+}
+
+.admin-left-container a {
+    color: black;
+    text-decoration: none;
 }
 
 .admin-image {
@@ -143,8 +149,9 @@ form {
     padding: 40px 0 0 40px;
 }
 
-.admin-right-container {
-   
+.admin-upper-container a {
+   color: black;
+   text-decoration: none;
 }
 
 .admin-upper-container {
@@ -156,6 +163,12 @@ form {
 
 .admin-upper-text {
     padding: 20px 0 0 20px;
+    color: black !important;
+}
+
+.admin-lower-container a {
+    color: black;
+    text-decoration: none;
 }
 
 .admin-lower-container {
@@ -170,6 +183,47 @@ form {
 }
 
 /* End of Admin Panel */
+
+/* Start of Create Competition */
+
+.create-competition-background {
+    background: #E5E5E5;
+    padding: 50px;
+    border-radius: 30px;
+}
+
+.common-1 {
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+
+.common-1 label {
+    font-weight: bold;
+}
+
+.common-1 input[type=text] {
+    padding: 15px;
+    border: none;
+}
+
+.form-unique-6 input[type=submit] {
+    padding: 10px;
+    width: 20%;
+    color: white;
+    background: #A98F64;
+    border-radius: 10px;
+    border: none;
+}
+
+.form-unique-6 {
+    display: flex;
+    justify-content: flex-end;
+    font-weight: bold;
+}
+
+
+/* End of Create Competition */
 
 hr.solid {
     border-top: 3px solid #a98f64;
