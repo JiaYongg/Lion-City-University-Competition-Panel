@@ -2,10 +2,10 @@
 
 @{
     ViewData["Title"] = Model.CompetitionName + " | Competitions";
-    List<Criteria> criteriaList = (List<Criteria>) ViewData["CriteriaList"];
-    List<Judge> judgeList = (List<Judge>) ViewData["JudgeList"];
-    List<CompetitionSubmission> csList = (List<CompetitionSubmission>) ViewData["CompetitionSubmissionList"];
-    List<Comments> commentsList = (List<Comments>) ViewData["Comments"];
+    List<Criteria> criteriaList = (List<Criteria>)ViewData["CriteriaList"];
+    List<Judge> judgeList = (List<Judge>)ViewData["JudgeList"];
+    List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["CompetitionSubmissionList"];
+    List<Comments> commentsList = (List<Comments>)ViewData["Comments"];
 }
 
 <div class="container-fluid min-vh-80 competition-details padding-override">
@@ -57,6 +57,59 @@
         </div>
     </div>
 </div>
+@if (ViewData["ShowResults"] == "true")
+{
+    List<CompetitionSubmission> rankList = (List<CompetitionSubmission>) ViewData["Rankings"];
+
+<div class="container pt-5 pb-5">
+    <div class="row pt-2 pb-2">
+        <div class="col-6 col-md-6">
+            <h4 class="gold">Winners</h4>
+        </div>
+        <div class="col-6 col-md-6 text-center text-md-right">
+            <span class="gold">@rankList.Count</span> winners
+        </div>
+    </div>
+
+    @if (rankList.Count > 0)
+    {
+        <div class="row">
+            @for (int i = 0; i < rankList.Count; i++)
+            {
+                <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
+                    <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
+                    <h4 class="position-absolute rank"><span class="badge badge-success float-right">Rank @rankList[i].Ranking</span></h4>
+                    <div class="card-body">
+                        <h5 class="card-title gold">by <span class="gold">@rankList[i].CompetitorName</h5>
+                        <p class="card-text"><span class="gold">@rankList[i].VoteCount votes</span></p>
+                        @if (rankList[i].FileUploadDateTime != null && rankList[i].FileUploadDateTime != null)
+                        {
+                            <p class="card-text">Submitted on <span class="gold">@rankList[i].FileUploadDateTime.ToString()</span></p>
+                            <p class="card-text">
+                                <a href="~/competitionfile/@rankList[i].FileUrl" target="_blank">@rankList[i].FileUrl</a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="card-text">There is no file submitted at the moment.</p>
+                        }
+
+                    </div>
+                    <div class="text-center pb-4">
+                        <a class="btn background-blue disabled btn-180" asp-controller="" asp-action="">Vote</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-12 text-center p-5">
+            <h5>There are currently no participants for this competition.</h5>
+        </div>
+    }
+</div>
+}
 
 <div class="container pt-5 pb-5">
     <div class="row pt-2 pb-2">
@@ -70,34 +123,33 @@
 
     @if (csList.Count > 0)
     {
-    <div class="row">
-        @for (int i = 0; i < csList.Count; i++)
-        {
-            <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
-                <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title gold">Untitled Submission #@i</h5>
-                    <p class="card-text">by <span class="gold">@csList[i].CompetitorName</span></p>
-                    <p class="card-text"><span class="gold">@csList[i].VoteCount votes</span></p>
-                    @if (csList[i].FileUploadDateTime != null && csList[i].FileUploadDateTime != null)
-                    {
-                        <p class="card-text">Submitted on <span class="gold">@csList[i].FileUploadDateTime.ToString()</span></p>
-                        <p class="card-text">
-                            <a href="~/competitionfile/@csList[i].FileUrl" target="_blank">@csList[i].FileUrl</a>
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="card-text">File is not yet submitted.</p>
-                    }
+        <div class="row">
+            @for (int i = 0; i < csList.Count; i++)
+            {
+                <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
+                    <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title gold">by <span class="gold">@csList[i].CompetitorName</span></h5>
+                        <p class="card-text"><span class="gold">@csList[i].VoteCount votes</span></p>
+                        @if (csList[i].FileUploadDateTime != null && csList[i].FileUploadDateTime != null)
+                        {
+                            <p class="card-text">Submitted on <span class="gold">@csList[i].FileUploadDateTime.ToString()</span></p>
+                            <p class="card-text">
+                                <a href="~/competitionfile/@csList[i].FileUrl" target="_blank">@csList[i].FileUrl</a>
+                            </p>
+                        }
+                        else
+                        {
+                    <p class="card-text">There is no file submitted at the moment.</p>
+                        }
 
+                    </div>
+                    <div class="text-center pb-4">
+                        <a class="btn background-blue btn-180" asp-controller="" asp-action="">Vote</a>
+                    </div>
                 </div>
-                <div class="text-center pb-4">
-                    <a class="btn background-blue btn-180" asp-controller="" asp-action="">Vote</a>
-                </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
     }
     else
     {
@@ -110,7 +162,7 @@
     <div class="container pt-5">
         <h4 class="gold">Comments</h4>
         <div class="row">
-            <form class="col-md-12" asp-controller="Competition" asp-action="AddComments" asp-route-competitionId="@Model.CompetitionId" method="post">
+            <form class="col-md-12" asp-controller="Comments" asp-action="AddComments" asp-route-competitionId="@Model.CompetitionId" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group col-md-12">
                     <textarea required name="Comments" class="form-control" id="" placeholder="Add a Comment" rows="5"></textarea>
@@ -129,7 +181,7 @@
                     @foreach (Comments cmmts in commentsList)
                     {
                         <tr>
-                            <td class="text-center"><img src="~/images/img_avatar.png" width="80" style="border-radius: 40px"/></td>
+                            <td class="text-center"><img src="~/images/img_avatar.png" width="80" style="border-radius: 40px" /></td>
                             <td>
                                 <h6 class="gold">Anonymous<br /></h6>
                                 <small>Posted on @cmmts.DateTimePosted</small>

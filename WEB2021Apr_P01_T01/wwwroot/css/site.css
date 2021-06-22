@@ -60,6 +60,11 @@
     font-family: 'DM Serif Display', serif;
 }
 
+.rank {
+    right: 15px;
+    top: 15px;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     color: #3b3b3b;

@@ -69,6 +69,17 @@ namespace WEB2021Apr_P01_T01.Controllers
             {
                 RedirectToAction("Error", "Home");
             }
+
+            if (competitionDetails.ResultsReleaseDate < DateTime.Now)
+            {
+                ViewData["ShowResults"] = "true";
+                ViewData["Rankings"] = GetRankings(id);
+            }
+            else
+            {
+                ViewData["ShowResults"] = "false";
+            }
+
             return View(competitionDetails);
         }
 
@@ -84,7 +95,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 CommentDesc = comments,
                 DateTimePosted = DateTime.Now
             };
-
+            
             commentsContext.AddComments(cmmts);
             return RedirectToAction("Details", new { id = competitionId });
         }
@@ -114,6 +125,12 @@ namespace WEB2021Apr_P01_T01.Controllers
         {
             List<Comments> commentsList = commentsContext.GetCompetitionComments(id);
             return commentsList;
+        }
+
+        private List<CompetitionSubmission> GetRankings(int id)
+        {
+            List<CompetitionSubmission> rankList = csContext.GetTopThree(id);
+            return rankList;
         }
     }
 }
