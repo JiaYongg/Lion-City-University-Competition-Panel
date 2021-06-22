@@ -16,6 +16,8 @@ namespace WEB2021Apr_P01_T01.Controllers
         private CriteriaDAL criteriaContext = new CriteriaDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
         private CompetitionSubmissionDAL csContext = new CompetitionSubmissionDAL();
+        private CommentsDAL commentsContext = new CommentsDAL();
+
 
         public ActionResult Index()
         {
@@ -42,7 +44,6 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult PastCompetitions()
         {
             List<Competition> pastCompetitionList = competitionContext.GetPastCompetitions();
-
             ViewData["PageTitle"] = "Past Competitions";
             ViewData["Subtitle"] = "View the past competition, its entries and the award winners.";
             ViewData["BgImgUrl"] = "../images/66732.png";
@@ -61,6 +62,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             ViewData["JudgeList"] = GetCompetitionJudges(id);
             ViewData["CriteriaList"] = GetCompetitionCriterias(id);
             ViewData["CompetitionSubmissionList"] = GetCompetitionSubmissions(id);
+            ViewData["Comments"] = GetCompetitionComments(id);
 
             Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
             if (competitionDetails == null)
@@ -89,6 +91,12 @@ namespace WEB2021Apr_P01_T01.Controllers
             // Get the list of competition submissions for a specific competition
             List<CompetitionSubmission> csList = csContext.GetCompetitionSubmissions(id);
             return csList;
+        }
+
+        private List<Comments> GetCompetitionComments(int id)
+        {
+            List<Comments> commentsList = commentsContext.GetCompetitionComments(id);
+            return commentsList;
         }
     }
 }

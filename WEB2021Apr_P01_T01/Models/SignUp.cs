@@ -16,9 +16,8 @@ namespace WEB2021Apr_P01_T01.Models
         [Required(ErrorMessage = "This field is required.")]
         public string lastName { get; set; }
         [Display(Name = "Email Address")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")] // <- [EmailAddress]
+        [EmailAddress]
         [Required(ErrorMessage = "This field is required.")]
-        [ValidateEmailAddress]
         public string emailAddress { get; set; }
 
         [Display(Name = "Password")]
@@ -32,7 +31,8 @@ namespace WEB2021Apr_P01_T01.Models
         [DataType(DataType.Password)]
         public string confirmPassword { get; set; }
 
+        public string? salutation { get; set; }
         public string userType { get; set; }
-
+        public int AreaInterestId { get; set; }
     }
 }

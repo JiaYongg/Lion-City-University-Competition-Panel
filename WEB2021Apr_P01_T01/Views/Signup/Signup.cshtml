@@ -1,0 +1,108 @@
+﻿@model WEB2021Apr_P01_T01.Models.SignUp
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibity -->
+    <meta charset="utf-8">
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Competition Panel - Lion City University</title>
+    <!-- Reference to customized styling for this website -->
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+</head>
+
+<body class="login-background">
+    <div class="container d-flex justify-content-center align-items-center" style="height: 75vh;">
+        <div class="FormContent d-flex flex-column col-md-6 col-12">
+            <h3 class="gold text-center">Sign Up</h3>
+            <div class="align-self-center justify-content-center">
+                <form asp-controller="SignUp" asp-action="SignUp" method="post">
+                    <fieldset>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group input-group">
+                            <div class="col-sm-6">
+                                <input asp-for="firstName" class="form-control" placeholder="First Name" required />
+                                <span asp-validation-for="firstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <input asp-for="lastName" class="form-control" autocomplete="off" placeholder="Last Name" required />
+                                <span asp-validation-for="lastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input asp-for="emailAddress" class="form-control" autocomplete="off" placeholder="Email" required />
+                                <span asp-validation-for="emailAddress" class="text-danger">@TempData["Error"]</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input asp-for="password" class="form-control" autocomplete="off" placeholder="Password" required />
+                                <span asp-validation-for="password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input asp-for="confirmPassword" class="form-control" autocomplete="off" placeholder="Confirm Password" required />
+                                <span asp-validation-for="confirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <select asp-for="salutation" asp-items="@ViewData["Salutation"] as List<SelectListItem>" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group input-group">
+                            @foreach (var item in ViewData["UserType"] as List<string>)
+                            {
+                                <div class="col-sm-6">
+                                    <input asp-for="userType" id="@item" class="form-check-input" style="width: 8%" autocomplete="off" type="radio" value="@item" required />
+                                    <label asp-validation-for="userType" style="font-size: 15px">@item</label>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="form-group" id="aoi">
+                            <div class="col-sm-12">
+                                <select asp-for="AreaInterestId" asp-items="@ViewData["Aoi"] as List<SelectListItem>" class="form-control"></select>
+                            </div>
+                        </div>
+                        <!-- login button -->
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="submit" value="Sign Up" class="btn background-gold btn-180 btn-login" />
+                            </div>
+                        </div>
+                        <!-- Error message-->
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <span style="color:red;">@TempData["Message"]</span>
+                            </div>
+                        </div>
+                        <p class="mt-5">Already have an account? <a style="text-decoration: underline;" asp-controller="Login" asp-action="Index">Login.</a></p>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $(document).ready(function () {
+        $("[id = 'Competitor Registration']").on("click", function () {
+            $("#aoi").hide();
+        });
+        $("[id = 'Judge Registration']").on("click", function () {
+            $("#aoi").show();
+        });
+    });
+</script>
+}
+
+</html>
