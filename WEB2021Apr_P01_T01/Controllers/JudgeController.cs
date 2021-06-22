@@ -4,14 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB2021Apr_P01_T01.DAL;
+using Microsoft.AspNetCore.Http;
 
 namespace WEB2021Apr_P01_T01.Controllers
 {
     public class JudgeController : Controller
     {
+        public CompetitionDAL compContext = new CompetitionDAL();
+        public JudgeDAL judgeContext = new JudgeDAL();
+
+        int criteriaNo = 1;
+        
         // GET: JudgeController
         public ActionResult Index()
         {
+            int judgeId = (int)HttpContext.Session.GetInt32("userID");
+            ViewData["compName"] = judgeContext.GetJudgesCompetition(judgeId);
             return View();
         }
 
@@ -22,76 +31,19 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult JudgeCriteria()
         {
+            ViewData["criteriaNo"] = criteriaNo;
             return View();
         }
 
-        // GET: JudgeController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: JudgeController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: JudgeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult AddCriteria()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: JudgeController/Edit/5
-        public ActionResult Edit(int id)
-        {
+            ViewData["criteriaNo"] = criteriaNo + 1;
             return View();
         }
 
-        // POST: JudgeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: JudgeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: JudgeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
     }
 }
