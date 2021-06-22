@@ -44,6 +44,26 @@ body {
     width: 100%;
 }
 
+.criteria-container {
+    background-color: #E5E5E5;
+    opacity: 0.75;
+}
+
+.criteria-header {
+    font-family: 'DM Serif Display', serif;
+    display: inline-block
+}
+
+#criteria-image {
+    width: 20%;
+    height: auto;
+}
+
+.criteria-value {
+    font-size: 2em;
+    font-family: 'DM Serif Display', serif;
+}
+
 form {
     display: flex;
     align-items: center;
@@ -71,7 +91,9 @@ form {
 .judge-content {
     position: absolute;
     z-index: -1;
-    padding: 20px;
+    padding-right: 15%;
+    padding-top: 20px;
+    padding-left: 20px
 }
 
 .judge-image {
@@ -80,6 +102,7 @@ form {
     z-index: 1;
     width: 85%;
     height: 300px;
+    border-radius: 25px;
 }
 
 /*.judge-left-panel:link, .judge-left-panel:visited, .judge-left-panel:hover, .judge-left-panel:active, .judge-right-panel:link, .judge-right-panel:visited, .judge-right-panel:hover, .judge-right-panel:active {

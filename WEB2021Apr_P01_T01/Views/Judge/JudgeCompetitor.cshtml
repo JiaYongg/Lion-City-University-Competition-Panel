@@ -1,3 +1,16 @@
-﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Competitor>
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Judge>
 
-<h1>Judge Competitor</h1>
+@{
+    ViewData["Title"] = "Judge Competitor";
+}  
+
+<p>Judge Panel</p>
+<h2 class="PageTitle">View Competitors - @ViewData["compName"] </h2>
+<!-- Add a partial view to display a list of staff records
+in a tabular format. -->
+<partial name="~/Views/Judge/_ViewCompetitor.cshtml" model="@Model" />
+
+<p>
+    <a asp-action="Index">Back to home</a>
+</p>
+

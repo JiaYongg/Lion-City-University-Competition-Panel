@@ -60,6 +60,37 @@ namespace WEB2021Apr_P01_T01.DAL
             return judgeList;
         }
 
+        public List<Competition> GetJudgesCompetition(int judgeId)
+        {
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify the SELECT SQL Statement
+            cmd.CommandText = @"SELECT * FROM Judge INNER JOIN CompetitionJudge ON CompetitionJudge.JudgeID = Judge.JudgeID WHERE CompetitionID = @selectedJudgeId;";
+            cmd.Parameters.AddWithValue("@selectedJudgeId", judgeId);
+
+            // Opens a Database Connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<Competition> judgeCompList = new List<Competition>();
+            while (reader.Read())
+            {
+                judgeCompList.Add(
+                    new Competition
+                    {
+                        CompetitionId = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(2),
+                    });
+            }
+
+            // Close the DataReader & DB connection
+            reader.Close();
+            conn.Close();
+
+            return judgeCompList;
+        }
+
         // Following Method Added by Jordan for populating in Competition Details View
         public List<Judge> GetCompetitionJudges(int competitionId)
         {
@@ -96,6 +127,5 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return compyJudgeList;
         }
-
     }
 }

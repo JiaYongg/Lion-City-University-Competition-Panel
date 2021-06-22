@@ -42,6 +42,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 {
                     HttpContext.Session.SetString("Name", judge.Name);
                     HttpContext.Session.SetString("Role", "LCU Judge");
+                    HttpContext.Session.SetInt32("userID", judge.JudgeId);
                     // go to judge panel
                     return RedirectToAction("Index","Judge");
                 }
@@ -54,6 +55,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 {
                     HttpContext.Session.SetString("Name", competitor.Name);
                     HttpContext.Session.SetString("Role", "Competitor");
+                    HttpContext.Session.SetInt32("userID", competitor.CompetitorId);
                     // go to competitor panel
                     return RedirectToAction("Index", "Competitor");
                 }
