@@ -30,17 +30,28 @@ namespace WEB2021Apr_P01_T01.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int AddCompetitor(Competitor competitor)
+        public int AddCompetitor(string name, string? salutation, string email, string password)
         {
+            Competitor competitor = new Competitor();
+            if (salutation == "")
+            {
+                salutation = null;
+            }
             SqlCommand cmd = conn.CreateCommand();
-
             cmd.CommandText = @"INSERT INTO Competitor (CompetitorName, Salutation, EmailAddr, Password) 
             OUTPUT INSERTED.CompetitorId VALUES(@name, @salutation, @email, @password)";
 
-            cmd.Parameters.AddWithValue("@name", competitor.Name);
-            cmd.Parameters.AddWithValue("@salutation", competitor.Salutation);
-            cmd.Parameters.AddWithValue("@email", competitor.EmailAddr);
-            cmd.Parameters.AddWithValue("@password", competitor.Password);
+            cmd.Parameters.AddWithValue("@name", name);      
+            if (salutation != null)
+            {
+                cmd.Parameters.AddWithValue("@salutation", salutation);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@salutation", DBNull.Value);
+            }
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@password", password);
 
             conn.Open();
 
@@ -51,16 +62,26 @@ namespace WEB2021Apr_P01_T01.DAL
             return competitor.CompetitorId;
         }
 
-        public int AddJudge(Judge judge)
+        public int AddJudge(string name, string? salutation, int aoi, string email, string password)
         {
-            SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO Judge (JudgeName, Salutation, EmailAddr, Password)
-            OUTPUT INSERTED.JudgeId VALUES(@name, @salutation, @email, @password)";
+            Judge judge = new Judge();
 
-            cmd.Parameters.AddWithValue("@name", judge.Name);
-            cmd.Parameters.AddWithValue("@salutation", judge.Salutation);
-            cmd.Parameters.AddWithValue("@email", judge.EmailAddr);
-            cmd.Parameters.AddWithValue("@password", judge.Password);
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"INSERT INTO Judge (JudgeName, Salutation, AreaInterestID, EmailAddr, Password)
+            OUTPUT INSERTED.JudgeId VALUES(@name, @salutation, @aoi, @email, @password)";
+
+            cmd.Parameters.AddWithValue("@name", name);
+            if (salutation != null)
+            {
+                cmd.Parameters.AddWithValue("@salutation", salutation);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@salutation", DBNull.Value);
+            }
+            cmd.Parameters.AddWithValue("@aoi", aoi);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@password", password);
 
             conn.Open();
 
