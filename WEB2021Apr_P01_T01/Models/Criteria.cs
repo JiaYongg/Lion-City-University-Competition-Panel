@@ -13,10 +13,10 @@ namespace WEB2021Apr_P01_T01.Models
         [Display(Name = "Competition ID")]
         public int? CompetitionID { get; set; }
         [Required]
-        [Display(Name = "Criteria Name")]
+        [Display(Name = "Criteria Name:")]
         public string CriteriaName { get; set; }
         [Required]
-        [Display(Name = "Weightage of Criteria")]
+        [Display(Name = "Weightage of Criteria:")]
         public int Weightage { get; set; }
 
 

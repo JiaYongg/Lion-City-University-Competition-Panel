@@ -5,106 +5,46 @@
 }
 
 
-<html>
-<head>
-    <!-- Use Unicode character encoding - multi-language compatibity -->
-    <meta charset="utf-8">
-    <!-- Set the initial view zooming scale for mobile device -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Competition Panel - Lion City University</title>
-    <!-- Reference to customized styling for this website -->
-    <link rel="stylesheet" type="text/css" href="~/css/site.css">
-</head>
+<style>
+    ::-webkit-input-placeholder {
+        opacity: 0.5;
+    }
+</style>
 <body>
     @*Holding entire form aka container *@
     <div class="container">
         <p>Create Judging Criteria</p>
         @*Holding criterias*@
-    <form asp-action="JudgeCriteria">
-        <div class="col-md-6">
-            @*Criteria indexs*@
-            <div class="form-group col-6">
+    <form asp-action="JudgeCriteria" class="criteria-container">
+        <div class="col-sm-6">
+            <div class="criteria-header">
                 <span class="criteria-value">Criteria @ViewData["criteriaNo"]</span>
                 <div id="criteria-image">
                     <img src="~/images/red-cross.png" style="width: 100%" />
                 </div>
             </div>
-            @*Criteria indexs*@
-            <div>
-                <div class="form-group">
-                    <label asp-for="Weightage" class="control-label"></label>
-                    <input asp-for="Weightage" class="form-control" />
+            <div class="criteria-content">
+                <div class="form-group d-flex flex-column">
+                    <label asp-for="Weightage" class="criteria-label"></label>
+                    <input asp-for="Weightage" class="criteria-text" placeholder="Weightage in % " style="width:50%" />
                     <span asp-validation-for="Weightage" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="CriteriaName" class="control-label"></label>
-                    <input asp-for="CriteriaName" class="form-control" />
+                <div class="form-group d-flex flex-column">
+                    <label asp-for="CriteriaName" class="criteria-label"></label>
+                    <input asp-for="CriteriaName" class="criteria-text" placeholder="Criteria Name" />
                     <span asp-validation-for="CriteriaName" class="text-danger"></span>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            @*Criteria indexs*@
-            <div class="form-group col-6">
-                <span class="criteria-value">Criteria @ViewData["criteriaNo"]</span>
-                <div id="criteria-image">
-                    <img src="~/images/red-cross.png" style="width: 100%" />
-                </div>
-            </div>
-            @*Criteria indexs*@
-            <div>
-                <div class="form-group">
-                    <label asp-for="Weightage" class="control-label"></label>
-                    <input asp-for="Weightage" class="form-control" />
-                    <span asp-validation-for="Weightage" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CriteriaName" class="control-label"></label>
-                    <input asp-for="CriteriaName" class="form-control" />
-                    <span asp-validation-for="CriteriaName" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-        @*Error msg & btn*@
-        <div class="flex-row">
-            <div class="col-6">
-                Weightage must total to 100%@TempData["Error Message"]
-            </div>
-            <div class="col-4">
-                <input type="submit" value="Add new criteria" class="btn btn-primary" />
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+        <div class="criteria-footer col-12 flex-row d-flex">
+            <p class="criteria-error col-7">@TempData["criteriaError"]</p>
+            <input type="button" value="Add new criteria" class="btn background-gold btn-180 btn-login col-2 criteria-btn"/>
+            <input type="submit" value="Create" class="btn background-gold btn-180 btn-login col-2 criteria-btn" />
         </div>
     </form>
     </div>
-    <!--<div class="row">
-        <div class="col-md-4">
-            <form asp-action="JudgeCriteria">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
-    @* Holding Criteria *@
-    <!--<div>
-                    <h2 class="col-sm-10">Criteria @ViewData["criteriaNo"]</h2>
-                    <img class="col-sm-2" src="~/images/red-cross.png" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="CriteriaName" class="control-label"></label>
-                    <input asp-for="CriteriaName" class="form-control" />
-                    <span asp-validation-for="CriteriaName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Weightage" class="control-label"></label>
-                    <input asp-for="Weightage" class="form-control" />
-                    <span asp-validation-for="Weightage" class="text-danger"></span>
-                </div>
-            </form>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>-->
 
     <div>
         <a asp-action="Index">Back to List</a>
     </div>
 </body>
-</html>

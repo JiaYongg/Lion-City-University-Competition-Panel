@@ -36,7 +36,8 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <input asp-for="emailAddress" class="form-control" autocomplete="off" placeholder="Email" required />
-                                <span asp-validation-for="emailAddress" class="text-danger">@TempData["Error"]</span>
+                                <span asp-validation-for="emailAddress" class="text-danger"></span>
+                                <span class="text-danger" id="emailError">@TempData["Error"]</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -95,6 +96,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
     $(document).ready(function () {
+        $("#emailError").fadeOut(5000);
         $("[id = 'Competitor Registration']").on("click", function () {
             $("#aoi").hide();
         });

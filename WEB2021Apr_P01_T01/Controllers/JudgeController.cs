@@ -19,8 +19,8 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: JudgeController
         public ActionResult Index()
         {
-            int judgeId = (int)HttpContext.Session.GetInt32("userID");
-            ViewData["compName"] = judgeContext.GetJudgesCompetition(judgeId);
+            //int judgeId = (int)HttpContext.Session.GetInt32("userID");
+            //ViewData["compName"] = judgeContext.GetJudgesCompetition(judgeId);
             return View();
         }
 
