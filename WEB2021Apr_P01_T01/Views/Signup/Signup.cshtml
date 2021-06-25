@@ -28,6 +28,7 @@
                                 <input asp-for="firstName" class="form-control" placeholder="First Name" required />
                                 <span asp-validation-for="firstName" class="text-danger"></span>
                             </div>
+                            <br />
                             <div class="col-sm-6">
                                 <input asp-for="lastName" class="form-control" autocomplete="off" placeholder="Last Name" required />
                                 <span asp-validation-for="lastName" class="text-danger"></span>
@@ -61,8 +62,8 @@
                             @foreach (var item in ViewData["UserType"] as List<string>)
                             {
                                 <div class="col-sm-6">
-                                    <input asp-for="userType" id="@item" class="form-check-input" style="width: 8%" autocomplete="off" type="radio" value="@item" required />
-                                    <label asp-validation-for="userType" style="font-size: 15px">@item</label>
+                                    <input class="form-check-input" asp-for="userType" id="@item" style="width: 8%; margin-right:10px;" autocomplete="off" type="radio" value="@item"required />
+                                    <label class="form-check-label" asp-validation-for="userType" style="font-size: 15px">@item</label>
                                 </div>
                             }
 
