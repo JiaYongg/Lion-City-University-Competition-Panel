@@ -123,6 +123,11 @@ body {
     margin: 0 10px;
 }
 
+.criteria-delete {
+    border: none;
+    background-color: #E5E5E5;
+}
+
 .login-background {
     background-image: url('../images/bg-login.jpg'); 
     background-size: cover;

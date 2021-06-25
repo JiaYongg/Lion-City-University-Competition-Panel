@@ -47,6 +47,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                     return RedirectToAction("Index","Judge");
                 }
             }
+
             //Finding of competitor email address && password, accessing database
             List<Competitor> competitorList = competitorContext.GetAllCompetitor();
             foreach (Competitor competitor in competitorList)
