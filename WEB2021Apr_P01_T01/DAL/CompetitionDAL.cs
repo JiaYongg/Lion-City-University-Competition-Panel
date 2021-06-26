@@ -146,5 +146,35 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return compy;
         }
+
+        public int addCompetition(int aoiId, string compName, DateTime start, DateTime end, DateTime result)
+        {
+            Competition competition = new Competition();
+
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"INSERT INTO Competition (AreaInterestID, CompetitionName, StartDate, EndDate, ResultReleaseDate)
+                OUTPUT INSERTED.CompetitionID
+                VALUES(@aoi, @name, @start, @end, @results)";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@aoi", aoiId);
+            cmd.Parameters.AddWithValue("@name", compName);
+            cmd.Parameters.AddWithValue("@start", start);
+            cmd.Parameters.AddWithValue("@end", end);
+            cmd.Parameters.AddWithValue("@results", result);
+            //A connection to database must be opened before any operations made.
+            conn.Open();
+            //ExecuteScalar is used to retrieve the auto-generated
+            //StaffID after executing the INSERT SQL statement
+            competition.CompetitionId = (int)cmd.ExecuteScalar();
+
+            //A connection should be closed after operations.
+            conn.Close();
+
+            //Return id when no error occurs.
+            return competition.CompetitionId;
+        }
     }
 }
