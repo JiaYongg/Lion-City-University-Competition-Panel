@@ -17,52 +17,54 @@
         <div class="">
             <p>Create Competition</p>
         </div>
-        <div class="create-competition-background">
-            <div class="row">
-                <div class="col-sm-6 form-common-class form-unique-1">
-                    <div class="form-group common-1">
-                        <label for="competitionName">Name of Competition: </label>
-                        <input type="text" name="competitionName" placeholder="Enter Competition Name" class="create-competition-input" required/>
+        <form asp-action="Create">
+            <div class="create-competition-background">
+                <div class="row">
+                    <div class="col-sm-6 form-common-class form-unique-1">
+                        <div class="form-group common-1">
+                            <label for="competitionName">Name of Competition: </label>
+                            <input type="text" name="competitionName" placeholder="Enter Competition Name" class="create-competition-input" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-common-class form-unique-2">
+                        <div class="form-group common-1">
+                            <label for="areaOfInterest">Area of Interest: </label>
+                            <input type="text" name="areaOfInterest" placeholder="Select Area of Interest" class="create-competition-input" required />
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-6 form-common-class form-unique-2">
-                    <div class="form-group common-1">
-                        <label for="areaOfInterest">Area of Interest: </label>
-                        <input type="text" name="areaOfInterest" placeholder="Select Area of Interest" class="create-competition-input" required/>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-sm-6 form-common-class form-unique-3">
-                    <div class="form-group common-1">
-                        <label for="startDate">Start Date: </label>
-                        <input type="text" name="startDate" placeholder="Enter Start Date (DD/MM/YYYY)" class="create-competition-input" required/>
+                <div class="row">
+                    <div class="col-sm-6 form-common-class form-unique-3">
+                        <div class="form-group common-1">
+                            <label for="startDate">Start Date: </label>
+                            <input type="date" name="startDate" placeholder="Enter Start Date (DD/MM/YYYY)" class="create-competition-input" required style="padding: 15px; border: none;" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-common-class form-unique-4">
+                        <div class="form-group common-1">
+                            <label for="endDate">End Date: </label>
+                            <input type="date" name="endDate" placeholder="Enter End Date (DD/MM/YYYY)" class="create-competition-input" required style="padding: 15px; border: none;"/>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-6 form-common-class form-unique-4">
-                    <div class="form-group common-1">
-                        <label for="endDate">End Date: </label>
-                        <input type="text" name="endDate" placeholder="Enter End Date (DD/MM/YYYY)" class="create-competition-input" required/>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-sm-6 form-common-class form-unique-5">
-                    <div class="form-group common-1">
-                        <label for="resultRelease">Date of Results Released: </label>
-                        <input type="text" name="resultRelease" placeholder="Enter Results Release Date (DD/MM/YYYY)" class="create-competition-input" required/>
+                <div class="row">
+                    <div class="col-sm-6 form-common-class form-unique-5">
+                        <div class="form-group common-1">
+                            <label for="resultRelease">Date of Results Released: </label>
+                            <input type="date" name="resultRelease" placeholder="Enter Results Release Date (DD/MM/YYYY)" class="create-competition-input" required style="padding: 15px; border: none;"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 form-unique-6">
+                        <input type="submit" name="submit" value="Create" class="create-competition-submit" />
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-sm-12 form-unique-6">
-                    <input type="submit" name="submit" value="Create" class="create-competition-submit" />
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>
