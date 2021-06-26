@@ -147,7 +147,7 @@ namespace WEB2021Apr_P01_T01.DAL
             return compy;
         }
 
-        public int addCompetition(int aoiId, string compName, DateTime start, DateTime end, DateTime result)
+        public int AddCompetition(int aoiId, string compName, DateTime start, DateTime end, DateTime result)
         {
             Competition competition = new Competition();
 

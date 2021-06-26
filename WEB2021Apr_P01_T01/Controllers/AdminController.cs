@@ -4,11 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB2021Apr_P01_T01.DAL;
+using WEB2021Apr_P01_T01.Models;
 
 namespace WEB2021Apr_P01_T01.Controllers
 {
     public class AdminController : Controller
     {
+        public CompetitionDAL compyContext = new CompetitionDAL();
+
         // GET: AdminController
         public ActionResult Index()
         {
@@ -18,7 +22,20 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController/Details/5
         public ActionResult CreateCompetition()
         {
-            return View("CreateCompetition");
+            return View();
+        }
+
+        public ActionResult Create(IFormCollection formData)
+        {
+            string CompetitionName = formData["CompetitionName"];
+            int AreaOfInterest = Convert.ToInt32(formData["AreaOfInterest"]);
+            DateTime StartDate = Convert.ToDateTime(formData["StartDate"]);
+            DateTime EndDate = Convert.ToDateTime(formData["EndDate"]);
+            DateTime ResultsReleasedDate = Convert.ToDateTime(formData["ResultsReleasedDate"]);
+
+            //criteriaContext.AddCriteria(compId, nameList[i], weightageList[i]);
+            compyContext.AddCompetition(AreaOfInterest, CompetitionName, StartDate, EndDate, ResultsReleasedDate);
+            return RedirectToAction("CreateCompetition");
         }
 
         // GET: AdminController/Create
@@ -27,20 +44,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View("AreaOfInterest");
         }
 
-        // POST: AdminController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         // GET: AdminController/Edit/5
         public ActionResult Edit(int id)
