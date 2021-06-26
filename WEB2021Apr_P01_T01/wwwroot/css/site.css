@@ -282,6 +282,28 @@ form {
 
 /* End of Create Competition */
 
+/* Start of Area of Interest */
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #A98F64;
+    border: none;
+}
+
+/*.custom-checkbox .custom-control:checked ~ .custom-control-label::before {
+    background-color: #a98f64;
+}*/
+
+/* End of Area of Interest */
 hr.solid {
     border-top: 3px solid #a98f64;
     width: 10vw;

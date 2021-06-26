@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Area of Interest";
+}
+
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibity -->
+    <meta charset="utf-8">
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Competition Panel - Lion City University</title>
+    <!-- Reference to customized styling for this website -->
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <script src="~/js/site.js"></script>
+</head>
+<body>
+    <div class="container vh70">
+        <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
+            <div class="aoi-titles">
+                <p>Manage Area of Interest</p>
+                <h2>Area of Interest</h2>
+            </div>
+            <div class="aoi-button">
+                <input type="submit" name="addNewInterest" value="Add New Interest" style="border: none; border-radius: 10px; background: #A98F64; color: white; padding: 10px 15px;" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="display: flex; justify-content: center;">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="selectAll" />
+                                <label class="custom-control-label" for="selectAll"></label>
+                            </div>
+                        </th>
+                        <th scope="col">Name of Interest: </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-middle">
+                            <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1"></label>
+                            </div>
+                        </td>
+                        <td class="d-flex justify-content-between align-items-center">
+                            <div class="aoi-table-data">
+                                <p>Sports</p>
+                            </div>
+                            <div class="aoi-table-buttons" style="padding: 0 20px;">
+                                <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                <button type="button" class="btn btn-default btn-circle" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    @*<tr>
+                        <td class="align-middle">
+                            <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
+                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                <label class="custom-control-label" for="customCheck2"></label>
+                            </div>
+                        </td>
+                        <td class="d-flex justify-content-between align-items-center">
+                            <div class="aoi-table-data">
+                                <p>Sports</p>
+                            </div>
+                            <div class="aoi-table-buttons" style="padding: 0 20px;">
+                                <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                <button type="button" class="btn btn-default btn-circle" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
+                            </div>
+                        </td>
+                    </tr>*@
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

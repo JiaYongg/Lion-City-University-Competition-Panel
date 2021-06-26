@@ -2,3 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$('#selectAll').click(function (e) {
+    var table = $(e.target).closest('table');
+    $('td input:checkbox', table).prop('checked', this.checked);
+});
