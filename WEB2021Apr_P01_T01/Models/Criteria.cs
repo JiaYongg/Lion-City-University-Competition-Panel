@@ -9,9 +9,9 @@ namespace WEB2021Apr_P01_T01.Models
     public class Criteria
     {
         [Display(Name = "Criteria ID")]
-        public int? CriteriaID { get; set; }
+        public int CriteriaID { get; set; }
         [Display(Name = "Competition ID")]
-        public int? CompetitionID { get; set; }
+        public int CompetitionID { get; set; }
         [Required]
         [Display(Name = "Criteria Name:")]
         public string CriteriaName { get; set; }

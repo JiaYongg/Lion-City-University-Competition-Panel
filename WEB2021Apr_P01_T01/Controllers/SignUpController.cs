@@ -108,7 +108,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 {
                     // adds competitor account to database
                     competitor.CompetitorId = signUpContext.AddCompetitor(name, chosenSalutation, chosenEmail, password);
-                    return View("Login", competitor);
+                    return View("Login",competitor);
                 }
             }
         }

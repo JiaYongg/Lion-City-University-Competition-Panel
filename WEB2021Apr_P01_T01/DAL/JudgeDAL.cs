@@ -66,7 +66,7 @@ namespace WEB2021Apr_P01_T01.DAL
             SqlCommand cmd = conn.CreateCommand();
 
             // Specify the SELECT SQL Statement
-            cmd.CommandText = @"SELECT * FROM Judge INNER JOIN CompetitionJudge ON CompetitionJudge.JudgeID = Judge.JudgeID WHERE CompetitionID = @selectedJudgeId;";
+            cmd.CommandText = @"SELECT * FROM Competition INNER JOIN CompetitionJudge ON CompetitionJudge.CompetitionID = Competition.CompetitionID WHERE JudgeID = @selectedJudgeId;";
             cmd.Parameters.AddWithValue("@selectedJudgeId", judgeId);
 
             // Opens a Database Connection and execute the SQL statement
