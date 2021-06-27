@@ -1,16 +1,72 @@
-﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Judge>
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.CompetitionSubmission>
 
 @{
-    ViewData["Title"] = "Judge Competitor";
-}  
+    ViewData["Title"] = "Judge Competitors";
+}
 
-<p>Judge Panel</p>
-<h2 class="PageTitle">View Competitors - @ViewData["compName"] </h2>
-<!-- Add a partial view to display a list of staff records
-in a tabular format. -->
-<partial name="~/Views/Judge/_ViewCompetitor.cshtml" model="@Model" />
 
-<p>
-    <a asp-action="Index">Back to home</a>
-</p>
+<body>
+    <div class="container vh70">
+        <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
+            <div class="aoi-titles">
+                <p>Judge Panel</p>
+                <h2>View Competitiors - @ViewData["compName"]</h2>
+            </div>
+        </div>
 
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Ranking:</th>
+                        <th scope="col">Competitor Name: </th>
+                        <th scope="col">Total Marks:</th>
+                        <th scope="col">Number of Votes:</th>
+                        <th scope="col">View Appeal:</th>
+                        <th scope="col">View Submission:</th>
+                        <th scope="col">Action:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>1</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>James</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>80</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>40</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>40</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>40</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="aoi-table-buttons" style="padding: 0 20px;">
+                                <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
