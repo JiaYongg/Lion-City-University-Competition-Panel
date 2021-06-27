@@ -147,14 +147,31 @@ namespace WEB2021Apr_P01_T01.DAL
             return compy;
         }
 
-        public int AddCompetition(int aoiId, string compName, DateTime start, DateTime end, DateTime result)
+        public int AddCompetition(Competition competition, int aoiId)
         {
-            Competition competition = new Competition();
+            string compName = competition.CompetitionName;
+            int startDay = competition.StartDate.Day;
+            int startMonth = competition.StartDate.Month;
+            int startYear = competition.StartDate.Year;
+
+            DateTime start = new DateTime(startYear, startMonth, startDay);
+
+            int endDay = competition.EndDate.Day;
+            int endMonth = competition.EndDate.Month;
+            int endYear = competition.EndDate.Year;
+
+            DateTime end = new DateTime(endYear, endMonth, endDay);
+
+            int resultDay = competition.ResultsReleaseDate.Day;
+            int resultMonth = competition.ResultsReleaseDate.Month;
+            int resultYear = competition.ResultsReleaseDate.Year;
+
+            DateTime result = new DateTime(resultYear, resultMonth, resultDay);
 
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO Competition (AreaInterestID, CompetitionName, StartDate, EndDate, ResultReleaseDate)
+            cmd.CommandText = @"INSERT INTO Competition (AreaInterestID, CompetitionName, StartDate, EndDate, ResultReleasedDate)
                 OUTPUT INSERTED.CompetitionID
                 VALUES(@aoi, @name, @start, @end, @results)";
             //Define the parameters used in SQL statement, value for each parameter
@@ -175,6 +192,27 @@ namespace WEB2021Apr_P01_T01.DAL
 
             //Return id when no error occurs.
             return competition.CompetitionId;
+        }
+
+        public int AddAreaInterest(string aoiName)
+        {
+            AreaInterest aoi = new AreaInterest();
+
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"INSERT INTO AreaInterest(Name) OUTPUT INSERTED.AreaInterestID VALUES(@name)";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@name", aoiName);
+
+            conn.Open();
+
+            aoi.AreaInterestId = (int)cmd.ExecuteScalar();
+
+            conn.Close();
+
+            return aoi.AreaInterestId;
         }
     }
 }

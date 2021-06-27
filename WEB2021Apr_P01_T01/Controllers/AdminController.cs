@@ -27,14 +27,25 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult Create(IFormCollection formData)
         {
-            string CompetitionName = formData["CompetitionName"];
-            int AreaOfInterest = Convert.ToInt32(formData["AreaOfInterest"]);
-            DateTime StartDate = Convert.ToDateTime(formData["StartDate"]);
-            DateTime EndDate = Convert.ToDateTime(formData["EndDate"]);
-            DateTime ResultsReleasedDate = Convert.ToDateTime(formData["ResultsReleasedDate"]);
+            string competitionName = formData["CompetitionName"];
+            string areaOfInterest = formData["AreaOfInterest"];
+            DateTime startDate = Convert.ToDateTime(formData["StartDate"]);
+            DateTime endDate = Convert.ToDateTime(formData["EndDate"]);
+            DateTime resultsReleasedDate = Convert.ToDateTime(formData["ResultsReleasedDate"]);
+
+            Competition competition = new Competition
+            {
+                CompetitionName = competitionName,
+                AoiName = areaOfInterest,
+                StartDate = startDate,
+                EndDate = endDate,
+                ResultsReleaseDate = resultsReleasedDate
+            };
+
+            int aoiID = compyContext.AddAreaInterest(competition.AoiName);
 
             //criteriaContext.AddCriteria(compId, nameList[i], weightageList[i]);
-            compyContext.AddCompetition(AreaOfInterest, CompetitionName, StartDate, EndDate, ResultsReleasedDate);
+            compyContext.AddCompetition(competition, aoiID);
             return RedirectToAction("CreateCompetition");
         }
 
