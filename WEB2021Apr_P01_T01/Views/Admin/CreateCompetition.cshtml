@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WEB2021Apr_P01_T01.Models.Competition
+
+@{
     ViewData["Title"] = "Create Competition";
 }
 
@@ -23,7 +25,8 @@
                     <div class="col-sm-6 form-common-class form-unique-1">
                         <div class="form-group common-1">
                             <label for="competitionName">Name of Competition: </label>
-                            <input type="text" name="competitionName" placeholder="Enter Competition Name" class="create-competition-input" required />
+                            <input asp-for="CompetitionName" placeholder="Enter Competition Name" class="create-competition-input" required />
+                            <span asp-validation-for="CompetitionName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-sm-6 form-common-class form-unique-2">
@@ -32,6 +35,9 @@
                             <input type="text" name="areaOfInterest" placeholder="Select Area of Interest" class="create-competition-input" required />
                         </div>
                     </div>
+                    @*<div class="form-group">
+                        <label asp-for="AoiName" asp-items="@ViewData[""]></label>
+                    </div>*@
                 </div>
 
                 <div class="row">
