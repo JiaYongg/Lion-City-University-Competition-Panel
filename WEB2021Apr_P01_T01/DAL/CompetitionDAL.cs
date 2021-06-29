@@ -201,7 +201,7 @@ namespace WEB2021Apr_P01_T01.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO AreaInterest(Name) OUTPUT INSERTED.AreaInterestID VALUES(@name)";
+            cmd.CommandText = @"SELECT * FROM AreaInterest WHERE NAME = @name";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@name", aoiName);
