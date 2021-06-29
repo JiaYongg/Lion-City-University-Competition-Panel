@@ -32,7 +32,7 @@ namespace WEB2021Apr_P01_T01.DAL
             SqlCommand cmd = conn.CreateCommand();
 
             // Specify the SELECT SQL Statement
-            cmd.CommandText = @"SELECT * FROM CompetitionScore WHERE CompetitionID = @selectedCompetitionID AND CompetitorID = selectedCompetitorID; ";
+            cmd.CommandText = @"SELECT * FROM CompetitionScore WHERE CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID; ";
             cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionID);
             cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorID);
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,22 +43,68 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult JudgeCompetitor()
         {
-            ViewData["compName"] = HttpContext.Session.GetString("compName");
+            // Data needed at the start
+            List<int?> rankingList = new List<int?>();
+            List<string> nameList = new List<string>();
+            List<double> marksList = new List<double>();
+            List<int> votesList = new List<int>();
+            List<string> appealList = new List<string>();
+
             int compId = (int)HttpContext.Session.GetInt32("compId");
+            var compList = submitContext.GetCompetitionSubmissions(compId);
+            var noOfCompetitors = compList.Count();
+            var weightage = criteriaContext.GetCompetitionCriteria(compId);
+
+
+            ViewData["compList"] = compList;
+            ViewData["noOfCompetitiors"] = noOfCompetitors;
+            ViewData["compName"] = HttpContext.Session.GetString("compName");
 
             // Data that needs to be seen
-            // Ranking - ViewData["rank"]
-            // Competitor Name - ViewData["competitorName"]
-            // Total Marks - ViewData["totalScore"]
-            // Number of votes - ViewData["votes"]
-            submitContext.GetCompetitionSubmissions(compId);
+            
+            foreach (var item in compList)
+            {
+                int i = 0;
+                double total = 0;
+                //Console.WriteLine(item.VoteCount);
+                rankingList.Add(item.Ranking);
 
-            // Action to display appeal
+                // Competitor Name - ViewData["competitorName"]
+                nameList.Add(item.CompetitorName);
+                
+                // Total Marks - ViewData["totalScore"]
+                foreach (var score in scoreContext.GetCompetitiorScores(compId, item.CompetitorId))
+                {
+                    i += 1;
+                    total += weightage[i - 1].Weightage * Convert.ToDouble(score.Score) / 10;
+                }
+                marksList.Add(total);
+
+                // Number of votes - ViewData["votes"]
+                votesList.Add(item.VoteCount);
+
+                // Get appeals
+                appealList.Add(item.Appeal);
+                
+            }
+
+            ViewData["rankingList"] = rankingList;
+            ViewData["competitorName"] = nameList;
+            ViewData["totalScore"] = marksList;
+            ViewData["votes"] = votesList;
+            //ViewData["appeal"] = appealList;
+
 
             // Action to download submission
 
             // Action to update grades? possibly have a seperate action 1 to grade 1 to edit grades
 
+            return View();
+        }
+
+        // Action to display appeal
+        public ActionResult appeal()
+        {
             return View();
         }
 
