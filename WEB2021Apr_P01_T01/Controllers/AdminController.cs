@@ -48,7 +48,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 ResultsReleaseDate = resultsReleasedDate
             };
 
-            int aoiID = compyContext.AddAreaInterest(competition.AoiName);
+            int aoiID = compyContext.GetAreaInterestID(competition.AoiName); 
 
             compyContext.AddCompetition(competition, aoiID);
 
@@ -120,22 +120,17 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController/Delete/5
         public ActionResult Delete(int id)
         {
+            Console.WriteLine("test");
             return View();
         }
 
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(AreaInterest aoi)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            aoiContext.Delete(aoi.AreaInterestId);
+            return RedirectToAction("AreaOfInterest");
         }
     }
 }
