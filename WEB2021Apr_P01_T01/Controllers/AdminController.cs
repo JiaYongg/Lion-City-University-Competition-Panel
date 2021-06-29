@@ -13,6 +13,7 @@ namespace WEB2021Apr_P01_T01.Controllers
     public class AdminController : Controller
     {
         public CompetitionDAL compyContext = new CompetitionDAL();
+        private AoiDAL aoiContext = new AoiDAL();
 
         private List<SelectListItem> aoiList = new List<SelectListItem>();
         private List<AreaInterest> areaInterest = new List<AreaInterest>();
@@ -71,6 +72,15 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController/Create
         public ActionResult AreaOfInterest()
         {
+            List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
+            List<string> aoiNames = new List<string>();
+            foreach (var item in aoiList)
+            {
+                aoiNames.Add(item.Name);
+            }
+
+            ViewData["totalAOI"] = aoiList.Count();
+            ViewData["aoiName"] = aoiNames;
             return View();
         }
 
