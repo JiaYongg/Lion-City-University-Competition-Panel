@@ -20,7 +20,7 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public AdminController()
         {
-            for (int i=1;1<=10;i++)
+            for (int i=1;i<=10;i++)
             {
                 aoiList.Add(new SelectListItem
                 {
