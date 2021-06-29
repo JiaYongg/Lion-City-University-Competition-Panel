@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WEB2021Apr_P01_T01.DAL;
 using WEB2021Apr_P01_T01.Models;
 
@@ -12,6 +13,22 @@ namespace WEB2021Apr_P01_T01.Controllers
     public class AdminController : Controller
     {
         public CompetitionDAL compyContext = new CompetitionDAL();
+
+        private List<SelectListItem> aoiList = new List<SelectListItem>();
+        private List<AreaInterest> areaInterest = new List<AreaInterest>();
+
+
+        public AdminController()
+        {
+            for (int i=1;1<=10;i++)
+            {
+                aoiList.Add(new SelectListItem
+                {
+                    Value = i.ToString(),
+                    Text = i.ToString(),
+                });
+            }
+        }
 
         // GET: AdminController
         public ActionResult Index()
@@ -25,6 +42,8 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection formData)
         {
             string competitionName = formData["CompetitionName"];
@@ -44,18 +63,24 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             int aoiID = compyContext.AddAreaInterest(competition.AoiName);
 
-            //criteriaContext.AddCriteria(compId, nameList[i], weightageList[i]);
             compyContext.AddCompetition(competition, aoiID);
             return RedirectToAction("CreateCompetition");
         }
 
+
         // GET: AdminController/Create
         public ActionResult AreaOfInterest()
         {
-            return View("AreaOfInterest");
+            return View();
         }
 
-        
+        public ActionResult AddInterest(IFormCollection formData)
+        {
+            string aoiName = formData["aoiName"];
+
+            compyContext.AddAreaInterest(aoiName);
+            return RedirectToAction("AreaOfInterest");
+        }
 
         // GET: AdminController/Edit/5
         public ActionResult Edit(int id)
