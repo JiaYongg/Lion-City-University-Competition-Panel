@@ -1,76 +1,63 @@
 ﻿@model WEB2021Apr_P01_T01.Models.Competition
 
 @{
-    ViewData["Title"] = "Create Competition";
+    ViewData["Title"] = "CreateCompetition";
 }
 
-<html>
-<head>
-    <!-- Use Unicode character encoding - multi-language compatibity -->
-    <meta charset="utf-8">
-    <!-- Set the initial view zooming scale for mobile device -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Competition Panel - Lion City University</title>
-    <!-- Reference to customized styling for this website -->
-    <link rel="stylesheet" type="text/css" href="~/css/site.css">
-</head>
-<body>
-    <div class="container vh70">
-        <div class="">
-            <p>Create Competition</p>
-        </div>
-        <form asp-action="Create">
-            <div class="create-competition-background">
-                <div class="row">
-                    <div class="col-sm-6 form-common-class form-unique-1">
-                        <div class="form-group common-1">
-                            <label for="competitionName">Name of Competition: </label>
-                            <input asp-for="CompetitionName" placeholder="Enter Competition Name" class="create-competition-input" required />
-                            <span asp-validation-for="CompetitionName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 form-common-class form-unique-2">
-                        <div class="form-group common-1">
-                            <label for="areaOfInterest">Area of Interest: </label>
-                            <input type="text" name="areaOfInterest" placeholder="Select Area of Interest" class="create-competition-input" required />
-                        </div>
-                    </div>
-                    @*<div class="form-group">
-                        <label asp-for="AoiName" asp-items="@ViewData[""]></label>
-                    </div>*@
+
+<div class="container vh70">
+    <div class="">
+        <p> Create Competition</p>
+    </div>
+    <div class="container" style="background: #E5E5E5; border-radius: 50px;">
+        <form asp-action="CreateCompetition">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label asp-for="CompetitionName" class="control-label"></label>
+                    <input asp-for="CompetitionName" class="form-control" style="background-color: white;"/>
+                    <span asp-validation-for="CompetitionName" class="text-danger"></span>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-6 form-common-class form-unique-3">
-                        <div class="form-group common-1">
-                            <label for="startDate">Start Date: </label>
-                            <input type="date" name="startDate" placeholder="Enter Start Date (DD/MM/YYYY)" class="create-competition-input" required style="padding: 15px; border: none;" />
-                        </div>
-                    </div>
-                    <div class="col-sm-6 form-common-class form-unique-4">
-                        <div class="form-group common-1">
-                            <label for="endDate">End Date: </label>
-                            <input type="date" name="endDate" placeholder="Enter End Date (DD/MM/YYYY)" class="create-competition-input" required style="padding: 15px; border: none;"/>
-                        </div>
-                    </div>
+                <div class="form-group col-sm-6 d-flex flex-column">
+                    <label asp-for="AoiName"></label>
+                    <select asp-for="AoiName" asp-items="@ViewData["aoiList"] as List<SelectListItem>" style="height: 100%;"></select>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-sm-6 form-common-class">
-                        <div class="form-group common-1">
-                            <label for="ResultsReleasedDate">Date of Result Released: </label>
-                            <input type="date" name="ResultsReleasedDate" class="create-competition-input" required style="padding:15px; border: none;" />
-                        </div>
-                    </div>
+            <div class="row col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" class="form-control" style="background-color: white;"/>
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
                 </div>
+                <div class="form-group col-sm-6">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <input asp-for="EndDate" class="form-control" style="background-color: white;" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-sm-12 form-unique-6">
-                        <input type="submit" name="submit" value="Create" class="create-competition-submit" />
-                    </div>
+            <div class="row col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label asp-for="ResultsReleaseDate" class="control-label"></label>
+                    <input asp-for="ResultsReleaseDate" class="form-control" style="background-color: white;" />
+                    <span asp-validation-for="ResultsReleaseDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row col-sm-12">
+                <div class="col-sm-6"></div>
+                <div class="form-group col-sm-6 d-flex justify-content-end">
+                    <input type="submit" value="Create" class="btn btn-primary" style="border-radius:10px; background: #A98F64; width: 50%"/>
                 </div>
             </div>
         </form>
     </div>
-</body>
-</html>
+</div>
+
+
+@*<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
