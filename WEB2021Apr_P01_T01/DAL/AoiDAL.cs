@@ -83,5 +83,22 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return aoiName;
         }
+
+        public int Delete(int aoiId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"DELETE FROM AreaInterest WHERE AreaInterestID = @selectAoiID";
+            cmd.Parameters.AddWithValue("@selectAoiID", aoiId);
+
+            conn.Open();
+
+            int rowAffected = 0;
+
+            rowAffected += cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            return rowAffected;
+        }
     }
 }
