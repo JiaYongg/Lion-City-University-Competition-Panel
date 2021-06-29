@@ -17,6 +17,7 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult Index()
         {
             List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
+            
             return View(aoiList);
         }
 

@@ -1,5 +1,10 @@
-﻿@{
+﻿@model WEB2021Apr_P01_T01.Models.AreaInterest
+@{
     ViewData["Title"] = "Area of Interest";
+}
+
+@{ 
+    var name = (List<string>)ViewData["aoiName"];
 }
 
 <html>
@@ -25,7 +30,7 @@
             </div>
         </div>
 
-        @*<div class="col-12">
+        <div class="col-12">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -38,44 +43,47 @@
                         <th scope="col">Name of Interest: </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="align-middle">
-                            <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1"></label>
-                            </div>
-                        </td>
-                        <td class="d-flex justify-content-between align-items-center">
-                            <div class="aoi-table-data">
-                                <p>Sports</p>
-                            </div>
-                            <div class="aoi-table-buttons" style="padding: 0 20px;">
-                                <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#editModal" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
-                                <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#deleteModal" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                @for (int i = 0; i < Convert.ToInt32(ViewData["totalAOI"]); i++)
+                {
+                    <tbody>
+                        <tr>
+                            <td class="align-middle">
+                                <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    <label class="custom-control-label" for="customCheck1"></label>
+                                </div>
+                            </td>
+                            <td class="d-flex justify-content-between align-items-center">
+                                <div class="aoi-table-data">
+                                    <p>@name[i]</p>
+                                </div>
+                                <div class="aoi-table-buttons" style="padding: 0 20px;">
+                                    <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#editModal" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                    <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#deleteModal" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
 
-                </tbody>
             </table>
-        </div>*@
+        </div>
 
-        @if (Model.ToList().Count > 0)
+        @*@if (Model.ToList().Count > 0)
             {
                 <div class="table-responsive">
                     <table id="viewAreaInterest" class="table table-striped table-bordered">
-                         <thead>
-                             <tr>
-                                 <th scope="col" class="d-flex justify-content-center">
-                                     <div class="custom-control custom-checkbox">
-                                         <input type="checkbox" class="custom-control-input" id="selectAll" />
-                                         <label class="custom-control-label" for="selectAll"></label>
-                                     </div>
-                                 </th>
-                                 <th scope="col">Name of Interest:</th>
-                             </tr>
-                         </thead>
+                        <thead>
+                            <tr>
+                                <th scope="col" class="d-flex justify-content-center">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="selectAll" />
+                                        <label class="custom-control-label" for="selectAll"></label>
+                                    </div>
+                                </th>
+                                <th scope="col">Name of Interest:</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             <tr>
                                 <td>
@@ -86,22 +94,22 @@
                                 </td>
                             </tr>
                             @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.Name
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Name
 
-                                            <div class="aoi-table-buttons" style="padding: 0 20px;">
-                                                <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#editModal" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
-                                                <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#deleteModal" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
+                                        <div class="aoi-table-buttons" style="padding: 0 20px;">
+                                            <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#editModal" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                            <button type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#deleteModal" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
-            }
+            }*@
 
         <div class="modal" id="editModal">
             <div class="modal-dialog">
@@ -163,7 +171,7 @@
                             <label class="col-sm-12 col-form-label form-control-label">Name of Area of Interest: </label>
                             <div class="col-sm-12">
                                 <form asp-action="AddInterest">
-                                    <input class="form-control" type="text" name="aoiName" placeholder="Enter name of area of interest: " required style="margin-bottom: 10px;"/>
+                                    <input class="form-control" type="text" name="aoiName" placeholder="Enter name of area of interest: " required style="margin-bottom: 10px;" />
                                     <button type="submit" class="btn btn-success col-sm-6">Add Interest</button>
                                 </form>
                             </div>
