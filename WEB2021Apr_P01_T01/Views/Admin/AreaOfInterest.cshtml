@@ -43,10 +43,9 @@
                         <th scope="col">Name of Interest: </th>
                     </tr>
                 </thead>
-
-                @for (int i = 0; i < Convert.ToInt32(ViewData["totalAOI"]); i++)
-                 {
-                    <tbody>
+                <tbody>
+                    @for (int i = 0; i < Convert.ToInt32(ViewData["totalAOI"]); i++)
+                    {
                         <tr>
                             <td class="align-middle">
                                 <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
@@ -64,9 +63,8 @@
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                 }
-
+                    }
+                </tbody>
             </table>
         </div>
 
@@ -98,16 +96,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                    <!-- Modal Header -->
+                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">Confirm Delete?</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
-                    <!-- Modal body -->
+                     <!-- Modal body -->
                     <div class="modal-body">
                         <div class="col-sm-12 d-flex justify-content-center">
-                            <button asp-action="Delete" type="submit" class="btn btn-danger col-sm-6">delete</button>
+                            @*<form asp-action="Delete">
+                                <button type="submit" class="btn btn-danger">delete</button>
+                            </form>*@
+                            @*<button asp-action="Delete" type="submit" class="btn btn-danger">Delete</button>*@
+                            <input type="submit" class="btn btn-danger" value="Delete" asp-action="Delete" />
                         </div>
                     </div>
                 </div>
