@@ -4,15 +4,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB2021Apr_P01_T01.DAL;
 using WEB2021Apr_P01_T01.Models;
 
 namespace WEB2021Apr_P01_T01.Controllers
 {
     public class CompetitorController : Controller
     {
-        private Competitor competitor = new Competitor();
+        private CompetitionSubmissionDAL csContext = new CompetitionSubmissionDAL();
+        private JudgeDAL judgeContext = new JudgeDAL();
         // GET: CompetitorController
         public ActionResult Index()
+        {
+            ViewData["TryHarder"] = "Try harder next time!";
+            var competitorId = HttpContext.Session.GetInt32("userID");
+
+            List<CompetitionSubmission> cList = csContext.competitorCompetitions(Convert.ToInt32(competitorId));
+            foreach(var item in cList)
+            {
+                List<Judge> judgeList = judgeContext.GetCompetitionJudges(item.CompetitionId);
+                item.numofJudge = (int)judgeList.Count();
+            }
+            ViewData["CompetitorCompetitions"] = cList;
+
+            return View();
+        }
+
+        public ActionResult JoinCompetition()
         {
             return View();
         }
