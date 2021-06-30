@@ -1,16 +1,97 @@
-﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Judge>
+﻿@model WEB2021Apr_P01_T01.Models.CompetitionSubmission
+@{
+    ViewData["Title"] = "Judge Competitors";
+}
 
 @{
-    ViewData["Title"] = "Judge Competitor";
-}  
+    var rank = (List<int?>)ViewData["rankingList"];
+    var name = (List<string>)ViewData["competitorName"];
+    var totalScore = (List<double>)ViewData["totalScore"];
+    var votes = (List<int>)ViewData["votes"];
+}
+<body>
+    <div class="container vh70">
+        <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
+            <div class="aoi-titles">
+                <p>Judge Panel</p>
+                <h2>View Competitiors - @ViewData["compName"]</h2>
+            </div>
+        </div>
 
-<p>Judge Panel</p>
-<h2 class="PageTitle">View Competitors - @ViewData["compName"] </h2>
-<!-- Add a partial view to display a list of staff records
-in a tabular format. -->
-<partial name="~/Views/Judge/_ViewCompetitor.cshtml" model="@Model" />
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Ranking:</th>
+                        <th scope="col">Competitor Name: </th>
+                        <th scope="col">Total Marks:</th>
+                        <th scope="col">Number of Votes:</th>
+                        <th scope="col">View Appeal:</th>
+                        <th scope="col">View Submission:</th>
+                        <th scope="col">Action:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Convert.ToInt32(ViewData["noOfCompetitiors"]); i++)
+                    {
+                        <tr>
+                            <td>
+                                <div class="judge-table-content">
+                                    @if (rank[i] == null)
+                                    {
+                                        <p>-</p>
+                                    }
+                                    else
+                                    {
+                                        <p>@rank[i]</p>
+                                    }
 
-<p>
-    <a asp-action="Index">Back to home</a>
-</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <p>@name[i]</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <p>@totalScore[i]</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <p>@votes[i]</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    @if (Convert.ToBoolean(ViewData["haveAppeal"]) == true)
+                                    {
+                                        <a asp-action="appeal"><p>View Appeal</p></a>
+                                    }
+                                    else
+                                    {
+                                        <p>nil</p>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <a asp-action="">View Submission</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="aoi-table-buttons" style="padding: 0 20px;">
+                                    <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-star" style="color: yellow;"></i></button>
+                                    <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    }
 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
