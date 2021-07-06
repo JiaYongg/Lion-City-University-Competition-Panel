@@ -54,6 +54,8 @@ namespace WEB2021Apr_P01_T01.Controllers
             var compList = submitContext.GetCompetitionSubmissions(compId);
             var noOfCompetitors = compList.Count();
             var weightage = criteriaContext.GetCompetitionCriteria(compId);
+            int noOfCriteria = criteriaContext.GetCompetitionCriteria(compId).Count();
+            string criteriaScore = "";
 
 
             ViewData["compList"] = compList;
@@ -77,7 +79,9 @@ namespace WEB2021Apr_P01_T01.Controllers
                 {
                     i += 1;
                     total += weightage[i - 1].Weightage * Convert.ToDouble(score.Score) / 10;
+                    criteriaScore += score.Score;
                 }
+                criteriaScore += ",";
                 marksList.Add(total);
 
                 // Number of votes - ViewData["votes"]
@@ -88,11 +92,13 @@ namespace WEB2021Apr_P01_T01.Controllers
                 
             }
 
+
             ViewData["rankingList"] = rankingList;
             ViewData["competitorName"] = nameList;
             ViewData["totalScore"] = marksList;
             ViewData["votes"] = votesList;
-            //ViewData["appeal"] = appealList;
+            ViewData["appeal"] = appealList;
+            ViewData["noOfCriteria"] = noOfCriteria;
 
 
             // Action to download submission
@@ -103,8 +109,9 @@ namespace WEB2021Apr_P01_T01.Controllers
         }
 
         // Action to display appeal
-        public ActionResult appeal()
+        public ActionResult Grade()
         {
+
             return View();
         }
 
