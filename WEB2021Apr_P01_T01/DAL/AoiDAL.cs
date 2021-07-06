@@ -55,6 +55,36 @@ namespace WEB2021Apr_P01_T01.DAL
             return aoiList;
         }
 
+        public AreaInterest GetAoi()
+        {
+            AreaInterest aoi = new AreaInterest();
+
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify the SELECT SQL Statement
+            cmd.CommandText = @"SELECT * FROM AreaInterest";
+
+            // Opens a Database Connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    aoi.AreaInterestId = reader.GetInt32(0);
+                    aoi.Name = reader.GetString(1);
+                }
+            }
+
+            // Close the DataReader & DB connection
+            reader.Close();
+            conn.Close();
+
+            return aoi;
+        }
+
         public string GetAoiName(int aoiId)
         {
             // Create a SqlCommand object from connection object
@@ -88,7 +118,7 @@ namespace WEB2021Apr_P01_T01.DAL
         {
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"DELETE FROM AreaInterest WHERE AreaInterestID = @selectAoiID";
-            cmd.Parameters.AddWithValue("@selectAoiID", aoiId);
+            cmd.Parameters.AddWithValue("@selectAoiID", 1);
 
             conn.Open();
 

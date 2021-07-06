@@ -85,7 +85,10 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             ViewData["totalAOI"] = aoiList.Count();
             ViewData["AoiName"] = aoiNames;
-            return View();
+
+            AreaInterest areaInterest = aoiContext.GetAoi();
+
+            return View(areaInterest);
         }
 
         public ActionResult AddInterest(IFormCollection formData)
@@ -118,18 +121,18 @@ namespace WEB2021Apr_P01_T01.Controllers
         }
 
         // GET: AdminController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete()
         {
-            Console.WriteLine("test");
+            //Console.WriteLine("test");
             return View();
         }
 
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(AreaInterest aoi)
+        public ActionResult Delete(int id)
         {
-            aoiContext.Delete(aoi.AreaInterestId);
+            aoiContext.Delete(id);
             return RedirectToAction("AreaOfInterest");
         }
     }

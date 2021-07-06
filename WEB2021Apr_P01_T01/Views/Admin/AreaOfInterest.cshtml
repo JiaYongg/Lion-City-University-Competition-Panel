@@ -105,11 +105,10 @@
                      <!-- Modal body -->
                     <div class="modal-body">
                         <div class="col-sm-12 d-flex justify-content-center">
-                            @*<form asp-action="Delete">
+                            <form asp-action="Delete" asp-route-id="@Model.AreaInterestId">
                                 <button type="submit" class="btn btn-danger">delete</button>
-                            </form>*@
-                            @*<button asp-action="Delete" type="submit" class="btn btn-danger">Delete</button>*@
-                            <input type="submit" class="btn btn-danger" value="Delete" asp-action="Delete" />
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
