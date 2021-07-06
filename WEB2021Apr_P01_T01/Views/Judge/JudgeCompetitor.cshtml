@@ -8,9 +8,6 @@
     var name = (List<string>)ViewData["competitorName"];
     var totalScore = (List<double>)ViewData["totalScore"];
     var votes = (List<int>)ViewData["votes"];
-    var appeal = (List<string>)ViewData["appeal"];
-    string viewAppeal = "";
-    var criteraList = 
 }
 <body>
     <div class="container vh70">
@@ -20,31 +17,7 @@
                 <h2>View Competitiors - @ViewData["compName"]</h2>
             </div>
         </div>
-        <div class="modal" id="addInterestModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add New Interest</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <label class="col-sm-12 col-form-label form-control-label">Name of Area of Interest: </label>
-                            <div class="col-sm-12">
-                                <form asp-action="AddInterest">
-                                    <input class="form-control" type="text" name="aoiName" placeholder="Enter name of area of interest: " required style="margin-bottom: 10px;" />
-                                    <button type="submit" class="btn btn-success col-sm-6">Add Interest</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-12">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -92,31 +65,26 @@
                             </td>
                             <td>
                                 <div class="judge-table-content">
-                                    @if (appeal[i] != null)
+                                    @if (Convert.ToBoolean(ViewData["haveAppeal"]) == true)
                                     {
-                                        <a asp-action="appeal" data-toggle="modal" data-target="#viewAppeal"><p>View appeal @{ viewAppeal = appeal[i];}</p></a>
+                                        <a asp-action="appeal"><p>View Appeal</p></a>
                                     }
                                     else
                                     {
-                                        <p>-nil-</p>
+                                        <p>nil</p>
                                     }
                                 </div>
                             </td>
                             <td>
                                 <div class="judge-table-content">
-                                    <a data-toggle="modal" data-target="#viewAppeal">View Submission</a>
+                                    <a asp-action="">View Submission</a>
                                 </div>
                             </td>
                             <td>
                                 <div class="aoi-table-buttons" style="padding: 0 20px;">
-                                    @if (totalScore[i] == 0)
-                                    {
-                                        <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" data-toggle="modal" data-target="#viewAppeal"><i class="fas fa-star" style="color: yellow;"></i></button>
-                                    }
-                                    else
-                                    {
-                                        <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" data-toggle="modal" data-target="#gradeForm"><i class="fas fa-pen" style="color: white;"></i></button>
-                                    }
+                                    <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-star" style="color: yellow;"></i></button>
+                                    <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                    
                                 </div>
                             </td>
                         </tr>
@@ -124,62 +92,6 @@
 
                 </tbody>
             </table>
-        </div>
-
-        <!-- Lightbox for view appeal-->
-        <div class="modal" id="viewAppeal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h2 class="modal-title">View Appeal</h2>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <h4 class="col-sm-12">Appeal for @ViewData["compName"] </h4>
-                            <div class="col-sm-12">
-                                <p>@viewAppeal</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Lightbox for grading form-->
-        <div class="modal" id="gradeForm">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h2 class="modal-title">Grading competitor</h2>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <h4 class="col-sm-12">Grading for @ViewData["compName"] </h4>
-                            <div class="col-sm-12 d-flex flex-column justify-content-center">
-                                <form asp-action="Grade">
-                                    @for (int i = 1; i < (Convert.ToInt32(ViewData["noOfCriteria"]) + 1); i++)
-                                    {
-                                        <label>Criteria @i</label>
-                                        <input class="form-control" type="text" placeholder="Enter criteria score (0-10): " value="@i" style="margin-bottom: 10px;" required />
-                                    }
-
-                                    <button type="submit" class="btn btn-success col-sm-3">save</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
