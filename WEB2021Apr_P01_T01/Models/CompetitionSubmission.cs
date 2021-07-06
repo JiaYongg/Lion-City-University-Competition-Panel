@@ -21,7 +21,7 @@ namespace WEB2021Apr_P01_T01.Models
         public string? CompetitorName { get; set; }
 
         [Required]
-        [Display(Name = "Competitor's Name")]
+        [Display(Name = "Competition's Name")]
         public string? CompetitionName { get; set; }
 
         [Required]

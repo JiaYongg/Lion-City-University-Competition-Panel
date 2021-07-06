@@ -1,0 +1,93 @@
+﻿@model WEB2021Apr_P01_T01.Models.CompetitionSubmission
+
+@{
+    ViewData["Title"] = "JoinCompetition";
+}
+
+<h1>JoinCompetition</h1>
+
+<h4>CompetitionSubmission</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="JoinCompetition">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CompetitionId" class="control-label"></label>
+                <input asp-for="CompetitionId" class="form-control" />
+                <span asp-validation-for="CompetitionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitorId" class="control-label"></label>
+                <input asp-for="CompetitorId" class="form-control" />
+                <span asp-validation-for="CompetitorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitorName" class="control-label"></label>
+                <input asp-for="CompetitorName" class="form-control" />
+                <span asp-validation-for="CompetitorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompetitionName" class="control-label"></label>
+                <input asp-for="CompetitionName" class="form-control" />
+                <span asp-validation-for="CompetitionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="numofJudge" class="control-label"></label>
+                <input asp-for="numofJudge" class="form-control" />
+                <span asp-validation-for="numofJudge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResultReleasedDate" class="control-label"></label>
+                <input asp-for="ResultReleasedDate" class="form-control" />
+                <span asp-validation-for="ResultReleasedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FileUrl" class="control-label"></label>
+                <input asp-for="FileUrl" class="form-control" />
+                <span asp-validation-for="FileUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FileUploadDateTime" class="control-label"></label>
+                <input asp-for="FileUploadDateTime" class="form-control" />
+                <span asp-validation-for="FileUploadDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appeal" class="control-label"></label>
+                <input asp-for="Appeal" class="form-control" />
+                <span asp-validation-for="Appeal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VoteCount" class="control-label"></label>
+                <input asp-for="VoteCount" class="form-control" />
+                <span asp-validation-for="VoteCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ranking" class="control-label"></label>
+                <input asp-for="Ranking" class="form-control" />
+                <span asp-validation-for="Ranking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
