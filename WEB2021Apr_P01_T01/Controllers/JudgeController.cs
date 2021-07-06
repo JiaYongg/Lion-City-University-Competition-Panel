@@ -25,7 +25,6 @@ namespace WEB2021Apr_P01_T01.Controllers
         public static bool showCriteria = false;
 
 
-
         // GET: JudgeController/
         public ActionResult Index()
         {
@@ -79,7 +78,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 {
                     i += 1;
                     total += weightage[i - 1].Weightage * Convert.ToDouble(score.Score) / 10;
-                    criteriaScore += score.Score;
+                    criteriaScore += score.Score + "/";
                 }
                 criteriaScore += ",";
                 marksList.Add(total);
@@ -99,6 +98,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             ViewData["votes"] = votesList;
             ViewData["appeal"] = appealList;
             ViewData["noOfCriteria"] = noOfCriteria;
+            ViewData["criteriaScores"] = criteriaScore;
 
 
             // Action to download submission
