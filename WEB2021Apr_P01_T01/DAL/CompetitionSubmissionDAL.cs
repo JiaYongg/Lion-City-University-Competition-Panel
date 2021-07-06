@@ -123,5 +123,43 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return count;
         }
+
+        // Gets the competitor's list of competitions
+        public List<CompetitionSubmission> competitorCompetitions(int competitorId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT cs.*, c.CompetitionName, c.StartDate, c.EndDate, c.ResultReleasedDate FROM CompetitionSubmission AS cs INNER JOIN Competition AS c ON cs.CompetitionID = c.CompetitionID WHERE cs.CompetitorID = @selectedCompetitorId";
+            cmd.Parameters.AddWithValue("@selectedCompetitorId", competitorId);
+
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<CompetitionSubmission> competitorList = new List<CompetitionSubmission>();
+            while (reader.Read())
+            {
+                competitorList.Add(
+                    new CompetitionSubmission
+                    {
+                        CompetitionId = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(7),
+                        StartDate = reader.GetDateTime(8),
+                        EndDate = reader.GetDateTime(9),
+                        ResultReleasedDate = reader.GetDateTime(10),
+                        CompetitorId = reader.GetInt32(1),
+                        FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null,
+                        FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null,
+                        Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null,
+                        VoteCount = reader.GetInt32(5),
+                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null
+                    });
+            }
+
+            // Close the DataReader & DB connection
+            reader.Close();
+            conn.Close();
+
+            return competitorList;
+        }
     }
 }

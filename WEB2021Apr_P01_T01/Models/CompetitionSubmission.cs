@@ -20,6 +20,20 @@ namespace WEB2021Apr_P01_T01.Models
         [Display(Name = "Competitor's Name")]
         public string? CompetitorName { get; set; }
 
+        [Required]
+        [Display(Name = "Competitor's Name")]
+        public string? CompetitionName { get; set; }
+
+        [Required]
+        [Display(Name = "Number of Judge")]
+        public int? numofJudge { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public DateTime ResultReleasedDate { get; set; }
+
         [Display(Name = "File Submitted")]
         public string? FileUrl { get; set; }
         

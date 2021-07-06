@@ -15,22 +15,6 @@ namespace WEB2021Apr_P01_T01.Controllers
         public CompetitionDAL compyContext = new CompetitionDAL();
         private AoiDAL aoiContext = new AoiDAL();
 
-        private List<SelectListItem> aoiList = new List<SelectListItem>();
-        private List<AreaInterest> areaInterest = new List<AreaInterest>();
-
-
-        public AdminController()
-        {
-            for (int i=1;i<=10;i++)
-            {
-                aoiList.Add(new SelectListItem
-                {
-                    Value = i.ToString(),
-                    Text = i.ToString(),
-                });
-            }
-        }
-
         // GET: AdminController
         public ActionResult Index()
         {
@@ -40,18 +24,20 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController/Details/5
         public ActionResult CreateCompetition()
         {
+            ViewData["aoiList"] = GetAOI();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection formData)
+        public ActionResult CreateCompetition(IFormCollection formData)
         {
+
             string competitionName = formData["CompetitionName"];
-            string areaOfInterest = formData["AreaOfInterest"];
+            string areaOfInterest = formData["AoiName"];
             DateTime startDate = Convert.ToDateTime(formData["StartDate"]);
             DateTime endDate = Convert.ToDateTime(formData["EndDate"]);
-            DateTime resultsReleasedDate = Convert.ToDateTime(formData["ResultsReleasedDate"]);
+            DateTime resultsReleasedDate = Convert.ToDateTime(formData["ResultsReleaseDate"]);
 
             Competition competition = new Competition
             {
@@ -62,12 +48,30 @@ namespace WEB2021Apr_P01_T01.Controllers
                 ResultsReleaseDate = resultsReleasedDate
             };
 
-            int aoiID = compyContext.AddAreaInterest(competition.AoiName);
+            int aoiID = compyContext.GetAreaInterestID(competition.AoiName); 
 
             compyContext.AddCompetition(competition, aoiID);
+
             return RedirectToAction("CreateCompetition");
         }
 
+        private List<SelectListItem> GetAOI()
+        {
+            List<SelectListItem> aoi = new List<SelectListItem>();
+
+            List<AreaInterest> listOfAOI = aoiContext.GetAreaInterests();
+
+            foreach (var item in listOfAOI)
+            {
+                aoi.Add(new SelectListItem
+                {
+                    Value = item.Name,
+                    Text = item.Name 
+                });
+            }
+
+            return aoi;
+        }
 
         // GET: AdminController/Create
         public ActionResult AreaOfInterest()
@@ -80,7 +84,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
 
             ViewData["totalAOI"] = aoiList.Count();
-            ViewData["aoiName"] = aoiNames;
+            ViewData["AoiName"] = aoiNames;
             return View();
         }
 
@@ -116,22 +120,17 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController/Delete/5
         public ActionResult Delete(int id)
         {
+            Console.WriteLine("test");
             return View();
         }
 
         // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(AreaInterest aoi)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            aoiContext.Delete(aoi.AreaInterestId);
+            return RedirectToAction("AreaOfInterest");
         }
     }
 }
