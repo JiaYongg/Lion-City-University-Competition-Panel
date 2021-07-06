@@ -118,7 +118,7 @@ namespace WEB2021Apr_P01_T01.DAL
         {
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"DELETE FROM AreaInterest WHERE AreaInterestID = @selectAoiID";
-            cmd.Parameters.AddWithValue("@selectAoiID", 1);
+            cmd.Parameters.AddWithValue("@selectAoiID", aoiId);
 
             conn.Open();
 
