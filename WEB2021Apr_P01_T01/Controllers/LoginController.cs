@@ -64,7 +64,7 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             // For admin login hard code.
             //Admin -- adminID and admin password below
-            if (loginEmail == "admin@np.com" && password == "password1234")
+            if (loginEmail == "admin1@lcu.edu.sg" && password == "p@55Admin")
             {
                 // Admin login
                 // Store user role as a string in session with the key “Role”
