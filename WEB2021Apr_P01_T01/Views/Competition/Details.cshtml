@@ -6,6 +6,9 @@
     List<Judge> judgeList = (List<Judge>)ViewData["JudgeList"];
     List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["CompetitionSubmissionList"];
     List<Comments> commentsList = (List<Comments>)ViewData["Comments"];
+
+    // Variable to store the user role
+    string role = Context.Session.GetString("Role");
 }
 
 <div class="container-fluid min-vh-80 competition-details padding-override">
@@ -55,11 +58,18 @@
                         }
                         else if (Model.EndDate <= DateTime.Now)
                         {
-                            <a class="background-gold btn font-dm disabled">Join Competition</a>
+                            <a class="background-gold btn font-dm disabled" style="color:black;">Join Competition</a>
                         }
                         else
                         {
-                            <a asp-action="JoinCompetition" asp-controller="Competitor" asp-route-id="@Model.CompetitionId" class="background-gold btn font-dm">Join Competition</a>
+                            if (role == "Competitor")
+                            {
+                                <a asp-action="JoinCompetition" asp-controller="Competitor" asp-route-id="@Model.CompetitionId" class="background-gold btn font-dm">Join Competition</a>
+                            }
+                            else
+                            {
+                                <a class="background-gold btn font-dm disabled">Join Competition</a>
+                            }
                         }
                     }
 
