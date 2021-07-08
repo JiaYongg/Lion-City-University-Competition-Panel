@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    // Variable to store the user role
+    string role = Context.Session.GetString("Role");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -50,14 +55,50 @@
                     </ul>
                     <!-- Links that are aligned to the right ml-auto: left margin auto-adjusted -->
                     <ul class="navbar-nav ml-auto text-right text-md-left">
-                        <li class="nav-item">
-                            <!-- A link for logging out user -->
-                            <a class="nav-link" asp-controller="Login" asp-action="Index">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- A link for logging out user -->
-                            <a class="nav-link" asp-controller="Signup" asp-action="Index">Sign Up</a>
-                        </li>
+                        @if (role == "LCU Admin")
+                        {
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Logout" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else if (role == "LCU Judge")
+                        {
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Judge" asp-action="Index">Judge Panel</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Logout" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else if (role == "Competitor")
+                        {
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Competitor" asp-action="Index">Competitor Panel</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Logout" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Login" asp-action="Index">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- A link for logging out user -->
+                                <a class="nav-link" asp-controller="Signup" asp-action="Index">Sign Up</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </nav>
