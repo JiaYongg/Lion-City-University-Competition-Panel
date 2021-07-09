@@ -61,7 +61,7 @@ namespace WEB2021Apr_P01_T01.Controllers
         {
             ViewData["JudgeList"] = GetCompetitionJudges(id);
             ViewData["CriteriaList"] = GetCompetitionCriterias(id);
-            ViewData["CompetitionSubmissionList"] = GetCompetitionSubmissions(id);
+            List<CompetitionSubmission> csList = GetCompetitionSubmissions(id);
             ViewData["Comments"] = GetCompetitionComments(id);
 
             Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
@@ -88,6 +88,22 @@ namespace WEB2021Apr_P01_T01.Controllers
             {
                 ViewData["DisableVote"] = "true";
             }
+
+            // Jia Yong's added codes
+            
+            bool found = false;
+            foreach (var item in csList)
+            {
+                if (HttpContext.Session.GetInt32("userID") == item.CompetitorId)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            ViewData["IsJoined"] = found;
+
+            ViewData["CompetitionSubmissionList"] = csList;
 
             return View(competitionDetails);
         }

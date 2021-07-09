@@ -12,11 +12,13 @@ namespace WEB2021Apr_P01_T01.Controllers
     public class CompetitorController : Controller
     {
         private CompetitionSubmissionDAL csContext = new CompetitionSubmissionDAL();
+        private CompetitionDAL compyContext = new CompetitionDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
         // GET: CompetitorController
         public ActionResult Index()
         {
             ViewData["TryHarder"] = "Try harder next time!";
+
             var competitorId = HttpContext.Session.GetInt32("userID");
 
             List<CompetitionSubmission> cList = csContext.competitorCompetitions(Convert.ToInt32(competitorId));
@@ -29,11 +31,19 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             return View();
         }
-
-        public ActionResult JoinCompetition()
+        
+        public ActionResult JoinCompetition(int id)
         {
-            return View();
+
+            // When user clicks "Join Competition" button, it uses the competition ID to get the list of CompetitionSubmission from the competition ID
+            //List<CompetitionSubmission> csList = csContext.getCompetitionAndCompetitor(id);
+            var competitorId = HttpContext.Session.GetInt32("userID");
+
+            int affectRows = csContext.joinCompetition(id, Convert.ToInt32(competitorId));
+
+            return View("JoinCompetition");
         }
+
 
         // GET: CompetitorController/Details/5
         public ActionResult Details(int id)

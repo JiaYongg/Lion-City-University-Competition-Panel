@@ -37,81 +37,96 @@
         @if (csList.Count > 0)
         {
             <div class="card-group">
-                @foreach (var competition in csList)
-                {
-                    <div class="col-12 col-lg-4 card shadow-sm p-2 ml-lg-2 mr-lg-2 mb-4 ml-auto mr-auto bg-white rounded">
-                        <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title gold">@competition.CompetitionName</h5>
-                            @{
-                                if (DateTime.Now < competition.StartDate)
-                                {
-                                    <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Starting on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                                    int duration = (competition.StartDate - DateTime.Now).Days;
-                                    <img src="~/images/Timeleft.png" style="width: 30px;"> <span class="gold">@duration days left to the start of the competition</span><br /><br />
-                                }
-                                else if (competition.StartDate < DateTime.Now && DateTime.Now < competition.EndDate) // competition is on-going, duration left to submit file
-                                {
-                                    <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                                    int duration = (competition.EndDate - DateTime.Now).Days;
-                                    <img src="~/images/Timeleft.png" style="width: 30px;"> <span class="gold">@duration days left to submit a file</span><br /><br />
-                                    <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Upload File</a>
-                                }
-                                else if (competition.EndDate < DateTime.Now && competition.ResultReleasedDate > DateTime.Now) // competition ended, but results yet to released
-                                {
-                                    <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                                    int duration = (competition.ResultReleasedDate - competition.EndDate).Days;
-                                    <img src="~/images/results.png" style="width: 30px;"> <span class="gold">results release in @duration days</span><br /><br />
-
-                                    if (competition.Appeal == null)
+                <div class="row">
+                    @foreach (var competition in csList)
+                    {
+                        <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
+                            <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title gold">@competition.CompetitionName</h5>
+                                @{
+                                    if (DateTime.Now < competition.StartDate)
                                     {
-                                        <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Appeal</a>
+                                        <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Starting on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
+                                        int duration = (competition.StartDate - DateTime.Now).Days;
+                                        <img src="~/images/Timeleft.png" style="width: 30px;"> <span class="gold">@duration days left to the start of the competition</span><br /><br />
                                     }
-                                    else
+                                    else if (competition.StartDate <= DateTime.Now && DateTime.Now < competition.EndDate) // competition is on-going, duration left to submit file
                                     {
-                                        <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Appealed</a>
-                                    }
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex">
+                                                <img src="~/images/calendar.png" style="width: 30px; margin-right: 10px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span>
+                                            </div>
+                                            <a class="btn background-gold" style="color: white;" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Upload File</a>
+                                        </div>
+                                        <br />
+                                        int duration = (competition.EndDate - DateTime.Now).Days;
+                                        <img src="~/images/Timeleft.png" style="width: 30px;"> <span class="gold">@duration days left to submit a file</span><br /><br />
 
-                                }
-                                else //competition ended, result released
-                                {
-                                    <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                                    if (competition.Ranking != null)
+                                    }
+                                    else if (competition.EndDate < DateTime.Now && competition.ResultReleasedDate > DateTime.Now) // competition ended, but results yet to released
                                     {
-                                        string placing = "";
-                                        string medal = "";
-                                        if (competition.Ranking == 1)
+                                        <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
+                                        int duration = (competition.ResultReleasedDate - competition.EndDate).Days;
+                                        <img src="~/images/results.png" style="width: 30px;"> <span class="gold">results release in @duration days</span><br /><br />
+
+                                        if (competition.Appeal == null)
                                         {
-                                            placing = competition.Ranking + "st Place";
-                                            medal = "../images/firstplace.png";
-                                        }
-                                        else if (competition.Ranking == 2)
-                                        {
-                                            placing = competition.Ranking + "nd Place";
-                                            medal = "../images/secondplace.png";
-                                        }
-                                        else if (competition.Ranking == 2)
-                                        {
-                                            placing = competition.Ranking + "rd Place";
-                                            medal = "../images/thirdplace.png";
+                                            <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Appeal</a>
                                         }
                                         else
                                         {
-                                            placing = competition.Ranking + "th Place";
+                                            <a class="btn background-grey btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Appealed</a>
                                         }
-                                        <img src="~/images/cup.png" style="width: 30px;"> <span class="gold">@placing</span><br /><br />
-                                        <img src=@medal style="width: 30px;">
-                                        <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Ended</a>
                                     }
+                                    else //competition ended, result released
+                                    {
+
+                                        if (competition.Ranking != null)
+                                        {
+                                            string placing = "";
+                                            string medal = "";
+                                            if (competition.Ranking == 1)
+                                            {
+                                                placing = competition.Ranking + "st Place";
+                                                medal = "../images/firstplace.png";
+                                            }
+                                            else if (competition.Ranking == 2)
+                                            {
+                                                placing = competition.Ranking + "nd Place";
+                                                medal = "../images/secondplace.png";
+                                            }
+                                            else if (competition.Ranking == 2)
+                                            {
+                                                placing = competition.Ranking + "rd Place";
+                                                medal = "../images/thirdplace.png";
+                                            }
+                                            else
+                                            {
+                                                placing = competition.Ranking + "th Place";
+                                            }
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex">
+                                                    <img src="~/images/calendar.png" style="width: 30px; margin-right: 10px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span>
+                                                </div>
+                                                <a class="btn disabled" style="background-color: #6e6e6e; color: white;">Ended</a>
+                                            </div>
+                                            <br />
+
+                                            <img src="~/images/cup.png" style="width: 30px;"> <span class="gold">@placing</span><img src=@medal style="width: 30px; margin-left: 50%"><br /><br />
+
+                                        }
+                                    }
+                                    <img src="~/images/JudgeHammer.png" style="width: 30px;"> <span>@competition.numofJudge.ToString() judges</span>
                                 }
-                                <img src="~/images/JudgeHammer.png" style="width: 30px;"> <span>@competition.numofJudge.ToString() judges</span>
-                            }
+                            </div>
+                            <div class="text-center pb-4">
+                                <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
+                            </div>
                         </div>
-                        <div class="text-center pb-4">
-                            <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
+
             </div>
         }
         else

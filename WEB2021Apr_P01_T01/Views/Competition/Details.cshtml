@@ -6,6 +6,9 @@
     List<Judge> judgeList = (List<Judge>)ViewData["JudgeList"];
     List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["CompetitionSubmissionList"];
     List<Comments> commentsList = (List<Comments>)ViewData["Comments"];
+
+    // Variable to store the user role
+    string role = Context.Session.GetString("Role");
 }
 
 <div class="container-fluid min-vh-80 competition-details padding-override">
@@ -46,7 +49,30 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 col-md-9 pl-3 text-center text-md-left">
-                    <input type="button" asp-action="JoinCompetition" asp-controller="Competitor" class="background-gold btn font-dm" value="Join Competition" />
+                    @*Jia Yong's code*@
+                    @{
+
+                        if ((bool)ViewData["IsJoined"])
+                        {
+                            <input type="button" class="background-gold btn font-dm disabled" value="Joined" />
+                        }
+                        else if (Model.EndDate <= DateTime.Now)
+                        {
+                            <a class="background-gold btn font-dm disabled" style="color:black;">Join Competition</a>
+                        }
+                        else
+                        {
+                            if (role == "Competitor")
+                            {
+                                <a asp-action="JoinCompetition" asp-controller="Competitor" asp-route-id="@Model.CompetitionId" class="background-gold btn font-dm">Join Competition</a>
+                            }
+                            else
+                            {
+                                <a class="background-gold btn font-dm disabled">Join Competition</a>
+                            }
+                        }
+                    }
+
                 </div>
                 <div class="col-12 col-md-3 text-md-right text-center pt-3 pb-3 pt-md-0 pb-md-0">
                     <a href="https://www.facebook.com/" class="m-2" target="_blank"><img src="~/images/021-facebook.png" alt="Facebook" width="30" /></a>
@@ -59,53 +85,53 @@
 </div>
 @if (ViewData["ShowResults"] == "true")
 {
-    List<CompetitionSubmission> rankList = (List<CompetitionSubmission>) ViewData["Rankings"];
+    List<CompetitionSubmission> rankList = (List<CompetitionSubmission>)ViewData["Rankings"];
 
-<div class="container pt-5 pb-5">
-    <div class="row pt-2 pb-2">
-        <div class="col-6 col-md-6">
-            <h4 class="gold">Winners</h4>
+    <div class="container pt-5 pb-5">
+        <div class="row pt-2 pb-2">
+            <div class="col-6 col-md-6">
+                <h4 class="gold">Winners</h4>
+            </div>
+            <div class="col-6 col-md-6 text-center text-md-right">
+                <span class="gold">@rankList.Count</span> winners
+            </div>
         </div>
-        <div class="col-6 col-md-6 text-center text-md-right">
-            <span class="gold">@rankList.Count</span> winners
-        </div>
-    </div>
 
-    @if (rankList.Count > 0)
-    {
-        <div class="row">
-            @for (int i = 0; i < rankList.Count; i++)
-            {
-                <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
-                    <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
-                    <h4 class="position-absolute rank"><span class="badge badge-success float-right">Rank @rankList[i].Ranking</span></h4>
-                    <div class="card-body">
-                        <h5 class="card-title gold">by <span class="gold">@rankList[i].CompetitorName</h5>
-                        <p class="card-text"><span class="gold">@rankList[i].VoteCount votes</span></p>
-                        @if (rankList[i].FileUploadDateTime != null && rankList[i].FileUploadDateTime != null)
-                        {
-                            <p class="card-text">Submitted on <span class="gold">@rankList[i].FileUploadDateTime.ToString()</span></p>
-                            <p class="card-text">
-                                <a href="~/competitionfile/@rankList[i].FileUrl" target="_blank">@rankList[i].FileUrl</a>
-                            </p>
-                        }
-                        else
-                        {
-                            <p class="card-text">There is no file submitted at the moment.</p>
-                        }
+        @if (rankList.Count > 0)
+        {
+            <div class="row">
+                @for (int i = 0; i < rankList.Count; i++)
+                {
+                    <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
+                        <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
+                        <h4 class="position-absolute rank"><span class="badge badge-success float-right">Rank @rankList[i].Ranking</span></h4>
+                        <div class="card-body">
+                            <h5 class="card-title gold">by <span class="gold">@rankList[i].CompetitorName</h5>
+                            <p class="card-text"><span class="gold">@rankList[i].VoteCount votes</span></p>
+                            @if (rankList[i].FileUploadDateTime != null && rankList[i].FileUploadDateTime != null)
+                            {
+                                <p class="card-text">Submitted on <span class="gold">@rankList[i].FileUploadDateTime.ToString()</span></p>
+                                <p class="card-text">
+                                    <a href="~/competitionfile/@rankList[i].FileUrl" target="_blank">@rankList[i].FileUrl</a>
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">There is no file submitted at the moment.</p>
+                            }
 
+                        </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="col-12 text-center p-5">
-            <h5>There are currently no participants for this competition.</h5>
-        </div>
-    }
-</div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="col-12 text-center p-5">
+                <h5>There are currently no participants for this competition.</h5>
+            </div>
+        }
+    </div>
 }
 
 <div class="container pt-5 pb-5">
