@@ -1,17 +1,21 @@
 ﻿@model WEB2021Apr_P01_T01.Models.CompetitionSubmission
 @{
     ViewData["Title"] = "Judge Competitors";
+    List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["Submit"];
 }
 
-@{
-    var rank = (List<int?>)ViewData["rankingList"];
-    var name = (List<string>)ViewData["competitorName"];
-    var totalScore = (List<double>)ViewData["totalScore"];
-    var votes = (List<int>)ViewData["votes"];
-    var appeal = (List<string>)ViewData["appeal"];
-    string viewAppeal = "";
-    var criteraList = 
-}
+@*@{
+        var rank = (List<int?>)ViewData["rankingList"];
+        var name = (List<string>)ViewData["competitorName"];
+        var totalScore = (List<double>)ViewData["totalScore"];
+        var votes = (List<int>)ViewData["votes"];
+        var appeal = (List<string>)ViewData["appeal"];
+        string viewAppeal = "";
+
+        var arr = ViewData["criteriaScores"].ToString().Split(",");
+        List<string> criteraList = new List<string>(arr);
+        int index = 0;
+    }*@
 <body>
     <div class="container vh70">
         <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
@@ -20,31 +24,7 @@
                 <h2>View Competitiors - @ViewData["compName"]</h2>
             </div>
         </div>
-        <div class="modal" id="addInterestModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add New Interest</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <label class="col-sm-12 col-form-label form-control-label">Name of Area of Interest: </label>
-                            <div class="col-sm-12">
-                                <form asp-action="AddInterest">
-                                    <input class="form-control" type="text" name="aoiName" placeholder="Enter name of area of interest: " required style="margin-bottom: 10px;" />
-                                    <button type="submit" class="btn btn-success col-sm-6">Add Interest</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-12">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -59,127 +39,77 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Convert.ToInt32(ViewData["noOfCompetitiors"]); i++)
+                    @foreach (var item in csList)
                     {
-                        <tr>
-                            <td>
-                                <div class="judge-table-content">
-                                    @if (rank[i] == null)
-                                    {
-                                        <p>-</p>
-                                    }
-                                    else
-                                    {
-                                        <p>@rank[i]</p>
-                                    }
+                    <tr>
+                        <td>
+                            <div class="judge-table-content">
+                                @if (item.Ranking == null)
+                                {
+                                    <p>-</p>
+                                }
+                                else
+                                {
+                                    <p>@item.Ranking</p>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>@item.CompetitorName</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>@item.TotalMarks</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                <p>@item.VoteCount</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="judge-table-content">
+                                @if (item.Appeal == null)
+                                {
+                                    <p>~Nil~</p>
+                                }
+                                else
+                                {
+                                    <p>@item.Appeal</p>
+                                }
+                            </div>
+                        <td>
+                            <div class="judge-table-content">
+                                @if (item.FileUrl == null)
+                                {
+                                    <p>-</p>
+                                }
+                                else
+                                {
+                                    <p>@item.FileUrl</p>
+                                }
+                            </div>
+                        </td>
+                        </td>
+                    </tr>
 
-                                </div>
-                            </td>
-                            <td>
-                                <div class="judge-table-content">
-                                    <p>@name[i]</p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="judge-table-content">
-                                    <p>@totalScore[i]</p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="judge-table-content">
-                                    <p>@votes[i]</p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="judge-table-content">
-                                    @if (appeal[i] != null)
-                                    {
-                                        <a asp-action="appeal" data-toggle="modal" data-target="#viewAppeal"><p>View appeal @{ viewAppeal = appeal[i];}</p></a>
-                                    }
-                                    else
-                                    {
-                                        <p>-nil-</p>
-                                    }
-                                </div>
-                            </td>
-                            <td>
-                                <div class="judge-table-content">
-                                    <a data-toggle="modal" data-target="#viewAppeal">View Submission</a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="aoi-table-buttons" style="padding: 0 20px;">
-                                    @if (totalScore[i] == 0)
-                                    {
-                                        <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" data-toggle="modal" data-target="#viewAppeal"><i class="fas fa-star" style="color: yellow;"></i></button>
-                                    }
-                                    else
-                                    {
-                                        <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" data-toggle="modal" data-target="#gradeForm"><i class="fas fa-pen" style="color: white;"></i></button>
-                                    }
-                                </div>
-                            </td>
-                        </tr>
                     }
-
                 </tbody>
             </table>
         </div>
 
-        <!-- Lightbox for view appeal-->
-        <div class="modal" id="viewAppeal">
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h2 class="modal-title">View Appeal</h2>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <h4 class="col-sm-12">Appeal for @ViewData["compName"] </h4>
-                            <div class="col-sm-12">
-                                <p>@viewAppeal</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Lightbox for grading form-->
-        <div class="modal" id="gradeForm">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h2 class="modal-title">Grading competitor</h2>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <h4 class="col-sm-12">Grading for @ViewData["compName"] </h4>
-                            <div class="col-sm-12 d-flex flex-column justify-content-center">
-                                <form asp-action="Grade">
-                                    @for (int i = 1; i < (Convert.ToInt32(ViewData["noOfCriteria"]) + 1); i++)
-                                    {
-                                        <label>Criteria @i</label>
-                                        <input class="form-control" type="text" placeholder="Enter criteria score (0-10): " value="@i" style="margin-bottom: 10px;" required />
-                                    }
-
-                                    <button type="submit" class="btn btn-success col-sm-3">save</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
+
+
+<script>
+    $(document).on("click", ".editGrade", function () {
+        var iteration = $(this).data('id');
+        // As pointed out in comments,
+        // it is unnecessary to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    });
+</script>
