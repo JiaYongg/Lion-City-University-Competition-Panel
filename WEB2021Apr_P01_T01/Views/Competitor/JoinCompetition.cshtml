@@ -4,60 +4,35 @@
     ViewData["Title"] = "JoinCompetition";
 }
 
-<h1>JoinCompetition</h1>
+<h1>@Model.CompetitionName 's Submission Details</h1>
 
-<h4>CompetitionSubmission</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="JoinCompetition">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CompetitionId" class="control-label"></label>
-                <input asp-for="CompetitionId" class="form-control" />
-                <span asp-validation-for="CompetitionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompetitorId" class="control-label"></label>
-                <input asp-for="CompetitorId" class="form-control" />
-                <span asp-validation-for="CompetitorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="CompetitorName" class="control-label"></label>
-                <input asp-for="CompetitorName" class="form-control" />
+                <input asp-for="CompetitorName" class="form-control" readonly/>
                 <span asp-validation-for="CompetitorName" class="text-danger"></span>
+                <span></span>
             </div>
             <div class="form-group">
                 <label asp-for="CompetitionName" class="control-label"></label>
-                <input asp-for="CompetitionName" class="form-control" />
+                <input asp-for="CompetitionName" class="form-control" readonly/>
                 <span asp-validation-for="CompetitionName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="numofJudge" class="control-label"></label>
-                <input asp-for="numofJudge" class="form-control" />
-                <span asp-validation-for="numofJudge" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+                <input asp-for="EndDate" class="form-control" readonly/>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ResultReleasedDate" class="control-label"></label>
-                <input asp-for="ResultReleasedDate" class="form-control" />
+                <input asp-for="ResultReleasedDate" class="form-control" readonly/>
                 <span asp-validation-for="ResultReleasedDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="FileUrl" class="control-label"></label>
-                <input asp-for="FileUrl" class="form-control" />
-                <span asp-validation-for="FileUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="FileUploadDateTime" class="control-label"></label>
                 <input asp-for="FileUploadDateTime" class="form-control" />
                 <span asp-validation-for="FileUploadDateTime" class="text-danger"></span>
@@ -66,20 +41,16 @@
                 <label asp-for="Appeal" class="control-label"></label>
                 <input asp-for="Appeal" class="form-control" />
                 <span asp-validation-for="Appeal" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <a class="btn background-gold" asp-action="UploadFile" asp-route-id="@Model.CompetitorId">Upload File</a>
             </div>
             <div class="form-group">
-                <label asp-for="VoteCount" class="control-label"></label>
-                <input asp-for="VoteCount" class="form-control" />
-                <span asp-validation-for="VoteCount" class="text-danger"></span>
+                <a class="btn background-gold" asp-action="Appeal" asp-route-id="@Model.Appeal">Appeal</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Ranking" class="control-label"></label>
-                <input asp-for="Ranking" class="form-control" />
-                <span asp-validation-for="Ranking" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            @*
+                When competitor submits a form, call an SQL method in DAL to UPDATE the data provided, which includes FileUrl, FileUploadDateTime
+            *@
         </form>
     </div>
 </div>
