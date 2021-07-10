@@ -51,5 +51,7 @@ namespace WEB2021Apr_P01_T01.Models
 
         [Display(Name = "Rank")]
         public int? Ranking { get; set; }
+
+        public double? TotalMarks { get; set; }
     }
 }
