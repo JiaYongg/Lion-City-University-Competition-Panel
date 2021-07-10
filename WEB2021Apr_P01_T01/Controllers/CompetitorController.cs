@@ -17,32 +17,83 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: CompetitorController
         public ActionResult Index()
         {
-            ViewData["TryHarder"] = "Try harder next time!";
-
             var competitorId = HttpContext.Session.GetInt32("userID");
 
-            List<CompetitionSubmission> cList = csContext.competitorCompetitions(Convert.ToInt32(competitorId));
-            foreach(var item in cList)
-            {
-                List<Judge> judgeList = judgeContext.GetCompetitionJudges(item.CompetitionId);
-                item.numofJudge = (int)judgeList.Count();
-            }
-            ViewData["CompetitorCompetitions"] = cList;
+            List<CompetitionSubmission> csList = csContext.competitorCompetitions(Convert.ToInt32(competitorId));
 
-            return View();
+            List<CompetitorSubmissionViewModel> csVMList = MapToCompetitorSubmissionVM(csList);
+
+            return View(csVMList);
         }
-        
-        public ActionResult JoinCompetition(int id)
+
+        public List<CompetitorSubmissionViewModel> MapToCompetitorSubmissionVM(List<CompetitionSubmission> csList)
         {
 
-            // When user clicks "Join Competition" button, it uses the competition ID to get the list of CompetitionSubmission from the competition ID
-            //List<CompetitionSubmission> csList = csContext.getCompetitionAndCompetitor(id);
+            List<CompetitorSubmissionViewModel> csVMList = new List<CompetitorSubmissionViewModel>();
+            foreach (CompetitionSubmission cs in csList)
+            {
+                List<Judge> judgeList = judgeContext.GetCompetitionJudges(cs.CompetitionId);
+                cs.numofJudge = judgeList.Count();
+
+                CompetitorSubmissionViewModel csVM = new CompetitorSubmissionViewModel
+                {
+                    CompetitionId = cs.CompetitionId,
+                    CompetitionName = cs.CompetitionName,
+                    StartDate = cs.StartDate,
+                    EndDate = cs.EndDate,
+                    ResultsReleaseDate = cs.ResultReleasedDate,
+                    Appeal = cs.Appeal,
+                    Ranking = cs.Ranking,
+                    numOfJudge = cs.numofJudge,
+                    durationLeft = (cs.StartDate - DateTime.Now).Days,
+                    resultsReleaseDuration = (cs.ResultReleasedDate - cs.EndDate).Days,
+                    FileUrl = cs.FileUrl
+                };
+
+                if (DateTime.Now < csVM.StartDate) // competition has not yet started
+                {
+                    csVM.Status = "NotStarted";
+                    csVM.DateImage = "Timeleft.png";
+                }
+                else if (DateTime.Now >= csVM.StartDate && DateTime.Now < csVM.EndDate) // competition is on-going, duration left to submit file
+                {
+                    csVM.Status = "Ongoing";
+                    csVM.DateImage = "Timeleft.png";
+                }
+                else
+                {
+                    csVM.Status = "Ended";
+                    csVM.DateImage = "Timeleft.png";
+                }
+
+                if (csVM.ResultsReleaseDate >= DateTime.Now && csVM.Status == "Ended") // competition ended, results yet to release
+                {
+                    csVM.ResultRelease = false;
+                    csVM.DateImage = "results.png";
+                }
+                else if (csVM.Status == "Ended" && csVM.ResultsReleaseDate <= DateTime.Now)
+                {
+                    csVM.ResultRelease = true;
+                    csVM.DateImage = "cup.png";
+                }
+
+                csVMList.Add(csVM);
+            }
+
+            return csVMList;
+        }
+        
+        public ActionResult JoinCompetition(int id) // Takes in the competitionId to join the competition
+        {
+
             var competitorId = HttpContext.Session.GetInt32("userID");
 
             int affectRows = csContext.joinCompetition(id, Convert.ToInt32(competitorId));
 
-            return View("JoinCompetition");
-        }
+            CompetitionSubmission cs = csContext.GetCompetitionDetails(id);
+
+            return View("JoinCompetition", cs); // Need to add an object modal here to use in JoinCompetition View
+        } 
 
 
         // GET: CompetitorController/Details/5

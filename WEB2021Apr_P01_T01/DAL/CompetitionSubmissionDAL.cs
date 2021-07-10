@@ -184,10 +184,11 @@ namespace WEB2021Apr_P01_T01.DAL
             return affectRows;
         }
 
-
-        // use competitorid and competitionid to get their respective name
-        public List<CompetitionSubmission> getCompetitionAndCompetitor(int competitionId)
+        // Use competitionId to get various details of CompetitionSubmission
+        public CompetitionSubmission GetCompetitionDetails(int competitionId)
         {
+            CompetitionSubmission cs = new CompetitionSubmission();
+
             SqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = @"SELECT * FROM CompetitionSubmission AS cs INNER JOIN Competition AS compy ON cs.CompetitionID = compy.CompetitionID INNER JOIN Competitor AS c ON cs.CompetitorID = c.CompetitorID WHERE compy.CompetitionID = @selectedCompetitionID";
@@ -197,30 +198,33 @@ namespace WEB2021Apr_P01_T01.DAL
 
             SqlDataReader reader = cmd.ExecuteReader();
 
-            List<CompetitionSubmission> competitorList = new List<CompetitionSubmission>();
-            while (reader.Read())
+            if (reader.HasRows)
             {
-                competitorList.Add(
-                    new CompetitionSubmission
-                    {
-                        CompetitionId = reader.GetInt32(0),
-                        CompetitionName = reader.GetString(9),
-                        StartDate = reader.GetDateTime(10),
-                        EndDate = reader.GetDateTime(11),
-                        ResultReleasedDate = reader.GetDateTime(10),
-                        CompetitorId = reader.GetInt32(1),
-                        FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null,
-                        FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null,
-                        Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null,
-                        VoteCount = reader.GetInt32(5),
-                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null
-                    });
+                // Read the record from database
+                while (reader.Read())
+                {
+                    // Fill staff object with values from the data reader
+                    cs.CompetitionId = competitionId;
+                    cs.CompetitorId = reader.GetInt32(1);
+                    cs.FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null;
+                    cs.FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null;
+                    cs.Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null;
+                    cs.VoteCount = reader.GetInt32(5);
+                    cs.Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null;
+                    cs.CompetitionName = reader.GetString(9);
+                    // Competition Start Date is not necessary as the competitor has already joined the competition.
+                    cs.EndDate = reader.GetDateTime(11);
+                    cs.ResultReleasedDate = reader.GetDateTime(12);
+                    cs.CompetitorName = reader.GetString(14);
+                }
             }
-
+            // Close DataReader
             reader.Close();
+
+            // Close database connection
             conn.Close();
 
-            return competitorList;
+            return cs;
         }
     }
 }

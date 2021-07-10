@@ -1,139 +1,79 @@
-﻿@model WEB2021Apr_P01_T01.Models.Competitor
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.CompetitorSubmissionViewModel>
 
 @{
     ViewData["Title"] = "Competitor Panel";
-    List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["CompetitorCompetitions"];
 }
 
-<html>
-<head>
-    <!-- Use Unicode character encoding - multi-language compatibity -->
-    <meta charset="utf-8">
-    <!-- Set the initial view zooming scale for mobile device -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Competition Panel - Lion City University</title>
-    <!-- Reference to customized styling for this website -->
-    <link rel="stylesheet" type="text/css" href="~/css/site.css">
-</head>
-<body>
-    <div class="container">
-        <p>Competitor Panel</p>
-        <br />
-        <div class="d-flex flex-row justify-content-between w-100">
-            @{
-                var name = Context.Session.GetString("Name");
-            }
-            <div class="competitor-header-text">
-                <h2>Welcome, </h2>
-                <h1 class="gold"> @name</h1>
-            </div>
-            <div class="avatar">
-                <img src="~/images/img_avatar.png" style="border-radius: 60px; width: 120px" />
+<div class="container">
+    <br />
+    <div class="d-flex flex-row justify-content-between w-100">
+        @{
+            var name = Context.Session.GetString("Name");
+        }
+        <div class="competitor-header-text">
+            <h2>Welcome, </h2>
+            <h1 class="gold"> @name</h1>
+        </div>
+        <div class="avatar">
+            <img src="~/images/img_avatar.png" style="border-radius: 60px; width: 120px" />
+        </div>
+    </div>
+    <br />
+    <h2 class="gold">Your Participated Competitions</h2>
+
+    @if (Model.ToList().Count > 0)
+    {
+        <div class="card-group">
+            <div class="row">
+                @foreach (var competition in Model)
+                {
+                    <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
+                        <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title gold">@competition.CompetitionName</h5>
+                            <img src="~/images/calendar.png" style="width: 30px;"> <label asp-for="@competition.StartDate"></label><span class="gold">@competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
+                            <img src="~/images/@competition.DateImage" style="width: 30px;">
+                            @if (competition.Status == "NotStarted")
+                            {
+                                <span class="gold">@competition.durationLeft days left to the start of the competition</span><br /><br />
+                            }
+                            else if (competition.Status == "Ongoing")
+                            {
+                                <span class="gold">@competition.durationLeft days left to submit a file</span><br /><br />
+                            }
+                            else if (competition.Status == "Ended" && competition.ResultRelease == true)
+                            {
+                                <label asp-for="@competition.Ranking"></label><span class="gold"> @competition.Ranking</span>
+                                <span class="badge badge-secondary">Ended</span>
+                                <br /><br />
+                            }
+                            else
+                            {
+                                <label asp-for="@competition.resultsReleaseDuration"></label><span class="gold"> @competition.resultsReleaseDuration days</span><br /><br />
+                            }
+                            <img src="~/images/JudgeHammer.png" style="width: 30px;"> <span>@competition.numOfJudge.ToString() judges</span> <br /> <br />
+                            <br />
+                            @if (competition.Status == "Ended" && competition.ResultRelease == false)
+                            {
+                                if (competition.Appeal == null)
+                                {
+                                    <a class="btn background-gold btn-180" asp-controller="Competitor" asp-action="Appeal" asp-route-id="@competition.CompetitionId">Appeal</a>
+                                }
+                                else
+                                {
+                                    <a class="btn background-gold btn-180 disabled">Appealed</a>
+                                }
+                            }
+                            <br /> <br />
+                            <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-        <br />
-        <h2 class="gold">Your Participated Competitions</h2>
-
-        @if (csList.Count > 0)
-        {
-            <div class="card-group">
-                <div class="row">
-                    @foreach (var competition in csList)
-                    {
-                        <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
-                            <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title gold">@competition.CompetitionName</h5>
-                                @{
-                                    if (DateTime.Now < competition.StartDate)
-                                    {
-                                        <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Starting on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                                        int duration = (competition.StartDate - DateTime.Now).Days;
-                                        <img src="~/images/Timeleft.png" style="width: 30px;"> <span class="gold">@duration days left to the start of the competition</span><br /><br />
-                                    }
-                                    else if (competition.StartDate <= DateTime.Now && DateTime.Now < competition.EndDate) // competition is on-going, duration left to submit file
-                                    {
-                                        <div class="d-flex justify-content-between">
-                                            <div class="d-flex">
-                                                <img src="~/images/calendar.png" style="width: 30px; margin-right: 10px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span>
-                                            </div>
-                                            <a class="btn background-gold" style="color: white;" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Upload File</a>
-                                        </div>
-                                        <br />
-                                        int duration = (competition.EndDate - DateTime.Now).Days;
-                                        <img src="~/images/Timeleft.png" style="width: 30px;"> <span class="gold">@duration days left to submit a file</span><br /><br />
-
-                                    }
-                                    else if (competition.EndDate < DateTime.Now && competition.ResultReleasedDate > DateTime.Now) // competition ended, but results yet to released
-                                    {
-                                        <img src="~/images/calendar.png" style="width: 30px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                                        int duration = (competition.ResultReleasedDate - competition.EndDate).Days;
-                                        <img src="~/images/results.png" style="width: 30px;"> <span class="gold">results release in @duration days</span><br /><br />
-
-                                        if (competition.Appeal == null)
-                                        {
-                                            <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Appeal</a>
-                                        }
-                                        else
-                                        {
-                                            <a class="btn background-grey btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">Appealed</a>
-                                        }
-                                    }
-                                    else //competition ended, result released
-                                    {
-
-                                        if (competition.Ranking != null)
-                                        {
-                                            string placing = "";
-                                            string medal = "";
-                                            if (competition.Ranking == 1)
-                                            {
-                                                placing = competition.Ranking + "st Place";
-                                                medal = "../images/firstplace.png";
-                                            }
-                                            else if (competition.Ranking == 2)
-                                            {
-                                                placing = competition.Ranking + "nd Place";
-                                                medal = "../images/secondplace.png";
-                                            }
-                                            else if (competition.Ranking == 2)
-                                            {
-                                                placing = competition.Ranking + "rd Place";
-                                                medal = "../images/thirdplace.png";
-                                            }
-                                            else
-                                            {
-                                                placing = competition.Ranking + "th Place";
-                                            }
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex">
-                                                    <img src="~/images/calendar.png" style="width: 30px; margin-right: 10px;"> <span class="gold">Started on @competition.StartDate.ToString("d/M/yyyy")</span>
-                                                </div>
-                                                <a class="btn disabled" style="background-color: #6e6e6e; color: white;">Ended</a>
-                                            </div>
-                                            <br />
-
-                                            <img src="~/images/cup.png" style="width: 30px;"> <span class="gold">@placing</span><img src=@medal style="width: 30px; margin-left: 50%"><br /><br />
-
-                                        }
-                                    }
-                                    <img src="~/images/JudgeHammer.png" style="width: 30px;"> <span>@competition.numofJudge.ToString() judges</span>
-                                }
-                            </div>
-                            <div class="text-center pb-4">
-                                <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
-                            </div>
-                        </div>
-                    }
-                </div>
-
-            </div>
-        }
-        else
-        {
-            <span style="color:red;" class="text-center">There are no ongoing competitions presently.</span>
-        }
-    </div>
-
-</body>
-</html>
+    }
+    else
+    {
+        <span style="color:red;" class="text-center">There are no ongoing competitions presently.</span>
+    }
+</div>
