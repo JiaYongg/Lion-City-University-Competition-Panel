@@ -43,10 +43,10 @@
                 <span asp-validation-for="Appeal" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <a class="btn background-gold" asp-action="UploadFile" asp-route-id="@Model.CompetitorId">Upload File</a>
+                <a class="btn background-gold disabled" asp-action="UploadFile" asp-route-id="@Model.CompetitorId">Upload File</a>
             </div>
             <div class="form-group">
-                <a class="btn background-gold" asp-action="Appeal" asp-route-id="@Model.Appeal">Appeal</a>
+                <a class="btn background-gold disabled" asp-action="Appeal" asp-route-id="@Model.Appeal">Appeal</a>
             </div>
             @*
                 When competitor submits a form, call an SQL method in DAL to UPDATE the data provided, which includes FileUrl, FileUploadDateTime
