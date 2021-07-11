@@ -9,14 +9,7 @@
 <div class="container">
     <h2 class="gold mt-4">All Competitions</h2>
     <div class="ml-auto mr-auto d-flex justify-content-center flex-column mb-5">
-        <p class="text-center">Filter by Area of Interest</p>
-        <div class="text-center">
-            <button class="btn background-gold">All</button>
-            @foreach (AreaInterest aoi in aoiList)
-            {
-                <button class="btn background-gold m-2">@aoi.Name</button>
-            }
-        </div>
+        <partial name="~/Views/Competition/_AreaInterest.cshtml" model="@aoiList" />
     </div>
     <partial name="~/Views/Competition/_ViewCurrentCompetitions.cshtml" />
 </div>

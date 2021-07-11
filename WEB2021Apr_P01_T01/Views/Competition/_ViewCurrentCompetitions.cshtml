@@ -10,9 +10,9 @@
                 <div class="card-body">
                     <h5 class="card-title gold">@competition.CompetitionName</h5>
                     <p class="card-text">@competition.AoiName</p>
-                    <p class="card-text">Begins on <span class="gold">@competition.StartDate.ToString()</span></p>
-                    <p class="card-text">Ends on <span class="gold">@competition.EndDate.ToString()</span></p>
-                    <p class="card-text">Result releases on <span class="gold">@competition.ResultsReleaseDate.ToString()</span></p>
+                    <p class="card-text">Begins on <span class="gold">@Html.DisplayFor(model => competition.StartDate)</span></p>
+                    <p class="card-text">Ends on <span class="gold">@Html.DisplayFor(model => competition.EndDate)</span></p>
+                    <p class="card-text">Result releases on <span class="gold">@Html.DisplayFor(model => competition.ResultsReleaseDate)</span></p>
                 </div>
                 <div class="text-center pb-4">
                     <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
