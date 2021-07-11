@@ -1,11 +1,11 @@
-﻿@model WEB2021Apr_P01_T01.Models.Competition
+﻿@model WEB2021Apr_P01_T01.Models.CompetitionDetailsViewModel
+
+@{
+    ViewData["Title"] = "CompetitionDetails";
+}
 
 @{
     ViewData["Title"] = Model.CompetitionName + " | Competitions";
-    List<Criteria> criteriaList = (List<Criteria>)ViewData["CriteriaList"];
-    List<Judge> judgeList = (List<Judge>)ViewData["JudgeList"];
-    List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["CompetitionSubmissionList"];
-    List<Comments> commentsList = (List<Comments>)ViewData["Comments"];
 
     // Variable to store the user role
     string role = Context.Session.GetString("Role");
@@ -31,7 +31,7 @@
                     <div class="text-center text-md-left">
                         <h4 class="gold">Jury</h4>
                         <div class="mt-3">
-                            @foreach (Judge judge in judgeList)
+                            @foreach (Judge judge in Model.JudgeList)
                             {
                                 <span class="mr-2 font-dm font-weight-bold">@judge.Salutation @judge.Name</span><large class="font-weight-bolder mr-2">•</large>
                             }
@@ -41,7 +41,7 @@
                 <div class="col-12 col-md-4 text-md-right text-center mt-3 mt-md-0">
                     <h4 class="gold">Rubrics Based On:</h4>
                     <!-- Add Loop for display of competition's criteria after DAL is set up-->
-                    @foreach (Criteria criteria in criteriaList)
+                    @foreach (Criteria criteria in Model.CriteriaList)
                     {
                         <p>@criteria.CriteriaName</p>
                     }
@@ -106,7 +106,7 @@
                         <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                         <h4 class="position-absolute rank"><span class="badge badge-success float-right">Rank @rankList[i].Ranking</span></h4>
                         <div class="card-body">
-                            <h5 class="card-title gold">by <span class="gold">@rankList[i].CompetitorName</h5>
+                            <h5 class="card-title gold">by <span class="gold">@rankList[i].CompetitorName</span></h5>
                             <p class="card-text"><span class="gold">@rankList[i].VoteCount votes</span></p>
                             @if (rankList[i].FileUploadDateTime != null && rankList[i].FileUploadDateTime != null)
                             {
@@ -140,25 +140,25 @@
             <h4 class="gold">Competition Entries</h4>
         </div>
         <div class="col-6 col-md-6 text-center text-md-right">
-            <span class="gold">@csList.Count participants</span> has joined this competition
+            <span class="gold">@Model.SubmissionList.Count participants</span> has joined this competition
         </div>
     </div>
 
-    @if (csList.Count > 0)
+    @if (Model.SubmissionList.Count > 0)
     {
         <div class="row">
-            @for (int i = 0; i < csList.Count; i++)
+            @for (int i = 0; i < Model.SubmissionList.Count; i++)
             {
                 <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
                     <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title gold">by <span class="gold">@csList[i].CompetitorName</span></h5>
-                        <p class="card-text"><span class="gold">@csList[i].VoteCount votes</span></p>
-                        @if (csList[i].FileUploadDateTime != null && csList[i].FileUploadDateTime != null)
+                        <h5 class="card-title gold">by <span class="gold">@Model.SubmissionList[i].CompetitorName</span></h5>
+                        <p class="card-text"><span class="gold">@Model.SubmissionList[i].VoteCount votes</span></p>
+                        @if (Model.SubmissionList[i].FileUploadDateTime != null && Model.SubmissionList[i].FileUploadDateTime != null)
                         {
-                            <p class="card-text">Submitted on <span class="gold">@csList[i].FileUploadDateTime.ToString()</span></p>
+                            <p class="card-text">Submitted on <span class="gold">@Model.SubmissionList[i].FileUploadDateTime.ToString()</span></p>
                             <p class="card-text">
-                                <a href="~/competitionfile/@csList[i].FileUrl" target="_blank">@csList[i].FileUrl</a>
+                                <a href="~/competitionfile/@Model.SubmissionList[i].FileUrl" target="_blank">@Model.SubmissionList[i].FileUrl</a>
                             </p>
                         }
                         else
@@ -168,10 +168,10 @@
 
                     </div>
                     <div class="text-center pb-4">
-                        <form asp-controller="Competition" asp-action="Vote" asp-route-competitorId="@csList[i].CompetitorId" asp-route-competitionId="@csList[i].CompetitionId" method="post">
-                            @if ((bool) ViewData["DisableVote"] == true)
+                        <form asp-controller="Competition" asp-action="Vote" asp-route-competitorId="@Model.SubmissionList[i].CompetitorId" asp-route-competitionId="@Model.SubmissionList[i].CompetitionId" method="post">
+                            @if ((bool)ViewData["DisableVote"] == true)
                             {
-                                <input type="submit" class="btn background-blue btn-180" disabled="disabled" value="Voted" />
+                                <input type="submit" class="btn background-blue btn-180" disabled="disabled" value="Vote" />
                             }
                             else
                             {
@@ -194,10 +194,11 @@
     <div class="container pt-5">
         <h4 class="gold">Comments</h4>
         <div class="row">
-            <form class="col-md-12" asp-controller="Comments" asp-action="AddComments" asp-route-competitionId="@Model.CompetitionId" method="post">
+            <form class="col-md-12" asp-controller="Comments" asp-action="AddComments" asp-route-id="@Model.CompetitionId" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group col-md-12">
                     <textarea required name="Comments" class="form-control" id="" placeholder="Add a Comment" rows="5"></textarea>
+                    <span asp-validation-for="CommentDesc" class="text-danger"></span>
                     <div class="form-group col-md-12 mt-4 padding-override">
                         <input type="submit" class="btn background-blue w-100" value="Post" />
                     </div>
@@ -206,11 +207,11 @@
         </div>
     </div>
     <div class="container">
-        @if (commentsList.Count > 0)
+        @if (@Model.CommentsList.Count > 0)
         {
             <table class="table table-striped">
                 <tbody>
-                    @foreach (Comments cmmts in commentsList)
+                    @foreach (Comments cmmts in Model.CommentsList)
                     {
                         <tr>
                             <td class="text-center"><img src="~/images/img_avatar.png" width="80" style="border-radius: 40px" /></td>
@@ -232,3 +233,4 @@
         }
     </div>
 </div>
+
