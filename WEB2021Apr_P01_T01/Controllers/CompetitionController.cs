@@ -72,7 +72,7 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             if (competitionDetails.ResultsReleaseDate < DateTime.Now)
             {
-                ViewData["ShowResults"] = "true";
+                ViewData["ShowResults"] = true;
                 ViewData["Rankings"] = GetRankings(id);
             }
             else
