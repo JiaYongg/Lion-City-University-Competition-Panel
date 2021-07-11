@@ -97,7 +97,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                     {
                         int aoiid = signUp.AreaInterestId;
                         judge.JudgeId = signUpContext.AddJudge(name, chosenSalutation, aoiid, chosenEmail, password);
-                        return View("Login", judge);
+                        return RedirectToAction("Index", "Login");
                     }
                     else
                     {
@@ -108,7 +108,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 {
                     // adds competitor account to database
                     competitor.CompetitorId = signUpContext.AddCompetitor(name, chosenSalutation, chosenEmail, password);
-                    return View("Login",competitor);
+                    return RedirectToAction("Index", "Login");
                 }
             }
         }
