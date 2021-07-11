@@ -180,7 +180,7 @@ namespace WEB2021Apr_P01_T01.DAL
             // Close the connection to the database after operations
             conn.Close();
 
-            // Return the id when no error occurs.
+            // Return the rows affected when no error occurs.
             return affectRows;
         }
 
