@@ -46,7 +46,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                     Ranking = cs.Ranking,
                     numOfJudge = cs.numofJudge,
                     durationLeft = (cs.StartDate - DateTime.Now).Days,
-                    resultsReleaseDuration = (cs.ResultReleasedDate - cs.EndDate).Days,
+                    resultsReleaseDuration = (cs.ResultReleasedDate - DateTime.Now).Days,
                     FileUrl = cs.FileUrl
                 };
 
