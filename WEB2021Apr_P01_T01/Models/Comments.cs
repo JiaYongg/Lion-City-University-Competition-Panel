@@ -20,6 +20,7 @@ namespace WEB2021Apr_P01_T01.Models
         [StringLength(250, MinimumLength = 3)]
         public string CommentDesc { get; set; }
 
+        // ignore
         [DataType(DataType.Date)]
         [Display(Name = "Date & Time Posted")]
         [Required]

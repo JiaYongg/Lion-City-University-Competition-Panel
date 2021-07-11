@@ -77,16 +77,23 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
             else
             {
-                ViewData["ShowResults"] = "false";
+                ViewData["ShowResults"] = false;
             }
 
-            if (HttpContext.Session.GetString("Voted") != "true" && (competitionDetails.StartDate <= DateTime.Now && competitionDetails.EndDate >= DateTime.Now))
+            if (HttpContext.Session.GetString("Voted") == "true")
             {
-                ViewData["DisableVote"] = "false";
+                ViewData["DisableVote"] = true;
             }
             else
             {
-                ViewData["DisableVote"] = "true";
+                if (competitionDetails.StartDate >= DateTime.Now || competitionDetails.EndDate <= DateTime.Now)
+                {
+                    ViewData["DisableVote"] = true;
+                }
+                else
+                {
+                    ViewData["DisableVote"] = false;
+                }
             }
 
             // Jia Yong's added codes
@@ -108,21 +115,108 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View(competitionDetails);
         }
 
+        // Added and Modified for ViewModel
+        public ActionResult CompetitionDetails(int id)
+        {
+            Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
+            List<CompetitionSubmission> csList = GetCompetitionSubmissions(id);
+            List<Judge> juryList  = GetCompetitionJudges(id);
+            List<Criteria> criteriaList = GetCompetitionCriterias(id);
+            List<Comments> commentsList = GetCompetitionComments(id);
+
+            CompetitionDetailsViewModel cdVM = MapToCompetitionDetailsVM(competitionDetails, csList, juryList, commentsList, criteriaList);
+
+            if (competitionDetails == null)
+            {
+                RedirectToAction("Error", "Home");
+            }
+
+            if (competitionDetails.ResultsReleaseDate < DateTime.Now)
+            {
+                ViewData["ShowResults"] = true;
+                ViewData["Rankings"] = GetRankings(id);
+            }
+            else
+            {
+                ViewData["ShowResults"] = false;
+            }
+
+            if (HttpContext.Session.GetString("Voted") == "true")
+            {
+                ViewData["DisableVote"] = true;
+            }
+            else
+            {
+                if (competitionDetails.StartDate >= DateTime.Now || competitionDetails.EndDate <= DateTime.Now)
+                {
+                    ViewData["DisableVote"] = true;
+                }
+                else
+                {
+                    ViewData["DisableVote"] = false;
+                }
+            }
+
+            // Jia Yong's added codes
+
+            bool found = false;
+            foreach (var item in csList)
+            {
+                if (HttpContext.Session.GetInt32("userID") == item.CompetitorId)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            ViewData["IsJoined"] = found;
+            ViewData["CompetitionSubmissionList"] = csList;
+
+
+            return View(cdVM);
+        }
+
+        public CompetitionDetailsViewModel MapToCompetitionDetailsVM(Competition comp, List<CompetitionSubmission> csList, List<Judge> judgeList, List<Comments> commentsList, List<Criteria> criteriaList)
+        {
+            CompetitionDetailsViewModel cdVM = new CompetitionDetailsViewModel
+            {
+                CompetitionId = comp.CompetitionId,
+                CompetitionName = comp.CompetitionName,
+                StartDate = comp.StartDate,
+                EndDate = comp.EndDate,
+                ResultsReleaseDate = comp.ResultsReleaseDate,
+                AoiName = comp.AoiName,
+                JudgeList = judgeList,
+                CriteriaList = criteriaList,
+                SubmissionList = csList,
+                CommentsList = commentsList
+            };
+
+            return cdVM;
+        }
+
+        // End of recently added codes to migrate into ViewModel
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddComments(IFormCollection formData, int? competitionId)
+        public ActionResult AddComments(CompetitionDetailsViewModel cdVM)
         {
-            string comments = formData["Comments"].ToString();
-
-            Comments cmmts = new Comments
+            if (!ModelState.IsValid) // validation fails
             {
-                CompetitionID = (int) competitionId,
-                CommentDesc = comments,
-                DateTimePosted = DateTime.Now
-            };
-            
-            commentsContext.AddComments(cmmts);
-            return RedirectToAction("Details", new { id = competitionId });
+                return RedirectToAction("Details", new { id = cdVM.CompetitionId }); // returns the view with errors
+            }
+            else
+            {
+                Comments cmmts = new Comments
+                {
+                    CompetitionID = cdVM.CompetitionId,
+                    CommentDesc = cdVM.CommentDesc,
+                    DateTimePosted = DateTime.Now
+                };
+
+                cmmts.CommentId = commentsContext.AddComments(cmmts);
+            }
+            return RedirectToAction("Details", new { id = cdVM.CompetitionId });
         }
 
         [HttpPost]

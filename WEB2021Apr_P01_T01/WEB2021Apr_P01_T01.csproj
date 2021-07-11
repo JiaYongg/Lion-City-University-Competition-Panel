@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\AreaInterest\" />
     <Folder Include="wwwroot\competitionfiles\" />
   </ItemGroup>
 

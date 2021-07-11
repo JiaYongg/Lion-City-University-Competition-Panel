@@ -3,11 +3,12 @@
 @if (Model.ToList().Count > 0)
 {
     <div class="ml-auto mr-auto d-flex justify-content-center flex-column mb-5">
-        <p class="text-center">Filter by Area of Interest</p>
+        <p class="text-center">Filter by Area of Interest (Coming soon)</p>
         <div class="text-center">
+            <button class="btn background-gold m-2 disabled">All</button>
             @foreach (var aoi in Model)
             {
-                <button class="btn background-gold">@aoi.Name</button>
+                <button class="btn background-gold disabled m-2">@aoi.Name</button>
             }
         </div>
     </div>
