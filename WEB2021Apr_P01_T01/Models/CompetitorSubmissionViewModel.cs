@@ -39,7 +39,10 @@ namespace WEB2021Apr_P01_T01.Models
         public int? numOfJudge { get; set; }
 
         [Display(Name = "days left to the start of the competition")]
-        public int? durationLeft { get; set; }
+        public int? durationLeftToStart { get; set; }
+
+        [Display(Name = "days left to submit a file")]
+        public int? durationLeftToSubmit { get; set; }
 
         [Display(Name = "Results released in ")]
         public int? resultsReleaseDuration { get; set; }

@@ -31,20 +31,30 @@
                         <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title gold">@competition.CompetitionName</h5>
-                            <img src="~/images/calendar.png" style="width: 30px;"> <label asp-for="@competition.StartDate"></label><span class="gold">@competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
+                            <img src="~/images/calendar.png" style="width: 30px;"> <label asp-for="@competition.StartDate"></label><span class="gold"> @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
                             <img src="~/images/@competition.DateImage" style="width: 30px;">
                             @if (competition.Status == "NotStarted")
                             {
-                                <span class="gold">@competition.durationLeft days left to the start of the competition</span><br /><br />
+                                <span class="gold">@competition.durationLeftToStart days left to the start of the competition</span><br /><br />
                             }
                             else if (competition.Status == "Ongoing")
                             {
-                                <span class="gold">@competition.durationLeft days left to submit a file</span><br /><br />
+                                <span class="gold">@competition.durationLeftToSubmit days left to submit a file</span><br /><br />
+                                <a class="btn background-gold" style="color: white;" asp-controller="Competitor" asp-action="UploadFile" asp-route-id="@competition.CompetitionId">Upload File</a>
                             }
                             else if (competition.Status == "Ended" && competition.ResultRelease == true)
                             {
-                                <label asp-for="@competition.Ranking"></label><span class="gold"> @competition.Ranking</span>
-                                <span class="badge badge-secondary">Ended</span>
+                                if (competition.Ranking > 3)
+                                {
+
+                                    <span class="gold"> Try harder next time!</span>
+                                    <span class="badge badge-secondary">Ended</span>
+                                }
+                                else
+                                {
+                                    <label asp-for="@competition.Ranking"></label><span class="gold"> @competition.Ranking</span>
+                                    <span class="badge badge-secondary">Ended</span>
+                                }
                                 <br /><br />
                             }
                             else
