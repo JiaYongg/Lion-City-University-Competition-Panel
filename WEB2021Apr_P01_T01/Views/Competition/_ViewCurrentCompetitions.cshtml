@@ -15,7 +15,7 @@
                     <p class="card-text">Result releases on <span class="gold">@Html.DisplayFor(model => competition.ResultsReleaseDate)</span></p>
                 </div>
                 <div class="text-center pb-4">
-                    <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="Details" asp-route-id="@competition.CompetitionId">View Competition</a>
+                    <a class="btn background-blue btn-180" asp-controller="Competition" asp-action="CompetitionDetails" asp-route-id="@competition.CompetitionId">View Competition</a>
                 </div>
             </div>
         }

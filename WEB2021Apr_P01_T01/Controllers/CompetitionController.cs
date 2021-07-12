@@ -18,7 +18,6 @@ namespace WEB2021Apr_P01_T01.Controllers
         private CompetitionSubmissionDAL csContext = new CompetitionSubmissionDAL();
         private CommentsDAL commentsContext = new CommentsDAL();
 
-
         public ActionResult Index()
         {
             return View("Competition");
@@ -172,8 +171,87 @@ namespace WEB2021Apr_P01_T01.Controllers
             ViewData["IsJoined"] = found;
             ViewData["CompetitionSubmissionList"] = csList;
 
-
             return View(cdVM);
+        }
+
+        [HttpPost]
+        public ActionResult CompetitionDetails(CompetitionDetailsViewModel cdVM, int id)
+        {
+            Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
+            cdVM.JudgeList = GetCompetitionJudges(id);
+            cdVM.CriteriaList = GetCompetitionCriterias(id);
+            cdVM.CommentsList = GetCompetitionComments(id);
+            cdVM.SubmissionList = GetCompetitionSubmissions(id);
+
+            cdVM.AoiName = competitionDetails.AoiName;
+            cdVM.CompetitionId = id;
+            cdVM.CompetitionName = competitionDetails.CompetitionName;
+            cdVM.StartDate = competitionDetails.StartDate;
+            cdVM.EndDate = competitionDetails.EndDate;
+            cdVM.ResultsReleaseDate = competitionDetails.ResultsReleaseDate;
+
+            if (competitionDetails == null)
+            {
+                RedirectToAction("Error", "Home");
+            }
+
+            if (competitionDetails.ResultsReleaseDate < DateTime.Now)
+            {
+                ViewData["ShowResults"] = true;
+                ViewData["Rankings"] = GetRankings(id);
+            }
+            else
+            {
+                ViewData["ShowResults"] = false;
+            }
+
+            if (HttpContext.Session.GetString("Voted") == "true")
+            {
+                ViewData["DisableVote"] = true;
+            }
+            else
+            {
+                if (competitionDetails.StartDate >= DateTime.Now || competitionDetails.EndDate <= DateTime.Now)
+                {
+                    ViewData["DisableVote"] = true;
+                }
+                else
+                {
+                    ViewData["DisableVote"] = false;
+                }
+            }
+
+            // Jia Yong's added codes
+
+            bool found = false;
+            foreach (var item in cdVM.SubmissionList)
+            {
+                if (HttpContext.Session.GetInt32("userID") == item.CompetitorId)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            ViewData["IsJoined"] = found;
+            ViewData["CompetitionSubmissionList"] = cdVM.SubmissionList;
+
+            if (!ModelState.IsValid)
+            {
+                return View(cdVM);
+            }
+
+            Comments cmmts = new Comments
+            {
+                CommentDesc = cdVM.CommentDesc,
+                DateTimePosted = DateTime.Now,
+                CompetitionID = cdVM.CompetitionId
+            };
+
+            commentsContext.AddComments(cmmts);
+
+            //return View(cdVM);
+            return RedirectToAction("CompetitionDetails", cdVM.CompetitionId);
         }
 
         public CompetitionDetailsViewModel MapToCompetitionDetailsVM(Competition comp, List<CompetitionSubmission> csList, List<Judge> judgeList, List<Comments> commentsList, List<Criteria> criteriaList)

@@ -191,13 +191,14 @@
     }
 </div>
 <div class="container-fluid bg-light min-vh-80">
-    <div class="container pt-5">
+    <div class="container pt-5" id="Comments">
         <h4 class="gold">Comments</h4>
         <div class="row">
-            <form class="col-md-12" asp-controller="Comments" asp-action="AddComments" asp-route-id="@Model.CompetitionId" method="post">
+            <form class="col-md-12" asp-controller="Competition" asp-action="CompetitionDetails" asp-route-id="@Model.CompetitionId" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group col-md-12">
-                    <textarea required name="Comments" class="form-control" id="" placeholder="Add a Comment" rows="5"></textarea>
+                    @Html.TextAreaFor(model => model.CommentDesc, new { @class = "form-control", @placeholder = "Please enter your comments" })
+                    @*<textarea required name="Comments" class="form-control" id="" placeholder="Add a Comment" rows="5"></textarea>*@
                     <span asp-validation-for="CommentDesc" class="text-danger"></span>
                     <div class="form-group col-md-12 mt-4 padding-override">
                         <input type="submit" class="btn background-blue w-100" value="Post" />
