@@ -37,7 +37,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 comp.AoiName = aoiContext.GetAoiName(comp.AoiId);
             }
 
-            return View("CurrentCompetitions", competitionList);
+            return View("CompetitionList", competitionList);
         }
 
         public ActionResult PastCompetitions()
@@ -53,7 +53,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             {
                 comp.AoiName = aoiContext.GetAoiName(comp.AoiId);
             }
-            return View("PastCompetitions", pastCompetitionList);
+            return View("CompetitionList", pastCompetitionList);
         }
 
         public ActionResult Details(int id)

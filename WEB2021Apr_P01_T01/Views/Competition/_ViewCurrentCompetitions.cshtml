@@ -2,10 +2,10 @@
 
 @if (Model.ToList().Count > 0)
 {
-    <div class="card-group">
+    <div class="row">
         @foreach (var competition in Model)
         {
-            <div class="col-12 col-lg-4 card shadow-sm p-2 ml-lg-2 mr-lg-2 mb-4 ml-auto mr-auto bg-white rounded">
+            <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
                 <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title gold">@competition.CompetitionName</h5>

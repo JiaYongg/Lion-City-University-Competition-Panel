@@ -1,0 +1,16 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Competition>
+
+@{
+    ViewData["Title"] = ViewData["PageTitle"];
+    List<AreaInterest> aoiList = (List<AreaInterest>)ViewData["AreaInterest"];
+}
+
+<partial name="~/Views/Shared/_CompetitionBanner.cshtml" />
+<div class="container">
+    <h2 class="gold mt-4">All Competitions</h2>
+    <div class="ml-auto mr-auto d-flex justify-content-center flex-column mb-5">
+        <partial name="~/Views/Competition/_AreaInterest.cshtml" model="@aoiList" />
+    </div>
+    <partial name="~/Views/Competition/_ViewCurrentCompetitions.cshtml" />
+</div>
+
