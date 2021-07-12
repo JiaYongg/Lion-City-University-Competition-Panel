@@ -19,9 +19,9 @@ namespace WEB2021Apr_P01_T01.Models
         [Display(Name = "Area of Interest")]
         public string? AoiName { get; set; }
 
-        [Required]
+        [Required (ErrorMessage = "Please enter the competition name")]
         [Display(Name = "Competition Name")]
-        [StringLength(100, MinimumLength = 3)]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "The competition name must be between 3 to 100 characters.")]
         public string CompetitionName { get; set; }
 
         [Required]

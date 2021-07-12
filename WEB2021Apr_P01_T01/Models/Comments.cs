@@ -12,18 +12,17 @@ namespace WEB2021Apr_P01_T01.Models
         [Display(Name = "Comment ID")]
         public int? CommentId { get; set; }
 
-        [Display(Name = "Competition ID")]
         [Required]
+        [Display(Name = "Competition ID")]
         public int CompetitionID { get; set; }
 
         [Required(ErrorMessage = "Please enter your comments")]
-        [StringLength(250, MinimumLength = 3)]
+        [StringLength(250, MinimumLength = 3, ErrorMessage = "Comments must be between 3 to 250 characters")]
         public string CommentDesc { get; set; }
 
-        // ignore
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date & Time Posted")]
-        [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime DateTimePosted { get; set; }
     }

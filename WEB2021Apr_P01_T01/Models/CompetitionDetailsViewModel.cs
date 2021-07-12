@@ -40,7 +40,7 @@ namespace WEB2021Apr_P01_T01.Models
         public int? CommentId { get; set; }
 
         [Required(ErrorMessage = "Please enter your comments")]
-        [StringLength(250, MinimumLength = 3, ErrorMessage = "Please enter a comment between 3 to 250 characters")]
+        [StringLength(250, MinimumLength = 3, ErrorMessage = "Comments must be between 3 to 250 characters")]
         public string CommentDesc { get; set; }
 
         public List<Comments> CommentsList { get; set; }

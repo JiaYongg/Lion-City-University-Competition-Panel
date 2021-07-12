@@ -108,7 +108,7 @@
                         <div class="card-body">
                             <h5 class="card-title gold">by <span class="gold">@rankList[i].CompetitorName</span></h5>
                             <p class="card-text"><span class="gold">@rankList[i].VoteCount votes</span></p>
-                            @if (rankList[i].FileUploadDateTime != null && rankList[i].FileUploadDateTime != null)
+                            @if (rankList[i].FileUploadDateTime != null && rankList[i].FileUrl != null)
                             {
                                 <p class="card-text">Submitted on <span class="gold">@rankList[i].FileUploadDateTime.ToString()</span></p>
                                 <p class="card-text">
@@ -154,7 +154,7 @@
                     <div class="card-body">
                         <h5 class="card-title gold">by <span class="gold">@Model.SubmissionList[i].CompetitorName</span></h5>
                         <p class="card-text"><span class="gold">@Model.SubmissionList[i].VoteCount votes</span></p>
-                        @if (Model.SubmissionList[i].FileUploadDateTime != null && Model.SubmissionList[i].FileUploadDateTime != null)
+                        @if (Model.SubmissionList[i].FileUploadDateTime != null && Model.SubmissionList[i].FileUrl != null)
                         {
                             <p class="card-text">Submitted on <span class="gold">@Model.SubmissionList[i].FileUploadDateTime.ToString()</span></p>
                             <p class="card-text">
