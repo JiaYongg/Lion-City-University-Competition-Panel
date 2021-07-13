@@ -56,7 +56,7 @@
                         {
                             <input type="button" class="background-gold btn font-dm disabled" value="Joined" />
                         }
-                        else if (Model.EndDate <= DateTime.Now)
+                        else if (Model.EndDate <= DateTime.Now || (bool)ViewData["Joinable"] != true) // Competition has ended, not able to join
                         {
                             <a class="background-gold btn font-dm disabled" style="color:black;">Join Competition</a>
                         }

@@ -158,6 +158,15 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             // Jia Yong's added codes
 
+            if (competitionDetails.StartDate.Subtract(DateTime.Now).Days <= 3)
+            {
+                ViewData["Joinable"] = true;
+            }
+            else
+            {
+                ViewData["Joinable"] = false;
+            }
+
             bool found = false;
             foreach (var item in csList)
             {
