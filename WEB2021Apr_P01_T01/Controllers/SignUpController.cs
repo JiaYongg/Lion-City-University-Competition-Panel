@@ -66,7 +66,7 @@ namespace WEB2021Apr_P01_T01.Controllers
         [HttpPost]
         public ActionResult SignUp(SignUp signUp, Judge judge, Competitor competitor)
         {
-
+            // Reminder to add in validation message
             ViewData["UserType"] = userTypes;
             ViewData["Salutation"] = salutation;
 
