@@ -56,63 +56,63 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View("CompetitionList", pastCompetitionList);
         }
 
-        public ActionResult Details(int id)
-        {
-            ViewData["JudgeList"] = GetCompetitionJudges(id);
-            ViewData["CriteriaList"] = GetCompetitionCriterias(id);
-            List<CompetitionSubmission> csList = GetCompetitionSubmissions(id);
-            ViewData["Comments"] = GetCompetitionComments(id);
+        //public ActionResult Details(int id)
+        //{
+        //    ViewData["JudgeList"] = GetCompetitionJudges(id);
+        //    ViewData["CriteriaList"] = GetCompetitionCriterias(id);
+        //    List<CompetitionSubmission> csList = GetCompetitionSubmissions(id);
+        //    ViewData["Comments"] = GetCompetitionComments(id);
 
-            Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
-            if (competitionDetails == null)
-            {
-                RedirectToAction("Error", "Home");
-            }
+        //    Competition competitionDetails = competitionContext.GetCompetitionDetails(id);
+        //    if (competitionDetails == null)
+        //    {
+        //        RedirectToAction("Error", "Home");
+        //    }
 
-            if (competitionDetails.ResultsReleaseDate < DateTime.Now)
-            {
-                ViewData["ShowResults"] = true;
-                ViewData["Rankings"] = GetRankings(id);
-            }
-            else
-            {
-                ViewData["ShowResults"] = false;
-            }
+        //    if (competitionDetails.ResultsReleaseDate < DateTime.Now)
+        //    {
+        //        ViewData["ShowResults"] = true;
+        //        ViewData["Rankings"] = GetRankings(id);
+        //    }
+        //    else
+        //    {
+        //        ViewData["ShowResults"] = false;
+        //    }
 
-            if (HttpContext.Session.GetString("Voted") == "true")
-            {
-                ViewData["DisableVote"] = true;
-            }
-            else
-            {
-                if (competitionDetails.StartDate >= DateTime.Now || competitionDetails.EndDate <= DateTime.Now)
-                {
-                    ViewData["DisableVote"] = true;
-                }
-                else
-                {
-                    ViewData["DisableVote"] = false;
-                }
-            }
+        //    if (HttpContext.Session.GetString("Voted") == "true")
+        //    {
+        //        ViewData["DisableVote"] = true;
+        //    }
+        //    else
+        //    {
+        //        if (competitionDetails.StartDate >= DateTime.Now || competitionDetails.EndDate <= DateTime.Now)
+        //        {
+        //            ViewData["DisableVote"] = true;
+        //        }
+        //        else
+        //        {
+        //            ViewData["DisableVote"] = false;
+        //        }
+        //    }
 
-            // Jia Yong's added codes
+        //    // Jia Yong's added codes
             
-            bool found = false;
-            foreach (var item in csList)
-            {
-                if (HttpContext.Session.GetInt32("userID") == item.CompetitorId)
-                {
-                    found = true;
-                    break;
-                }
-            }
+        //    bool found = false;
+        //    foreach (var item in csList)
+        //    {
+        //        if (HttpContext.Session.GetInt32("userID") == item.CompetitorId)
+        //        {
+        //            found = true;
+        //            break;
+        //        }
+        //    }
 
-            ViewData["IsJoined"] = found;
+        //    ViewData["IsJoined"] = found;
 
-            ViewData["CompetitionSubmissionList"] = csList;
+        //    ViewData["CompetitionSubmissionList"] = csList;
 
-            return View(competitionDetails);
-        }
+        //    return View(competitionDetails);
+        //}
 
         // Added and Modified for ViewModel
         public ActionResult CompetitionDetails(int id)
@@ -277,27 +277,27 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         // End of recently added codes to migrate into ViewModel
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddComments(CompetitionDetailsViewModel cdVM)
-        {
-            if (!ModelState.IsValid) // validation fails
-            {
-                return RedirectToAction("Details", new { id = cdVM.CompetitionId }); // returns the view with errors
-            }
-            else
-            {
-                Comments cmmts = new Comments
-                {
-                    CompetitionID = cdVM.CompetitionId,
-                    CommentDesc = cdVM.CommentDesc,
-                    DateTimePosted = DateTime.Now
-                };
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult AddComments(CompetitionDetailsViewModel cdVM)
+        //{
+        //    if (!ModelState.IsValid) // validation fails
+        //    {
+        //        return RedirectToAction("Details", new { id = cdVM.CompetitionId }); // returns the view with errors
+        //    }
+        //    else
+        //    {
+        //        Comments cmmts = new Comments
+        //        {
+        //            CompetitionID = cdVM.CompetitionId,
+        //            CommentDesc = cdVM.CommentDesc,
+        //            DateTimePosted = DateTime.Now
+        //        };
 
-                cmmts.CommentId = commentsContext.AddComments(cmmts);
-            }
-            return RedirectToAction("Details", new { id = cdVM.CompetitionId });
-        }
+        //        cmmts.CommentId = commentsContext.AddComments(cmmts);
+        //    }
+        //    return RedirectToAction("Details", new { id = cdVM.CompetitionId });
+        //}
 
         [HttpPost]
         public ActionResult Vote(int? competitorId, int? competitionId)
@@ -308,7 +308,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 HttpContext.Session.SetString("Voted", "true");
             }
 
-            return RedirectToAction("Details", new { id = competitionId });
+            return RedirectToAction("CompetitionDetails", new { id = competitionId });
         }
 
         private List<Criteria> GetCompetitionCriterias(int id)
