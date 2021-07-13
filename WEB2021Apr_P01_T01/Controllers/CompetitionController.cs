@@ -251,7 +251,9 @@ namespace WEB2021Apr_P01_T01.Controllers
             commentsContext.AddComments(cmmts);
 
             //return View(cdVM);
-            return RedirectToAction("CompetitionDetails", cdVM.CompetitionId);
+            //return RedirectToAction("CompetitionDetails", cdVM.CompetitionId);
+            //return Redirect("/Competition/CompetitionDetails/" + cdVM.CompetitionId + "#Comments");
+            return RedirectToAction("CompetitionDetails", "Competition", cdVM.CompetitionId, "Comments");
         }
 
         public CompetitionDetailsViewModel MapToCompetitionDetailsVM(Competition comp, List<CompetitionSubmission> csList, List<Judge> judgeList, List<Comments> commentsList, List<Criteria> criteriaList)

@@ -215,8 +215,8 @@
                     @foreach (Comments cmmts in Model.CommentsList)
                     {
                         <tr>
-                            <td class="text-center"><img src="~/images/img_avatar.png" width="80" style="border-radius: 40px" /></td>
-                            <td>
+                            <td class="text-center col-3"><img src="~/images/img_avatar.png" width="80" style="border-radius: 40px" /></td>
+                            <td class="col-9" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
                                 <h6 class="gold">Anonymous<br /></h6>
                                 <small>Posted on @cmmts.DateTimePosted</small>
                                 <p>@cmmts.CommentDesc</p>
