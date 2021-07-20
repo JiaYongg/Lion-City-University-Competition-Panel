@@ -60,7 +60,16 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
 
             ViewData["Submit"] = compList;
-            return View();
+
+            CompetitionSubmission competitionSubmission = submitContext.GetCompetitionDetails(compId); 
+
+            return View(competitionSubmission);
+        }
+
+        public ActionResult competitorAppeal()
+        {
+            //ViewData["appeal"] = competitionSubmission.Appeal;
+            return RedirectToAction("JudgeCompetitor");
         }
         // Action to display appeal
         public ActionResult Grade()
