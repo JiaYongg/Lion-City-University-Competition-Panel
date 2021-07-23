@@ -40,7 +40,7 @@
                             else if (competition.Status == "Ongoing")
                             {
                                 <span class="gold">@competition.durationLeftToSubmit days left to submit a file</span><br /><br />
-                                <a class="btn background-gold disabled" style="color: white;" asp-controller="Competitor" asp-action="UploadFile" asp-route-id="@competition.CompetitionId">Upload File</a>
+                                <a class="btn background-gold" style="color: white;" asp-controller="Competitor" asp-action="CompetitionSubmissionDetails" asp-route-id="@competition.CompetitionId">Upload File</a>
                             }
                             else if (competition.Status == "Ended" && competition.ResultRelease == true)
                             {

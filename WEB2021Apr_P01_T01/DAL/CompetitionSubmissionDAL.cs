@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Data.SqlClient;
 using WEB2021Apr_P01_T01.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace WEB2021Apr_P01_T01.DAL
 {
@@ -184,10 +185,25 @@ namespace WEB2021Apr_P01_T01.DAL
             return affectRows;
         }
 
-        // Use competitionId to get various details of CompetitionSubmission
-        public CompetitionSubmission GetCompetitionDetails(int competitionId)
+        public void uploadFile(CompetitorSubmissionViewModel csVM)
         {
-            CompetitionSubmission cs = new CompetitionSubmission();
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"UPDATE CompetitionSubmission SET FileSubmitted = @selectedFile, DateTimeFileUpload = @uploadDateTime WHERE CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID";
+            cmd.Parameters.AddWithValue("@selectedFile", csVM.FileUrl);
+            cmd.Parameters.AddWithValue("@uploadDateTime", csVM.FileUploadDateTime);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", csVM.CompetitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", csVM.CompetitorId);
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        // Use competitionId to get various details of CompetitionSubmissionViewModel
+        public CompetitorSubmissionViewModel GetCompetitionDetails(int competitionId)
+        {
+            CompetitorSubmissionViewModel csVM = new CompetitorSubmissionViewModel();
 
             SqlCommand cmd = conn.CreateCommand();
 
@@ -204,18 +220,18 @@ namespace WEB2021Apr_P01_T01.DAL
                 while (reader.Read())
                 {
                     // Fill staff object with values from the data reader
-                    cs.CompetitionId = competitionId;
-                    cs.CompetitorId = reader.GetInt32(1);
-                    cs.FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null;
-                    cs.FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null;
-                    cs.Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null;
-                    cs.VoteCount = reader.GetInt32(5);
-                    cs.Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null;
-                    cs.CompetitionName = reader.GetString(9);
+                    csVM.CompetitionId = competitionId;
+                    csVM.CompetitorId = reader.GetInt32(1);
+                    csVM.FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null;
+                    csVM.FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null;
+                    csVM.Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null;
+                    //csVM.VoteCount = reader.GetInt32(5);
+                    csVM.Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null;
+                    csVM.CompetitionName = reader.GetString(9);
                     // Competition Start Date is not necessary as the competitor has already joined the competition.
-                    cs.EndDate = reader.GetDateTime(11);
-                    cs.ResultReleasedDate = reader.GetDateTime(12);
-                    cs.CompetitorName = reader.GetString(14);
+                    csVM.EndDate = reader.GetDateTime(11);
+                    csVM.ResultsReleaseDate = reader.GetDateTime(12);
+                    csVM.CompetitorName = reader.GetString(14);
                 }
             }
             // Close DataReader
@@ -224,7 +240,7 @@ namespace WEB2021Apr_P01_T01.DAL
             // Close database connection
             conn.Close();
 
-            return cs;
+            return csVM;
         }
     }
 }
