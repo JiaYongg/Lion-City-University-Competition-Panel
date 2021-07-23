@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,13 @@ namespace WEB2021Apr_P01_T01.Models
     {
         [Display(Name = "Competition ID")]
         public int CompetitionId { get; set; }
+
+        [Display(Name = "Competitor ID")]
+        public int CompetitorId { get; set; }
+
+        [Required]
+        [Display(Name = "Competitor's Name")]
+        public string? CompetitorName { get; set; }
 
         [Display(Name = "Competition Name")]
         public string CompetitionName { get; set; }
@@ -50,6 +58,13 @@ namespace WEB2021Apr_P01_T01.Models
         [Display(Name = "File Submitted")]
         public string? FileUrl { get; set; }
 
+        [Required(ErrorMessage = "Please choose a file.")]
+        public IFormFile? fileToUpload { get; set; }
+
+        [Display(Name = "File Submitted On")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd h:mm tt}", ApplyFormatInEditMode = true)]
+        public DateTime? FileUploadDateTime { get; set; }
         public string DateImage { get; set; }
 
         public string Status { get; set; }
