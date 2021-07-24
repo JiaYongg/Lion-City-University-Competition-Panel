@@ -50,10 +50,10 @@ namespace WEB2021Apr_P01_T01.DAL
                         CompetitorId = reader.GetInt32(1),
                         CompetitorName = reader.GetString(7), // to add later
                         FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null,
-                        FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?) null,
+                        FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null,
                         Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null,
                         VoteCount = reader.GetInt32(5),
-                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?) null
+                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null
                     });
             }
 
@@ -241,6 +241,32 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Close();
 
             return csVM;
+        }
+
+        // Update 
+        public int UpdateRank(CompetitionSubmission submit, int competitionId, int competitiorId)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE CompetitionSubmission SET Ranking = @rank WHERE CompetitionID = selectedCompetitionID AND CompetitorID = selectedCompetitorID;";
+
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@rank", submit.Ranking);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitiorId);
+
+            //Open a database connection
+            conn.Open();
+
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+
+            //Close the database connection
+            conn.Close();
+            return count;
         }
     }
 }
