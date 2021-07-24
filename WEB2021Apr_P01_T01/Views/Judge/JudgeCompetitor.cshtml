@@ -91,17 +91,17 @@
                                     {
                                         if (item.TotalMarks != null)
                                         {
-                                            <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" onclick="location.href = '@Url.Action("Edit")')"><i class="fas fa-star" style="color: yellow;"></i></button>
+                                            <a asp-action="Edit" asp-route-id="@item.CompetitorId">Update</a>
+                                            @*<button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" onclick="location.href = '@Url.Action("Edit", item.CompetitorId)'"><i class="fas fa-star" style="color: yellow;"></i></button>*@
                                         }
                                         else
                                         {
-                                            <button type="button" class="btn btn-default btn-circle editGrade" style="background: #A98F64;" onclick="location.href = '@Url.Action("Grade")')"><i class="fas fa-pen" style="color: white;"></i></button>
+                                            <button type="button" class="btn btn-default btn-circle editGrade" style="background: #A98F64;" onclick="location.href = '@Url.Action("Grade")'"><i class="fas fa-pen" style="color: white;"></i></button>
                                         }
                                     }
                                 </div>
                             </td>
                         </tr>
-
                     }
                 </tbody>
             </table>

@@ -10,7 +10,7 @@ namespace WEB2021Apr_P01_T01.Models
     {
         [Required]
         [Display(Name = "Score")]
-        public int Score { get; set; }
+        public List<int> Score { get; set; }
 
         [Display(Name = "Rank")]
         public int? Ranking { get; set; }

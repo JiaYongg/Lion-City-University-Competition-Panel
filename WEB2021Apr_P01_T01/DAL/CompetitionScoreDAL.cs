@@ -59,5 +59,38 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return scoreList;
         }
+
+        public List<CompetitionScore> GetCompetitionScores(int competitionID)
+        {
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify the SELECT SQL Statement
+            cmd.CommandText = @"SELECT * FROM CompetitionScore WHERE CompetitionID = @selectedCompetitionID";
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionID);
+
+            // Opens a Database Connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<CompetitionScore> scoreList = new List<CompetitionScore>();
+            while (reader.Read())
+            {
+                scoreList.Add(
+                    new CompetitionScore
+                    {
+                        CriteriaID = reader.GetInt32(0),
+                        CompetitorID = reader.GetInt32(1),
+                        CompetitionID = reader.GetInt32(2),
+                        Score = reader.GetInt32(3),
+                    });
+            }
+
+            // Close the DataReader & DB connection
+            reader.Close();
+            conn.Close();
+
+            return scoreList;
+        }
     }
 }

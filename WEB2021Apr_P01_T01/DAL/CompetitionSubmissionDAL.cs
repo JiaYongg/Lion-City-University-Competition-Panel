@@ -49,10 +49,10 @@ namespace WEB2021Apr_P01_T01.DAL
                         CompetitorId = reader.GetInt32(1),
                         CompetitorName = reader.GetString(7), // to add later
                         FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null,
-                        FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?) null,
+                        FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null,
                         Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null,
                         VoteCount = reader.GetInt32(5),
-                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?) null
+                        Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null
                     });
             }
 
@@ -61,6 +61,41 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Close();
 
             return submissionsList;
+        }
+        // Getting the details of specific competition and competitor submission, Kevin
+        public CompetitionSubmission GetCompetitionCompetitorSubmission(int competitionId, int competitorId)
+        {
+            CompetitionSubmission cs = new CompetitionSubmission();
+
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify the SELECT SQL Statement
+            cmd.CommandText = @"SELECT cs.*, c.CompetitorName FROM CompetitionSubmission AS cs INNER JOIN Competitor AS c ON cs.CompetitorID = c.CompetitorID WHERE cs.CompetitionID = @selectedCompetitionID AND cs.competitorId = @selectedCompetitorID;";
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorId);
+
+            // Opens a Database Connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                cs.CompetitionId = reader.GetInt32(0);
+                cs.CompetitorId = reader.GetInt32(1);
+                cs.CompetitorName = reader.GetString(7);
+                cs.FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null;
+                cs.FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null;
+                cs.Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null;
+                cs.VoteCount = reader.GetInt32(5);
+                cs.Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null;
+            }
+
+            // Close the DataReader & DB connection
+            reader.Close();
+            conn.Close();
+
+            return cs;
         }
 
         public List<CompetitionSubmission> GetTopThree(int competitionId)

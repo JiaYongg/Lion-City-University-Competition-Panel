@@ -12,7 +12,7 @@ namespace WEB2021Apr_P01_T01.Controllers
 {
     public class JudgeController : Controller
     {
-        
+
         public JudgeDAL judgeContext = new JudgeDAL();
         public CriteriaDAL criteriaContext = new CriteriaDAL();
 
@@ -61,17 +61,30 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             ViewData["Submit"] = compList;
 
-            CompetitionSubmission competitionSubmission = submitContext.GetCompetitionDetails(compId); 
+            CompetitionSubmission competitionSubmission = submitContext.GetCompetitionDetails(compId);
 
             return View(competitionSubmission);
         }
 
-        public ActionResult competitorAppeal()
+
+        public ActionResult Edit(int id)
         {
-            //ViewData["appeal"] = competitionSubmission.Appeal;
-            return RedirectToAction("JudgeCompetitor");
+            int compId = (int)HttpContext.Session.GetInt32("compId");
+
+            CompetitionSubmission submitModel = submitContext.GetCompetitionCompetitorSubmission(compId, id);
+
+            CriteriaRankViewModel crVM = MapToCriteriaRankVM(submitModel, id);
+            return View("Edit", crVM);
         }
-        // Action to display appeal
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(IFormCollection formData)
+        {
+            
+            return View("JudgeCompetitor");
+        }
+
         public ActionResult Grade()
         {
 
@@ -201,9 +214,35 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
         }
 
-        public ActionResult Edit()
+        // Using CompetitionSubmission & CompetitionScore
+        public CriteriaRankViewModel MapToCriteriaRankVM(CompetitionSubmission submit, int competitorId)
         {
-            return View();
+            int compId = (int)HttpContext.Session.GetInt32("compId");
+
+            List<int> scoreList = new List<int>();
+
+            var weightage = criteriaContext.GetCompetitionCriteria(compId);
+            
+
+            double total = 0;
+            int i = 0;
+            foreach (var score in scoreContext.GetCompetitiorScores(compId, competitorId))
+            {
+                scoreList.Add(score.Score);
+                total += weightage[i].Weightage * Convert.ToDouble(score.Score) / 10;
+                i++;
+            }
+            CriteriaRankViewModel crVM = new CriteriaRankViewModel
+            {
+                Score = scoreList,
+                Ranking = submit.Ranking,
+                TotalMarks = total
+            };
+
+            ViewData["criteriaNo"] = weightage.Count();
+
+            return crVM;
         }
+
     }
 }
