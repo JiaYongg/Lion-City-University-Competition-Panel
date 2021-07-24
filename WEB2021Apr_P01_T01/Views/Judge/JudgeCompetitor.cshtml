@@ -89,13 +89,16 @@
                                     }
                                     else
                                     {
+                                        <!-- When there is grades or rank to change -->
                                         if (item.TotalMarks != null)
                                         {
-                                            <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;"><i class="fas fa-star" style="color: yellow;"></i></button>
+                                            <button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" onclick="location.href='@Url.Action("Edit", "Judge")'"><i class="fas fa-star" style="color: yellow;"></i></button>
                                         }
+                                        <!-- When you need to mark the submission -->
                                         else
                                         {
-                                            <button type="button" class="btn btn-default btn-circle editGrade" style="background: #A98F64;"><i class="fas fa-pen" style="color: white;"></i></button>
+                                            <button type="button" class="btn btn-default btn-circle editGrade" style="background: #A98F64;" onclick="location.href='@Url.Action("Grade", "Judge")'"><i class="fas fa-pen" style="color: white;"></i></button>
+
                                         }
                                     }
                                 </div>

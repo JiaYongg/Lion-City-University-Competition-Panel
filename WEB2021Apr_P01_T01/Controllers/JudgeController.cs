@@ -200,5 +200,10 @@ namespace WEB2021Apr_P01_T01.Controllers
                 return RedirectToAction("JudgeCriteria");
             }
         }
+
+        public ActionResult Edit()
+        {
+            return View();
+        }
     }
 }
