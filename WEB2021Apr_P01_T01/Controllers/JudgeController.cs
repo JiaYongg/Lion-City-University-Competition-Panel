@@ -79,9 +79,10 @@ namespace WEB2021Apr_P01_T01.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(IFormCollection formData)
+        public ActionResult Edit(CriteriaRankViewModel crVM)
         {
-            
+            int compId = (int)HttpContext.Session.GetInt32("compId");
+            scoreContext.UpdateScore(crVM.Score, compId, crVM.CompetitorId, crVM.CriteriaId);
             return View("JudgeCompetitor");
         }
 
@@ -220,6 +221,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             int compId = (int)HttpContext.Session.GetInt32("compId");
 
             List<int> scoreList = new List<int>();
+            List<int> criteriaList = new List<int>();
 
             var weightage = criteriaContext.GetCompetitionCriteria(compId);
             
@@ -228,12 +230,15 @@ namespace WEB2021Apr_P01_T01.Controllers
             int i = 0;
             foreach (var score in scoreContext.GetCompetitiorScores(compId, competitorId))
             {
+                criteriaList.Add(score.CriteriaID);
                 scoreList.Add(score.Score);
                 total += weightage[i].Weightage * Convert.ToDouble(score.Score) / 10;
                 i++;
             }
             CriteriaRankViewModel crVM = new CriteriaRankViewModel
             {
+                CriteriaId = criteriaList,
+                CompetitorId = competitorId,
                 Score = scoreList,
                 Ranking = submit.Ranking,
                 TotalMarks = total

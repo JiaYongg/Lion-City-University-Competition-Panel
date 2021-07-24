@@ -25,7 +25,7 @@ namespace WEB2021Apr_P01_T01.DAL
             // Instantiate a SqlConnection object with the connection string read.
             conn = new SqlConnection(strConn);
         }
-        
+
         public List<CompetitionScore> GetCompetitiorScores(int competitionID, int competitorID)
         {
             // Create a SqlCommand object from connection object
@@ -91,6 +91,34 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Close();
 
             return scoreList;
+        }
+
+
+        // Update Score, kevin
+        public int UpdateScore(List<int> compScore, int competitionId, int competitorId, List<int> criteriaId)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE CompetitionScore SET Score = @score WHERE CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID AND CriteriaID = @selectedCriteriaId;";
+
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@score", compScore);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorId);
+            cmd.Parameters.AddWithValue("@selectedCriteriaId", criteriaId);
+
+            //Open a database connection
+            conn.Open();
+
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+            
+            //Close the database connection
+            conn.Close();
+            return count;
         }
     }
 }
