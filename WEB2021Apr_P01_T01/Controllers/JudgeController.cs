@@ -92,8 +92,16 @@ namespace WEB2021Apr_P01_T01.Controllers
                 Console.WriteLine(formData["Score[" + i + "]"]);
                 scoreContext.UpdateScore(Convert.ToInt32(formData["Score[" + i + "]"]), compId, competitorId, Convert.ToInt32(formData["CriteriaId[" + i + "]"]));
             }
-                
-            submitContext.UpdateRank(Convert.ToInt32(formData["Ranking"]), compId, competitorId);
+
+            if (formData["Ranking"] == "")
+            {
+                submitContext.UpdateRank(null, compId, competitorId);
+            }
+            else
+            {
+                submitContext.UpdateRank(Convert.ToInt32(formData["Ranking"]), compId, competitorId);
+            }
+            
             return RedirectToAction("JudgeCompetitor");
         }
 
