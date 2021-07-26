@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Grade";
+    int counter = 1;
 }
 
 <h1>Grade</h1>
@@ -10,13 +11,25 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Grade">
+        <form asp-action="Grade" enctype='multipart/form-data'>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Score" class="control-label"></label>
-                <input asp-for="Score" class="form-control" />
-                <span asp-validation-for="Score" class="text-danger"></span>
-            </div>
+            @for (int i = 0; i < Convert.ToInt32(ViewData["criteriaNo"].ToString()); i++)
+            {
+                <div class="col-sm-6">
+                    <div class="criteria-header">
+                        @*<span class="criteria-value">Criteria @counter</span>*@
+                        <span class="criteria-value">Criteria <input asp-for="CriteriaId[i]" class="form-control-plaintext" style="display: inline-block" readonly /></span>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="form-group d-flex flex-column">
+                            <label class="control-label">Score</label>
+                            <input asp-for="Score[i]" class="form-control" />
+                            <span asp-validation-for="Score[i]" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                counter++;
+            }
             <div class="form-group">
                 <label asp-for="Ranking" class="control-label"></label>
                 <input asp-for="Ranking" class="form-control" />

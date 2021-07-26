@@ -70,6 +70,8 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult Edit(int id)
         {
             int compId = (int)HttpContext.Session.GetInt32("compId");
+            HttpContext.Session.SetInt32("competitorId", id);
+            
 
             CompetitionSubmission submitModel = submitContext.GetCompetitionCompetitorSubmission(compId, id);
 
@@ -79,19 +81,60 @@ namespace WEB2021Apr_P01_T01.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CriteriaRankViewModel crVM)
+        public ActionResult Edit(IFormCollection formData)
+        {
+            int counter = (int)HttpContext.Session.GetInt32("counter");
+            int competitorId = (int)HttpContext.Session.GetInt32("competitorId");
+            int compId = (int)HttpContext.Session.GetInt32("compId");
+            
+            for (int i = 0; i < counter; i++)
+            {
+                Console.WriteLine(formData["Score[" + i + "]"]);
+                scoreContext.UpdateScore(Convert.ToInt32(formData["Score[" + i + "]"]), compId, competitorId, Convert.ToInt32(formData["CriteriaId[" + i + "]"]));
+            }
+                
+            submitContext.UpdateRank(Convert.ToInt32(formData["Ranking"]), compId, competitorId);
+            return RedirectToAction("JudgeCompetitor");
+        }
+
+        public ActionResult Grade(int id)
         {
             int compId = (int)HttpContext.Session.GetInt32("compId");
-            scoreContext.UpdateScore(crVM.Score, compId, crVM.CompetitorId, crVM.CriteriaId);
-            return View("JudgeCompetitor");
+            HttpContext.Session.SetInt32("competitorId", id);
+
+            CompetitionSubmission submitModel = submitContext.GetCompetitionCompetitorSubmission(compId, id);
+
+            CriteriaRankViewModel crVM = MapToCriteriaRankVM(submitModel, id);
+
+            return View("Grade", crVM);
         }
 
-        public ActionResult Grade()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Grade(IFormCollection formData)
         {
+            int counter = (int)HttpContext.Session.GetInt32("counter");
+            int competitorId = (int)HttpContext.Session.GetInt32("competitorId");
+            int compId = (int)HttpContext.Session.GetInt32("compId");
+            
+            for (int i = 0; i < counter; i++)
+            {
+                Console.WriteLine(formData["CriteriaId[" + i + "]"]);
+                scoreContext.InsertScore(Convert.ToInt32(formData["CriteriaId[" + i + "]"]), competitorId, compId, Convert.ToInt32(formData["Score[" + i + "]"]));
+            }
 
-            return View();
+            if (formData["Ranking"].Contains("") )
+            {
+                submitContext.UpdateRank(null, compId, competitorId);
+            }
+            else
+            {
+                submitContext.UpdateRank(Convert.ToInt32(formData["Ranking"]), compId, competitorId);
+            }
+            
+            
+            return RedirectToAction("JudgeCompetitor");
         }
-
 
         public ActionResult JudgeCriteria()
         {
@@ -224,17 +267,32 @@ namespace WEB2021Apr_P01_T01.Controllers
             List<int> criteriaList = new List<int>();
 
             var weightage = criteriaContext.GetCompetitionCriteria(compId);
-            
 
             double total = 0;
-            int i = 0;
-            foreach (var score in scoreContext.GetCompetitiorScores(compId, competitorId))
+
+            Console.WriteLine(scoreContext.GetCompetitiorScores(compId, competitorId));
+            if (scoreContext.GetCompetitiorScores(compId, competitorId).Count() == 0)
             {
-                criteriaList.Add(score.CriteriaID);
-                scoreList.Add(score.Score);
-                total += weightage[i].Weightage * Convert.ToDouble(score.Score) / 10;
-                i++;
+                for(int i = 0; i < weightage.Count(); i++)
+                {
+                    scoreList.Add(0);
+                    criteriaList.Add(i + 1);
+                }
             }
+            else
+            {
+                
+                int i = 0;
+                foreach (var score in scoreContext.GetCompetitiorScores(compId, competitorId))
+                {
+                    criteriaList.Add(score.CriteriaID);
+                    scoreList.Add(score.Score);
+                    total += weightage[i].Weightage * Convert.ToDouble(score.Score) / 10;
+                    i++;
+                }
+            }
+
+            
             CriteriaRankViewModel crVM = new CriteriaRankViewModel
             {
                 CriteriaId = criteriaList,
@@ -243,7 +301,7 @@ namespace WEB2021Apr_P01_T01.Controllers
                 Ranking = submit.Ranking,
                 TotalMarks = total
             };
-
+            HttpContext.Session.SetInt32("counter", weightage.Count);
             ViewData["criteriaNo"] = weightage.Count();
 
             return crVM;

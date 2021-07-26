@@ -263,17 +263,17 @@ namespace WEB2021Apr_P01_T01.DAL
         }
 
         // Update 
-        public int UpdateRank(CompetitionSubmission submit, int competitionId, int competitiorId)
+        public int UpdateRank(int? rank, int competitionId, int competitiorId)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
 
             //Specify an UPDATE SQL statement
-            cmd.CommandText = @"UPDATE CompetitionSubmission SET Ranking = @rank WHERE CompetitionID = selectedCompetitionID AND CompetitorID = selectedCompetitorID;";
+            cmd.CommandText = @"UPDATE CompetitionSubmission SET Ranking = @rank WHERE CompetitionID = @selectedCompetitionID AND CompetitorID = @selectedCompetitorID;";
 
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
-            cmd.Parameters.AddWithValue("@rank", submit.Ranking);
+            cmd.Parameters.AddWithValue("@rank", rank ?? Convert.DBNull);
             cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
             cmd.Parameters.AddWithValue("@selectedCompetitorID", competitiorId);
 

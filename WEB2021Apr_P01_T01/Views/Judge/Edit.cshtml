@@ -17,7 +17,8 @@
             {
                 <div class="col-sm-6">
                     <div class="criteria-header">
-                        <span class="criteria-value">Criteria @counter</span>
+                        @*<span class="criteria-value">Criteria @counter</span>*@
+                        <span class="criteria-value">Criteria <input asp-for="CriteriaId[i]" class="form-control-plaintext" style="display: inline-block" readonly /></span>
                     </div>
                     <div class="criteria-content">
                         <div class="form-group d-flex flex-column">
@@ -36,7 +37,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TotalMarks" class="control-label"></label>
-                <input asp-for="TotalMarks" class="form-control" />
+                <input asp-for="TotalMarks" class="form-control" readonly/>
                 <span asp-validation-for="TotalMarks" class="text-danger"></span>
             </div>
             <div class="form-group">
