@@ -95,7 +95,7 @@ namespace WEB2021Apr_P01_T01.DAL
 
 
         // Update Score, kevin
-        public int UpdateScore(List<int> compScore, int competitionId, int competitorId, List<int> criteriaId)
+        public int UpdateScore(int compScore, int competitionId, int competitorId, int criteriaId)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
@@ -115,10 +115,37 @@ namespace WEB2021Apr_P01_T01.DAL
 
             //ExecuteNonQuery is used for UPDATE and DELETE
             int count = cmd.ExecuteNonQuery();
-            
+
             //Close the database connection
             conn.Close();
             return count;
+        }
+
+        // Insert Score, kevin
+
+        public void InsertScore(int criteriaId, int competitorId, int competitionId, int score)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"INSERT INTO CompetitionScore (CriteriaID, CompetitorID, CompetitionID, Score) VALUES(@selectedCriteriaId, @selectedCompetitorID, @selectedCompetitionID, @selectedScore)";
+
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@selectedCriteriaId", criteriaId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorId);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            cmd.Parameters.AddWithValue("@selectedScore", score);
+
+            //Open a database connection
+            conn.Open();
+
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            cmd.ExecuteNonQuery();
+
+            //Close the database connection
+            conn.Close();
         }
     }
 }

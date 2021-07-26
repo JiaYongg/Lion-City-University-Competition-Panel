@@ -243,7 +243,50 @@ namespace WEB2021Apr_P01_T01.DAL
             return csVM;
         }
 
-        // Update 
+        // Adding it back in since Kevin requires the model instead of the view model
+        public CompetitionSubmission GetCompetitionDetail(int competitionId)
+        {
+            CompetitionSubmission cs = new CompetitionSubmission();
+
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT * FROM CompetitionSubmission AS cs INNER JOIN Competition AS compy ON cs.CompetitionID = compy.CompetitionID INNER JOIN Competitor AS c ON cs.CompetitorID = c.CompetitorID WHERE compy.CompetitionID = @selectedCompetitionID";
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                // Read the record from database
+                while (reader.Read())
+                {
+                    // Fill staff object with values from the data reader
+                    cs.CompetitionId = competitionId;
+                    cs.CompetitorId = reader.GetInt32(1);
+                    cs.FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null;
+                    cs.FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null;
+                    cs.Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null;
+                    cs.VoteCount = reader.GetInt32(5);
+                    cs.Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null;
+                    cs.CompetitionName = reader.GetString(9);
+                    // Competition Start Date is not necessary as the competitor has already joined the competition.
+                    cs.EndDate = reader.GetDateTime(11);
+                    cs.ResultReleasedDate = reader.GetDateTime(12);
+                    cs.CompetitorName = reader.GetString(14);
+                }
+            }
+            // Close DataReader
+            reader.Close();
+
+            // Close database connection
+            conn.Close();
+
+            return cs;
+        }
+
+        // Update, Kevin
         public int UpdateRank(CompetitionSubmission submit, int competitionId, int competitiorId)
         {
             //Create a SqlCommand object from connection object

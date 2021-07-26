@@ -60,10 +60,8 @@ namespace WEB2021Apr_P01_T01.Controllers
             }
 
             ViewData["Submit"] = compList;
-            return View();
-        }
 
-            CompetitionSubmission competitionSubmission = submitContext.GetCompetitionDetails(compId);
+            CompetitionSubmission competitionSubmission = submitContext.GetCompetitionDetail(compId);
 
             return View(competitionSubmission);
         }
