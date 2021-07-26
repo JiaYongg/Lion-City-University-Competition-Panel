@@ -114,6 +114,27 @@ namespace WEB2021Apr_P01_T01.DAL
             return aoiName;
         }
 
+        public int AddAreaInterest(string aoiName)
+        {
+            AreaInterest aoi = new AreaInterest();
+
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"INSERT INTO AreaInterest(Name) OUTPUT INSERTED.AreaInterestID VALUES(@name)";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@name", aoiName);
+
+            conn.Open();
+
+            aoi.AreaInterestId = (int)cmd.ExecuteScalar();
+
+            conn.Close();
+
+            return aoi.AreaInterestId;
+        }
+
         public int Delete(int aoiId)
         {
             SqlCommand cmd = conn.CreateCommand();

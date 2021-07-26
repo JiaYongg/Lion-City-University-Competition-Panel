@@ -78,13 +78,16 @@ namespace WEB2021Apr_P01_T01.Controllers
         {
             List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
             List<string> aoiNames = new List<string>();
+            List<int> aoiId = new List<int>();
             foreach (var item in aoiList)
             {
                 aoiNames.Add(item.Name);
+                aoiId.Add(item.AreaInterestId);
             }
 
             ViewData["totalAOI"] = aoiList.Count();
             ViewData["AoiName"] = aoiNames;
+            ViewData["AoiId"] = aoiId;
 
             AreaInterest areaInterest = aoiContext.GetAoi();
 
@@ -93,9 +96,9 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult AddInterest(IFormCollection formData)
         {
-            string aoiName = formData["aoiName"];
+            string aoiName = formData["AoiName"];
 
-            compyContext.AddAreaInterest(aoiName);
+            aoiContext.AddAreaInterest(aoiName);
             return RedirectToAction("AreaOfInterest");
         }
 
