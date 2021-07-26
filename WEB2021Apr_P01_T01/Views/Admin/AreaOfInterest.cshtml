@@ -18,14 +18,15 @@
     <!-- Reference to customized styling for this website -->
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
     <script src="~/js/site.js"></script>
+
+    <script>
+        function deleteModal(name, id) {
+            $("#deleteForm").attr('action', '/Admin/Delete/' + id);
+            $("#deleteModalBody").html('Name: ' + name);
+            $("#deleteModal").modal('show');
+        }
+    </script>
 </head>
-<script>
-    function deleteModal(name,id) {
-        $("#deleteForm").attr('action', '/Admin/Delete/' + id);
-        $("#deleteModalBody").html('Name: ' + name);
-        $("#deleteModal").modal('show');
-    }
-</script>
 <body>
     <div class="container">
         <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
