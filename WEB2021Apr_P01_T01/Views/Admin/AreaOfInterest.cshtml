@@ -3,7 +3,7 @@
     ViewData["Title"] = "Area of Interest";
 }
 
-@{
+@{ 
     var name = (List<string>)ViewData["AoiName"];
     var id = (List<int>)ViewData["AoiId"];
 }
@@ -45,9 +45,9 @@
                     <tr>
                         <th scope="col" style="display: flex; justify-content: center;">
                             @*<div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="selectAll" />
-                                    <label class="custom-control-label" for="selectAll"></label>
-                                </div>*@
+                                <input type="checkbox" class="custom-control-input" id="selectAll" />
+                                <label class="custom-control-label" for="selectAll"></label>
+                            </div>*@
                             <div class="custom-control">No.</div>
                         </th>
                         <th scope="col">Name of Interest: </th>
@@ -59,10 +59,10 @@
                         <tr>
                             <td class="align-middle">
                                 @*<div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
-                                        <input type="checkbox" class="custom-control-input" id="@String.Format("customCheck{0}", i)">
-                                        <label class="custom-control-label" for="@String.Format("customCheck{0}", i)"></label>
-                                    </div>*@
-                                <div class="custom-control text-center">@Html.Raw(i + 1)</div>
+                                    <input type="checkbox" class="custom-control-input" id="@String.Format("customCheck{0}", i)">
+                                    <label class="custom-control-label" for="@String.Format("customCheck{0}", i)"></label>
+                                </div>*@
+                                <div class="custom-control text-center">@Html.Raw(i+1)</div>
                             </td>
                             <td class="d-flex justify-content-between align-items-center">
                                 <div class="aoi-table-data">
