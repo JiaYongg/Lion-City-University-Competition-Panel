@@ -14,13 +14,15 @@ namespace WEB2021Apr_P01_T01.Controllers
     {
         private CompetitionSubmissionDAL csContext = new CompetitionSubmissionDAL();
         private CompetitionDAL compyContext = new CompetitionDAL();
+        public CompetitionScoreDAL scoreContext = new CompetitionScoreDAL();
+        public CriteriaDAL criteriaContext = new CriteriaDAL();
         private JudgeDAL judgeContext = new JudgeDAL();
         // GET: CompetitorController
         public ActionResult Index()
         {
-            var competitorId = HttpContext.Session.GetInt32("userID");
+            int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
-            List<CompetitionSubmission> csList = csContext.competitorCompetitions(Convert.ToInt32(competitorId));
+            List<CompetitionSubmission> csList = csContext.CompetitorCompetitions(competitorId);
 
             List<CompetitorSubmissionViewModel> csVMList = MapToCompetitorSubmissionVM(csList);
 
@@ -29,18 +31,48 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public List<CompetitorSubmissionViewModel> MapToCompetitorSubmissionVM(List<CompetitionSubmission> csList)
         {
+            int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
             List<CompetitorSubmissionViewModel> csVMList = new List<CompetitorSubmissionViewModel>();
+
+
             foreach (CompetitionSubmission cs in csList)
             {
                 List<Judge> judgeList = judgeContext.GetCompetitionJudges(cs.CompetitionId);
                 cs.numofJudge = judgeList.Count();
+
+                var criteriaList = criteriaContext.GetCompetitionCriteria(cs.CompetitionId);
+
+                List<string> nameList = new List<string>();
+                List<int> weightList = new List<int>();
+                List<double> scoreList = new List<double>();
+
+                foreach (var item in criteriaList)
+                {
+                    nameList.Add(item.CriteriaName);
+                    weightList.Add(item.Weightage);
+                }
+
+                int i = 0;
+                foreach (var score in scoreContext.GetCompetitiorScores(cs.CompetitionId, competitorId))
+                {
+                    // convert score to percentage out of the weightage score
+                    double num = score.Score;
+                    num /= 10;
+                    num *= weightList[i];
+                    scoreList.Add(num);
+                    i++;
+                }
 
                 CompetitorSubmissionViewModel csVM = new CompetitorSubmissionViewModel
                 {
                     CompetitionId = cs.CompetitionId,
                     //CompetitorId = cs.CompetitorId,
                     CompetitionName = cs.CompetitionName,
+                    CriteriaName = nameList,
+                    Score = scoreList,
+                    VoteCount = cs.VoteCount,
+                    Weightage = weightList,
                     StartDate = cs.StartDate,
                     EndDate = cs.EndDate,
                     ResultsReleaseDate = cs.ResultReleasedDate,
@@ -90,11 +122,11 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult JoinCompetition(int id) // Takes in the competitionId to join the competition
         {
 
-            var competitorId = HttpContext.Session.GetInt32("userID");
+            int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
-            csContext.joinCompetition(id, Convert.ToInt32(competitorId));
+            csContext.JoinCompetition(id, competitorId);
 
-            CompetitorSubmissionViewModel csVM = csContext.GetCompetitionDetails(id);
+            CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
 
             return View(csVM); // Need to add an object modal here to use in JoinCompetition View
         }
@@ -102,9 +134,9 @@ namespace WEB2021Apr_P01_T01.Controllers
         // this method is used for viewing of competition details after they have joined the competition, used to submit file and appeal
         public ActionResult CompetitionSubmissionDetails(int id)
         {
-            var competitorId = HttpContext.Session.GetInt32("userID");
+            int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
-            CompetitorSubmissionViewModel csVM = csContext.GetCompetitionDetails(id);
+            CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
 
             return View("JoinCompetition", csVM); // Need to add an object modal here to use in JoinCompetition View
         }
@@ -113,8 +145,8 @@ namespace WEB2021Apr_P01_T01.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CompetitionSubmissionDetails(CompetitorSubmissionViewModel csVM)
         {
-            var competitorId = HttpContext.Session.GetInt32("userID");
-            csVM.CompetitorId = (int)competitorId;
+            int competitorId = (int)HttpContext.Session.GetInt32("userID");
+            csVM.CompetitorId = competitorId;
 
             if (csVM.fileToUpload != null && csVM.fileToUpload.Length > 0)
             {
@@ -133,11 +165,13 @@ namespace WEB2021Apr_P01_T01.Controllers
 
                     csVM.FileUrl = uploadedFile;
                     csVM.FileUploadDateTime = DateTime.Now;
-                    csContext.uploadFile(csVM);
+                    csContext.UploadFile(csVM);
+                    ViewData["UploadColor"] = "lime";
                     ViewData["UploadMessage"] = "Upload Successful!";
                 }
                 catch (IOException)
                 {
+                    ViewData["UploadColor"] = "red";
                     ViewData["UploadMessage"] = "Upload Failed!";
                     return View("JoinCompetition", csVM);
                 }
@@ -150,73 +184,22 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View("JoinCompetition", csVM);
         }
 
-        // GET: CompetitorController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Appeal(int id)
         {
-            return View();
+            int competitorId = (int)HttpContext.Session.GetInt32("userID");
+            CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
+            return View("Appeal", csVM);
         }
 
-        // GET: CompetitorController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: CompetitorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Appeal(CompetitorSubmissionViewModel csVM)
         {
-            try
+            if (csVM.Appeal != null)
             {
-                return RedirectToAction(nameof(Index));
+                csContext.SubmitAppeal(csVM.Appeal, csVM.CompetitorId, csVM.CompetitionId);
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CompetitorController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CompetitorController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CompetitorController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CompetitorController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }
