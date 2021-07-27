@@ -12,6 +12,8 @@ namespace WEB2021Apr_P01_T01.DAL
 {
     public class CompetitionSubmissionDAL
     {
+        public CriteriaDAL criteriaContext = new CriteriaDAL();
+        public CompetitionScoreDAL scoreContext = new CompetitionScoreDAL();
         private IConfiguration Configuration { get; }
         private SqlConnection conn;
 
@@ -126,7 +128,7 @@ namespace WEB2021Apr_P01_T01.DAL
         }
 
         // Gets the competitor's list of competitions, Jia Yong
-        public List<CompetitionSubmission> competitorCompetitions(int competitorId)
+        public List<CompetitionSubmission> CompetitorCompetitions(int competitorId)
         {
             SqlCommand cmd = conn.CreateCommand();
 
@@ -164,7 +166,7 @@ namespace WEB2021Apr_P01_T01.DAL
         }
 
         // Joins a competition using competitionId and competitorId, Jia Yong
-        public int joinCompetition(int competitionId, int competitorId)
+        public void JoinCompetition(int competitionId, int competitorId)
         {
             SqlCommand cmd = conn.CreateCommand();
 
@@ -176,16 +178,14 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Open();
 
             // ExecuteNonQuery is used to retrieve the rows affected in the database
-            int affectRows = (int)cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
 
             // Close the connection to the database after operations
             conn.Close();
 
-            // Return the rows affected when no error occurs.
-            return affectRows;
         }
 
-        public void uploadFile(CompetitorSubmissionViewModel csVM)
+        public void UploadFile(CompetitorSubmissionViewModel csVM)
         {
             SqlCommand cmd = conn.CreateCommand();
 
@@ -201,14 +201,37 @@ namespace WEB2021Apr_P01_T01.DAL
         }
 
         // Use competitionId to get various details of CompetitionSubmissionViewModel
-        public CompetitorSubmissionViewModel GetCompetitionDetails(int competitionId)
+        public CompetitorSubmissionViewModel GetCompetitorCompetitionDetails(int competitionId, int competitorId)
         {
             CompetitorSubmissionViewModel csVM = new CompetitorSubmissionViewModel();
 
             SqlCommand cmd = conn.CreateCommand();
 
-            cmd.CommandText = @"SELECT * FROM CompetitionSubmission AS cs INNER JOIN Competition AS compy ON cs.CompetitionID = compy.CompetitionID INNER JOIN Competitor AS c ON cs.CompetitorID = c.CompetitorID WHERE compy.CompetitionID = @selectedCompetitionID";
+            cmd.CommandText = @"SELECT * FROM CompetitionSubmission AS cs INNER JOIN Competition AS compy ON cs.CompetitionID = compy.CompetitionID INNER JOIN Competitor AS c ON cs.CompetitorID = c.CompetitorID WHERE compy.CompetitionID = @selectedCompetitionID AND c.CompetitorID = @selectedCompetitorID";
             cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorId);
+
+            var criteriaList = criteriaContext.GetCompetitionCriteria(competitionId);
+            List<string> nameList = new List<string>();
+            List<int> weightList = new List<int>();
+            List<double> scoreList = new List<double>();
+
+            foreach (var item in criteriaList)
+            {
+                nameList.Add(item.CriteriaName);
+                weightList.Add(item.Weightage);
+            }
+
+            int i = 0;
+            foreach (var score in scoreContext.GetCompetitiorScores(competitionId, competitorId))
+            {
+                // convert score to percentage out of the weightage score
+                double num = score.Score;
+                num /= 10;
+                num *= weightList[i];
+                scoreList.Add(num);
+                i++;
+            }
 
             conn.Open();
 
@@ -219,16 +242,19 @@ namespace WEB2021Apr_P01_T01.DAL
                 // Read the record from database
                 while (reader.Read())
                 {
-                    // Fill staff object with values from the data reader
+                    // Fill CompetitorSubmissionViewModel object with values from the data reader
                     csVM.CompetitionId = competitionId;
                     csVM.CompetitorId = reader.GetInt32(1);
                     csVM.FileUrl = !reader.IsDBNull(2) ? reader.GetString(2) : null;
                     csVM.FileUploadDateTime = !reader.IsDBNull(3) ? reader.GetDateTime(3) : (DateTime?)null;
                     csVM.Appeal = !reader.IsDBNull(4) ? reader.GetString(4) : null;
-                    //csVM.VoteCount = reader.GetInt32(5);
+                    csVM.CriteriaName = nameList;
+                    csVM.Score = scoreList;
+                    csVM.Weightage = weightList;
+                    csVM.VoteCount = reader.GetInt32(5);
                     csVM.Ranking = !reader.IsDBNull(6) ? reader.GetInt32(6) : (int?)null;
                     csVM.CompetitionName = reader.GetString(9);
-                    // Competition Start Date is not necessary as the competitor has already joined the competition.
+                    csVM.StartDate = reader.GetDateTime(10);
                     csVM.EndDate = reader.GetDateTime(11);
                     csVM.ResultsReleaseDate = reader.GetDateTime(12);
                     csVM.CompetitorName = reader.GetString(14);
@@ -241,6 +267,24 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Close();
 
             return csVM;
+        }
+
+        public void SubmitAppeal(string appealMessage, int competitorId, int competitionId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"UPDATE CompetitionSubmission SET Appeal = @appeal WHERE CompetitorID = @selectedCompetitorID AND CompetitionID = @selectedCompetitionID";
+            cmd.Parameters.AddWithValue("@appeal", appealMessage);
+            cmd.Parameters.AddWithValue("@selectedCompetitorID", competitorId);
+            cmd.Parameters.AddWithValue("@selectedCompetitionID", competitionId);
+
+            conn.Open();
+
+            // ExecuteNonQuery is used to retrieve the rows affected in the database
+            cmd.ExecuteNonQuery();
+
+            // Close the connection to the database after operations
+            conn.Close();
         }
     }
 }
