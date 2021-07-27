@@ -4,24 +4,13 @@
     List<CompetitionSubmission> csList = (List<CompetitionSubmission>)ViewData["Submit"];
 }
 
-@*@{
-        var rank = (List<int?>)ViewData["rankingList"];
-        var name = (List<string>)ViewData["competitorName"];
-        var totalScore = (List<double>)ViewData["totalScore"];
-        var votes = (List<int>)ViewData["votes"];
-        var appeal = (List<string>)ViewData["appeal"];
-        string viewAppeal = "";
 
-        var arr = ViewData["criteriaScores"].ToString().Split(",");
-        List<string> criteraList = new List<string>(arr);
-        int index = 0;
-    }*@
 <body>
     <div class="container vh70">
         <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
             <div class="aoi-titles">
                 <p>Judge Panel</p>
-                <h2>View Competitiors - @ViewData["compName"]</h2>
+                <h2>View Competitiors - @Model.CompetitionName</h2>
             </div>
         </div>
 
@@ -41,75 +30,125 @@
                 <tbody>
                     @foreach (var item in csList)
                     {
-                    <tr>
-                        <td>
-                            <div class="judge-table-content">
-                                @if (item.Ranking == null)
-                                {
-                                    <p>-</p>
-                                }
-                                else
-                                {
-                                    <p>@item.Ranking</p>
-                                }
-                            </div>
-                        </td>
-                        <td>
-                            <div class="judge-table-content">
-                                <p>@item.CompetitorName</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="judge-table-content">
-                                <p>@item.TotalMarks</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="judge-table-content">
-                                <p>@item.VoteCount</p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="judge-table-content">
-                                @if (item.Appeal == null)
-                                {
-                                    <p>~Nil~</p>
-                                }
-                                else
-                                {
-                                    <p>@item.Appeal</p>
-                                }
-                            </div>
-                        <td>
-                            <div class="judge-table-content">
-                                @if (item.FileUrl == null)
-                                {
-                                    <p>-</p>
-                                }
-                                else
-                                {
-                                    <p>@item.FileUrl</p>
-                                }
-                            </div>
-                        </td>
-                        </td>
-                    </tr>
-
+                        <tr>
+                            <td>
+                                <div class="judge-table-content">
+                                    @if (item.Ranking == null)
+                                    {
+                                        <p>-</p>
+                                    }
+                                    else
+                                    {
+                                        <p>@item.Ranking</p>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <p>@item.CompetitorName</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <p>@item.TotalMarks</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    <p>@item.VoteCount</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    @if (item.Appeal == null)
+                                    {
+                                        <p>~Nil~</p>
+                                    }
+                                    else
+                                    {
+                                        <a data-toggle="modal" data-target="#appealModal" data-appeal="@item.Appeal" data-name="@item.CompetitorName" href="#">View Appeal</a>
+                                    }
+                                </div>
+                            <td>
+                                <div class="judge-table-content">
+                                    @if (item.FileUrl == null)
+                                    {
+                                        <p>~Nil~</p>
+                                    }
+                                    else
+                                    {
+                                        <a class="file" href="#">@item.FileUrl</a>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="judge-table-content">
+                                    @if (item.FileUrl == null)
+                                    {
+                                        <p>~Nil~</p>
+                                    }
+                                    else
+                                    {
+                                        if (item.AlrMarked == true)
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.CompetitorId">Change Grade</a>
+                                            @*<button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" onclick="location.href = '@Url.Action("Edit", item.CompetitorId)'"><i class="fas fa-star" style="color: yellow;"></i></button>*@
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Grade" asp-route-id="@item.CompetitorId">Mark</a>
+                                            @*<button type="button" class="btn btn-default btn-circle editGrade" style="background: #A98F64;" onclick="location.href = '@Url.Action("Grade")'"><i class="fas fa-pen" style="color: white;"></i></button>*@
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
         </div>
-
-
     </div>
+    <!-- Lightbox for Appeal -->
+    <div class="modal fade" id="appealModal" tabindex="-1" role="dialog" aria-labelledby="appealModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="appealModalLabel">View appeal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="appeal-Data"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End -->
+    <!-- To use many different modals see this link: https://stackoverflow.com/questions/40645032/creating-multiple-modals-on-a-single-page -->
 </body>
 
+@section Scripts {
 
-<script>
-    $(document).on("click", ".editGrade", function () {
-        var iteration = $(this).data('id');
-        // As pointed out in comments,
-        // it is unnecessary to have to manually call the modal.
-        // $('#addBookDialog').modal('show');
-    });
-</script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#appealModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var name = button.data('name')
+            var file = button.data('file')
+            var appeal = button.data('appeal')// Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('View appeal - ' + file)
+            modal.find('.modal-title').text('View appeal - ' + name)
+            modal.find('.appeal-Data').text(appeal)
+        });
+        $('.file').click(function () {
+            alert("File is being downloaded.");
+        })
+    </script>
+}

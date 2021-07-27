@@ -1,0 +1,54 @@
+﻿@model WEB2021Apr_P01_T01.Models.CriteriaRankViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    int counter = 1;
+}
+
+<h1>Edit</h1>
+
+<h4>CriteriaRankViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype='multipart/form-data'>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @for (int i = 0; i < Convert.ToInt32(ViewData["criteriaNo"].ToString()); i++)
+            {
+                <div class="col-sm-6">
+                    <div class="criteria-header">
+                        @*<span class="criteria-value">Criteria @counter</span>*@
+                        <span class="criteria-value">Criteria <input asp-for="CriteriaId[i]" class="form-control-plaintext" style="display: inline-block" readonly /></span>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="form-group d-flex flex-column">
+                            <label class="control-label">Score</label>
+                            <input asp-for="Score[i]" class="form-control" />
+                            <span asp-validation-for="Score[i]" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                counter++;
+            }
+            <div class="form-group">
+                <label asp-for="Ranking" class="control-label"></label>
+                <input asp-for="Ranking" class="form-control" />
+                <span asp-validation-for="Ranking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalMarks" class="control-label"></label>
+                <input asp-for="TotalMarks" class="form-control" readonly/>
+                <span asp-validation-for="TotalMarks" class="text-danger"></span>
+            </div>
+            <div class="form-group col-12 flex-row d-flex">
+                <p class="criteria-error col-7">@TempData["error"]</p>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="JudgeCompetitor">Back to List</a>
+</div>
+
