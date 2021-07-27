@@ -4,59 +4,61 @@
     ViewData["Title"] = "JoinCompetition";
 }
 
-<h1>@Model.CompetitionName 's Submission Details</h1>
+<div class="container">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CompetitionSubmissionDetails" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CompetitorName" class="control-label"></label>
-                <input asp-for="CompetitorName" class="form-control" />
+    <form asp-action="CompetitionSubmissionDetails" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="CompetitorName" class="control-label" style="display:none"></label>
+                <label>Competitor Name:</label>
+                <input asp-for="CompetitorName" class="form-control" readonly/>
                 <span asp-validation-for="CompetitorName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompetitionName" class="control-label"></label>
-                <input asp-for="CompetitionName" class="form-control" />
+            <div class="form-group col-sm-6">
+                <label asp-for="CompetitionName" class="control-label" style="display:none"></label>
+                <label>Competition Name:</label>
+                <input asp-for="CompetitionName" class="form-control" readonly/>
                 <span asp-validation-for="CompetitionName" class="text-danger"></span>
             </div>
-            <div class="form-group" style="display: none;">
-                <label asp-for="CompetitorId" class="control-label"></label>
-                <input asp-for="CompetitorId" class="form-control" />
-                <span asp-validation-for="CompetitorId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <label asp-for="CompetitorId" class="control-label"></label>
+            <input asp-for="CompetitorId" class="form-control" />
+        </div>
+        <div class="form-group" style="display: none;">
+            <label asp-for="CompetitionId" class="control-label"></label>
+            <input asp-for="CompetitionId" class="form-control" />
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" readonly/>
+                <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
-            <div class="form-group" style="display: none;">
-                <label asp-for="CompetitionId" class="control-label"></label>
-                <input asp-for="CompetitionId" class="form-control" />
-                <span asp-validation-for="CompetitionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group col-sm-6">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+                <input asp-for="EndDate" class="form-control" readonly/>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ResultsReleaseDate" class="control-label"></label>
-                <input asp-for="ResultsReleaseDate" class="form-control" />
-                <span asp-validation-for="ResultsReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input class="background-gold" asp-for="fileToUpload" accept="" />
+        </div>
+        <div class="form-group col-sm-6">
+            <label asp-for="ResultsReleaseDate" class="control-label"></label>
+            <input asp-for="ResultsReleaseDate" class="form-control" readonly />
+            <span asp-validation-for="ResultsReleaseDate" class="text-danger"></span>
+        </div>
+        <div class="form-group d-flex flex-column">
+            <input class="background-gold" asp-for="fileToUpload" accept="" style="margin-bottom:20px;"/>
+            @if (DateTime.Now >= Model.StartDate && DateTime.Now < Model.EndDate)
+            {
                 <input type="submit" class="btn background-gold" asp-controller="Competitor" asp-action="CompetitionSubmissionDetails" asp-route-id="CompetitorId" value="Submit" />
-                <span style="color:red;">@ViewData["UploadMessage"]</span>
-            </div>
-            <div class="form-group">
-                <a class="btn background-gold disabled" asp-action="Appeal" asp-route-id="@Model.Appeal">Appeal</a>
-            </div>
-        </form>
-    </div>
+            }
+            else
+            {
+                <input type="submit" class="btn background-gold disabled" value="Submit" />
+            }
+            <span style="color:@ViewData["UploadColor"]; text-align:center;">@ViewData["UploadMessage"]</span>
+        </div>
+    </form>
 </div>
-
-<div>
-    <a asp-action="Index">Back to Competitor Panel</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
