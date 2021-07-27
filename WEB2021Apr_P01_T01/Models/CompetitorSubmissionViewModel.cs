@@ -16,14 +16,14 @@ namespace WEB2021Apr_P01_T01.Models
         public int CompetitorId { get; set; }
 
         [Required]
-        [Display(Name = "Competitor's Name")]
+        [Display(Name = "by ")]
         public string? CompetitorName { get; set; }
 
-        [Display(Name = "Competition Name")]
+        [Display(Name = "Competition:")]
         public string CompetitionName { get; set; }
 
         [Display(Name = "Competition Start Date: ")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime StartDate { get; set; }
 
@@ -32,13 +32,18 @@ namespace WEB2021Apr_P01_T01.Models
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "Results will be released on ")]
+        [Display(Name = "Results Released: ")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime ResultsReleaseDate { get; set; }
 
+        [Required]
         [Display(Name = "Appeal Remarks")]
         public string? Appeal { get; set; }
+
+        [Required]
+        [Display(Name = "votes")]
+        public int VoteCount { get; set; }
 
         [Display(Name = "Rank")]
         public int? Ranking { get; set; }
@@ -61,14 +66,22 @@ namespace WEB2021Apr_P01_T01.Models
         [Required(ErrorMessage = "Please choose a file.")]
         public IFormFile? fileToUpload { get; set; }
 
-        [Display(Name = "File Submitted On")]
+        [Display(Name = "Submitted On:")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd h:mm tt}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime? FileUploadDateTime { get; set; }
         public string DateImage { get; set; }
 
         public string Status { get; set; }
 
         public bool ResultRelease { get; set; }
+
+        [Required]
+        [Display(Name = "Score")]
+        public List<double>? Score { get; set; }
+
+        public List<string> CriteriaName { get; set; }
+
+        public List<int> Weightage { get; set; }
     }
 }
