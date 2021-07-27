@@ -89,14 +89,14 @@
                                     }
                                     else
                                     {
-                                        if (item.TotalMarks != 0)
+                                        if (item.AlrMarked == true)
                                         {
-                                            <a asp-action="Edit" asp-route-id="@item.CompetitorId">Update</a>
+                                            <a asp-action="Edit" asp-route-id="@item.CompetitorId">Change Grade</a>
                                             @*<button type="button" class="btn btn-default btn-circle" style="background: #A98F64;" onclick="location.href = '@Url.Action("Edit", item.CompetitorId)'"><i class="fas fa-star" style="color: yellow;"></i></button>*@
                                         }
                                         else
                                         {
-                                            <a asp-action="Grade" asp-route-id="@item.CompetitorId">Grade</a>
+                                            <a asp-action="Grade" asp-route-id="@item.CompetitorId">Mark</a>
                                             @*<button type="button" class="btn btn-default btn-circle editGrade" style="background: #A98F64;" onclick="location.href = '@Url.Action("Grade")'"><i class="fas fa-pen" style="color: white;"></i></button>*@
                                         }
                                     }

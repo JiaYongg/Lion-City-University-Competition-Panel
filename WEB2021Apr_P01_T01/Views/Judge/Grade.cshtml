@@ -36,6 +36,7 @@
                 <span asp-validation-for="Ranking" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <p class="criteria-error col-7">@TempData["error"]</p>
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

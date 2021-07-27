@@ -46,16 +46,26 @@ namespace WEB2021Apr_P01_T01.Controllers
             var compList = submitContext.GetCompetitionSubmissions(compId);
             var weightage = criteriaContext.GetCompetitionCriteria(compId);
 
+
             foreach (var item in compList)
             {
                 int i = 0;
                 double total = 0;
 
-                foreach (var score in scoreContext.GetCompetitiorScores(compId, item.CompetitorId))
+                if (scoreContext.GetCompetitiorScores(compId, item.CompetitorId).Count() == 0 )
                 {
-                    total += weightage[i].Weightage * Convert.ToDouble(score.Score) / 10;
-                    i++;
+                    item.AlrMarked = false;
                 }
+                else
+                {
+                    foreach (var score in scoreContext.GetCompetitiorScores(compId, item.CompetitorId))
+                    {
+                        total += weightage[i].Weightage * Convert.ToDouble(score.Score) / 10;
+                        i++;
+                    }
+                    item.AlrMarked = true;
+                }
+                
                 item.TotalMarks = total;
             }
 
@@ -89,8 +99,16 @@ namespace WEB2021Apr_P01_T01.Controllers
             
             for (int i = 0; i < counter; i++)
             {
-                Console.WriteLine(formData["Score[" + i + "]"]);
-                scoreContext.UpdateScore(Convert.ToInt32(formData["Score[" + i + "]"]), compId, competitorId, Convert.ToInt32(formData["CriteriaId[" + i + "]"]));
+                if (Convert.ToInt32(formData["Score[" + i + "]"]) >= 0 && Convert.ToInt32(formData["Score[" + i + "]"]) <= 10)
+                {
+                    scoreContext.UpdateScore(Convert.ToInt32(formData["Score[" + i + "]"]), compId, competitorId, Convert.ToInt32(formData["CriteriaId[" + i + "]"]));
+                }
+                else
+                {
+                    TempData["error"] = "Please enter a number from 0 to 10";
+
+                    return RedirectToAction("Edit");
+                }
             }
 
             if (formData["Ranking"] == "")
@@ -127,8 +145,16 @@ namespace WEB2021Apr_P01_T01.Controllers
             
             for (int i = 0; i < counter; i++)
             {
-                Console.WriteLine(formData["CriteriaId[" + i + "]"]);
-                scoreContext.InsertScore(Convert.ToInt32(formData["CriteriaId[" + i + "]"]), competitorId, compId, Convert.ToInt32(formData["Score[" + i + "]"]));
+                if (Convert.ToInt32(formData["Score[" + i + "]"]) >= 0 && Convert.ToInt32(formData["Score[" + i + "]"]) <= 10)
+                {
+                    scoreContext.InsertScore(Convert.ToInt32(formData["CriteriaId[" + i + "]"]), competitorId, compId, Convert.ToInt32(formData["Score[" + i + "]"]));
+                }
+                else
+                {
+                    TempData["error"] = "Please enter a number from 0 to 10";
+
+                    return RedirectToAction("Grade");
+                }
             }
 
             if (formData["Ranking"].Contains("") )
