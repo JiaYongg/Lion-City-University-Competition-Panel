@@ -154,7 +154,7 @@ namespace WEB2021Apr_P01_T01.DAL
             int startMonth = competition.StartDate.Month;
             int startYear = competition.StartDate.Year;
 
-            DateTime start = new DateTime(startYear, startMonth, startDay);
+            DateTime start = new DateTime(startYear, startMonth, startDay, competition.StartDate.Hour, competition.StartDate.Minute, 0);
 
             int endDay = competition.EndDate.Day;
             int endMonth = competition.EndDate.Month;
@@ -169,29 +169,45 @@ namespace WEB2021Apr_P01_T01.DAL
             DateTime result = new DateTime(resultYear, resultMonth, resultDay);
 
             SqlCommand cmd = conn.CreateCommand();
-            //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
+
             cmd.CommandText = @"INSERT INTO Competition (AreaInterestID, CompetitionName, StartDate, EndDate, ResultReleasedDate)
                 OUTPUT INSERTED.CompetitionID
                 VALUES(@aoi, @name, @start, @end, @results)";
-            //Define the parameters used in SQL statement, value for each parameter
-            //is retrieved from respective class's property.
+
             cmd.Parameters.AddWithValue("@aoi", aoiId);
             cmd.Parameters.AddWithValue("@name", compName);
             cmd.Parameters.AddWithValue("@start", start);
             cmd.Parameters.AddWithValue("@end", end);
             cmd.Parameters.AddWithValue("@results", result);
-            //A connection to database must be opened before any operations made.
-            conn.Open();
-            //ExecuteScalar is used to retrieve the auto-generated
-            //StaffID after executing the INSERT SQL statement
-            competition.CompetitionId = (int)cmd.ExecuteScalar();
 
-            //A connection should be closed after operations.
+            conn.Open();
+
+            competition.CompetitionId = (int)cmd.ExecuteScalar();
             conn.Close();
 
-            //Return id when no error occurs.
             return competition.CompetitionId;
+        }
+
+        public bool CheckCompetitionName(string name)
+        {
+            bool exist = false;
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM Competition WHERE CompetitionName = @name";
+            cmd.Parameters.AddWithValue("@name", name);
+
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                exist = true;
+            }
+            reader.Close();
+
+            conn.Close();
+
+            return exist;
         }
 
         public int GetAreaInterestID(string aoiName)
@@ -215,25 +231,6 @@ namespace WEB2021Apr_P01_T01.DAL
             return aoi.AreaInterestId;
         }
 
-        //public int AddAreaInterest(string aoiName)
-        //{
-        //    AreaInterest aoi = new AreaInterest();
-
-        //    SqlCommand cmd = conn.CreateCommand();
-        //    //Specify an INSERT SQL statement which will
-        //    //return the auto-generated StaffID after insertion
-        //    cmd.CommandText = @"INSERT INTO AreaInterest(Name) OUTPUT INSERTED.AreaInterestID VALUES(@name)";
-        //    //Define the parameters used in SQL statement, value for each parameter
-        //    //is retrieved from respective class's property.
-        //    cmd.Parameters.AddWithValue("@name", aoiName);
-
-        //    conn.Open();
-
-        //    aoi.AreaInterestId = (int)cmd.ExecuteScalar();
-
-        //    conn.Close();
-
-        //    return aoi.AreaInterestId;
-        //}
+        
     }
 }

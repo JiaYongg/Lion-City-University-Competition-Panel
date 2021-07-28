@@ -29,52 +29,79 @@
                 {
                     <div class="card col-md-4 p-2 mt-4 shadow-sm bg-white rounded">
                         <img class="card-img-top" src="~/images/no-image.png" alt="Card image cap">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title gold">@competition.CompetitionName</h5>
-                            <img src="~/images/calendar.png" style="width: 30px;"> <label asp-for="@competition.StartDate"></label><span class="gold"> @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
-                            <img src="~/images/@competition.DateImage" style="width: 30px;">
-                            @if (competition.Status == "NotStarted")
-                            {
-                                <span class="gold">@competition.durationLeftToStart days left to the start of the competition</span><br /><br />
-                            }
-                            else if (competition.Status == "Ongoing")
-                            {
-                                <span class="gold">@competition.durationLeftToSubmit days left to submit a file</span><br /><br />
-                                <a class="btn background-gold" style="color: white;" asp-controller="Competitor" asp-action="CompetitionSubmissionDetails" asp-route-id="@competition.CompetitionId">Upload File</a>
-                            }
-                            else if (competition.Status == "Ended" && competition.ResultRelease == true)
-                            {
-                                if (competition.Ranking > 3)
+                            <div>
+                                <img src="~/images/calendar.png" style="width: 30px;"> <label asp-for="@competition.StartDate"></label><span class="gold"> @competition.StartDate.ToString("d/M/yyyy")</span><br /><br />
+                                <img src="~/images/JudgeHammer.png" style="width: 30px;"> <span>@competition.numOfJudge.ToString() judges</span> <br /> <br />
+                            </div>
+                            <div>
+                                <img src="~/images/@competition.DateImage" style="width: 30px;">
+                                @if (competition.Status == "NotStarted")
                                 {
-                                    <span class="gold"> Try harder next time!</span>
-                                    <span class="badge badge-secondary">Ended</span>
+                                    <span class="gold">@competition.durationLeftToStart days left to the start of the competition</span><br /><br />
+                                }
+                                else if (competition.Status == "Ongoing")
+                                {
+                                    <span class="gold">@competition.durationLeftToSubmit days left to submit a file</span><br /><br />
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <a class="btn background-gold" style="color: white;" asp-controller="Competitor" asp-action="CompetitionSubmissionDetails" asp-route-id="@competition.CompetitionId">Upload File</a>
+                                    </div>
+                                }
+                                else if (competition.Status == "Ended" && competition.ResultRelease == true)
+                                {
+                                    if (competition.Ranking > 3)
+                                    {
+                                        <span class="gold"> Try harder next time!</span>
+                                        <span class="badge badge-secondary">Ended</span>
+                                    }
+                                    else
+                                    {
+                                        <label asp-for="@competition.Ranking"></label><span class="gold"> @competition.Ranking</span>
+                                        <span class="badge badge-secondary">Ended</span>
+                                    }
+                                    <br /><br />
+                                    <span><b>Scores:</b></span><br />
+                                    for (int i = 0; i < competition.CriteriaName.Count(); i++)
+                                    {
+                                        <span>@competition.CriteriaName[i] Score: @competition.Score[i]/@competition.Weightage[i]%</span>
+                                        <br />
+                                    }
+                                    <br />
                                 }
                                 else
                                 {
-                                    <label asp-for="@competition.Ranking"></label><span class="gold"> @competition.Ranking</span>
-                                    <span class="badge badge-secondary">Ended</span>
+                                    <label asp-for="@competition.resultsReleaseDuration"></label><span class="gold"> @competition.resultsReleaseDuration days</span><br /><br />
                                 }
-                                <br /><br />
-                            }
-                            else
-                            {
-                                <label asp-for="@competition.resultsReleaseDuration"></label><span class="gold"> @competition.resultsReleaseDuration days</span><br /><br />
-                            }
-                            <img src="~/images/JudgeHammer.png" style="width: 30px;"> <span>@competition.numOfJudge.ToString() judges</span> <br /> <br />
-                            <br />
+                            </div>
                             @if (competition.Status == "Ended" && competition.ResultRelease == false)
                             {
                                 if (competition.Appeal == null)
                                 {
-                                    <a class="btn background-gold btn-180" asp-controller="Competitor" asp-action="Appeal" asp-route-id="@competition.CompetitionId">Appeal</a>
+                                    if (competition.Score.Count() != 0) // if competitor's competition has scores for criterias
+                                    {
+                                        <span>Scores:</span>
+                                        for (int i = 0; i < competition.CriteriaName.Count(); i++)
+                                        {
+                                            <span>@competition.CriteriaName[i] Score: @competition.Score[i]/@competition.Weightage[i]%</span>
+                                            <br />
+                                        }
+                                    }
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <a class="btn background-gold btn-180" asp-controller="Competitor" asp-action="Appeal" asp-route-id="@competition.CompetitionId">Appeal</a>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <a class="btn background-gold btn-180 disabled">Appealed</a>
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <a class="btn background-gold btn-180 disabled">Appealed</a>
+                                    </div>
                                 }
                             }
-                            <br /> <br />
-                            <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="CompetitionDetails" asp-route-id="@competition.CompetitionId">View Competition</a>
+                            <br />
+                            <div class="d-flex mt-auto" style="justify-content: center;">
+                                <a class="btn background-gold btn-180" asp-controller="Competition" asp-action="CompetitionDetails" asp-route-id="@competition.CompetitionId">View Competition</a>
+                            </div>
                         </div>
                     </div>
                 }
@@ -83,6 +110,6 @@
     }
     else
     {
-        <span style="color:red;" class="text-center">There are no ongoing competitions presently.</span>
+        <span style="color:red;" class="text-center">You have yet to join a competition.</span>
     }
 </div>

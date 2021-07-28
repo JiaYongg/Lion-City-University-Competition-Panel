@@ -1,0 +1,118 @@
+﻿@model WEB2021Apr_P01_T01.Models.CompetitorSubmissionViewModel
+
+@{
+    ViewData["Title"] = "Appeal";
+}
+
+<div class="container appeal-container">
+    <form asp-action="Appeal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CompetitionId" class="control-label" style="display: none;"></label>
+            <input asp-for="CompetitionId" class="form-control" style="display: none;" />
+        </div>
+        <div class="form-group">
+            <label asp-for="CompetitorId" class="control-label" style="display: none;"></label>
+            <input asp-for="CompetitorId" class="form-control" style="display: none;" />
+        </div>
+        <section class="d-flex col-12 appeal-section">
+            <div class="submission-img col-md-6 col-sm-12">
+                @if (Model.FileUrl.Contains("jpg") || Model.FileUrl.Contains("png"))
+                {
+                    <img class="card-img-top" src="~/competitionfiles/@Model.FileUrl" alt="File is not an image">
+                }
+                else
+                {
+                    <img class="card-img-top" src="~/images/no-image.png" alt="no image">
+                }
+            </div>
+            <div class="content col-md-6 col-sm-12">
+                <h2 class="submission-file form-group">
+                    <label asp-for="FileUrl" class="control-label" style="display:none;"></label>
+                    <input asp-for="FileUrl" class="form-control-plaintext gold" readonly style="padding-top:0;" />
+                    <span asp-validation-for="FileUrl" class="text-danger"></span>
+                </h2>
+                <div class="d-flex">
+                    <div class="form-group d-flex competitor-name" style="padding-left:0; align-items:center;">
+                        <label asp-for="CompetitorName" class="control-label"></label>
+                        <input asp-for="CompetitorName" class="form-control-plaintext gold" style="padding-top:0;" readonly />
+                        <span asp-validation-for="CompetitorName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-flex" style="padding-right:0; align-items:center; font-style:italic;">
+                        <input asp-for="VoteCount" class="form-control-plaintext" readonly style="padding:0; width:20%; text-align:center; font-style:italic;" />
+                        <label asp-for="VoteCount" class="control-label" style="margin-bottom:0;"></label>
+                        <span asp-validation-for="VoteCount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="submission-details">
+                    <div class="form-group d-flex competition-name">
+                        <label asp-for="CompetitionName" class="control-label" style="padding-left:0; font-weight:bold; width:100%;"></label>
+                        <input asp-for="CompetitionName" class="form-control-plaintext gold" style="padding-top:0;" readonly />
+                        <span asp-validation-for="CompetitionName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-flex upload-date">
+                        <label asp-for="FileUploadDateTime" class="control-label" style="padding-left:0; font-weight:bold; width:100%;"></label>
+                        <input asp-for="FileUploadDateTime" class="form-control-plaintext gold" style="padding-top:0;" readonly />
+                        <span asp-validation-for="FileUploadDateTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="results-release">
+                    <div class="form-group d-flex release-date">
+                        <label asp-for="ResultsReleaseDate" class="control-label d-flex" style="padding-left:0; font-weight:bold; width:100%;"></label>
+                        <input asp-for="ResultsReleaseDate" class="form-control-plaintext gold" readonly style="padding-top:0;" />
+                        <span asp-validation-for="ResultsReleaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="score">
+                    @if (Model.Score.Count() != 0)
+                    {
+                        <span style="font-weight:bold;">Scores:</span>
+                        @for (int i = 0; i < Model.CriteriaName.Count(); i++)
+                        {
+                            <p style="font-weight:bold;">@Model.CriteriaName[i] Score: <span class="gold">@Model.Score[i]/@Model.Weightage[i]%</span></p>
+                        }
+                    }
+
+                </div>
+            </div>
+        </section>
+        <br />
+        <div class="appealParent col-12">
+            <h2 class="appealTitle gold" style="text-align:center">Appeal Form</h2>
+            <div class="form-group">
+                <label asp-for="Appeal" class="control-label" style="display:none;"></label>
+                <input type="text" asp-for="Appeal" class="form-control" style="height:200px;" placeholder="Please describe the reasons and tell us why you think you deserve a better grading."/>
+                <span asp-validation-for="Appeal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Appeal" class="btn btn-primary background-gold" style="width:100%;" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<style type="text/css">
+
+    @@media (max-width: 767px) {
+        .appeal-section {
+            flex-direction: column;
+        }
+        h2 input{
+            text-align: center;
+        }
+        .competitor-name{
+            text-align: right;
+        }
+        .content {
+            text-align: center;
+        }
+    }
+    @@media (min-width: 768px) and (max-width: 991px){
+        .competitor-name, .competition-name, .upload-date, .release-date {
+            flex-direction: column;
+        }
+        .competitor-name label{
+            width: 100%;
+        }
+    }
+</style>
