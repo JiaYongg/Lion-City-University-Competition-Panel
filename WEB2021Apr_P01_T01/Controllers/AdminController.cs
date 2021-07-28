@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WEB2021Apr_P01_T01.DAL;
 using WEB2021Apr_P01_T01.Models;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace WEB2021Apr_P01_T01.Controllers
 {
@@ -30,29 +32,64 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCompetition(IFormCollection formData)
+        public ActionResult CreateCompetition(Competition competition)
         {
-
-            string competitionName = formData["CompetitionName"];
-            string areaOfInterest = formData["AoiName"];
-            DateTime startDate = Convert.ToDateTime(formData["StartDate"]);
-            DateTime endDate = Convert.ToDateTime(formData["EndDate"]);
-            DateTime resultsReleasedDate = Convert.ToDateTime(formData["ResultsReleaseDate"]);
-
-            Competition competition = new Competition
+            if (!ModelState.IsValid)
             {
-                CompetitionName = competitionName,
-                AoiName = areaOfInterest,
-                StartDate = startDate,
-                EndDate = endDate,
-                ResultsReleaseDate = resultsReleasedDate
-            };
+                ModelStateEntry sDate = null;
+                ModelStateEntry eDate = null;
+                ModelStateEntry rDate = null;
+                if (ModelState.TryGetValue("StartDate", out sDate))
+                {
+                    if (sDate != null && sDate.Errors.Count > 0)
+                    {
+                        ModelState.Remove("StartDate");
+                        ModelState.AddModelError("StartDate", "Start Date is invalid");
+                    }
+                }
 
+                if (ModelState.TryGetValue("EndDate", out eDate))
+                {
+                    if (eDate != null && eDate.Errors.Count > 0)
+                    {
+                        ModelState.Remove("EndDate");
+                        ModelState.AddModelError("EndDate", "End Date is invalid");
+                    }
+                }
+
+                if (ModelState.TryGetValue("ResultsReleaseDate", out rDate))
+                {
+                    if (rDate != null && rDate.Errors.Count > 0)
+                    {
+                        ModelState.Remove("ResultsReleaseDate");
+                        ModelState.AddModelError("ResultsReleaseDate", "Result Release Date is invalid");
+                    }
+                }
+
+                if (!competition.Validated)
+                {
+                    var validationResults = competition.Validate(new ValidationContext(competition, null, null));
+                    foreach (var error in validationResults)
+                    {
+                        foreach (var memberName in error.MemberNames)
+                        {
+                            ModelState.AddModelError(memberName, error.ErrorMessage);
+                        }
+                    }
+                }
+                ViewData["aoiList"] = GetAOI();
+                return View(competition);
+            }
+            if(compyContext.CheckCompetitionName(competition.CompetitionName))
+            {
+                ModelState.AddModelError("CompetitionName", "Competition already exists");
+                ViewData["aoiList"] = GetAOI();
+                return View(competition);
+            }
             int aoiID = compyContext.GetAreaInterestID(competition.AoiName);
+            int compId = compyContext.AddCompetition(competition, aoiID);
 
-            compyContext.AddCompetition(competition, aoiID);
-
-            return RedirectToAction("CreateCompetition");
+            return Redirect("~/Competition/CompetitionDetails/"+compId);
         }
 
         private List<SelectListItem> GetAOI()
