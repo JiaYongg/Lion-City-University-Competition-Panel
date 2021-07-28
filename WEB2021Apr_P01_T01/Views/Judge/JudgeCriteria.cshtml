@@ -9,6 +9,16 @@
     ::-webkit-input-placeholder {
         opacity: 0.5;
     }
+
+    @@media (max-width: 769px) {
+        .criteria-footer {
+            flex-direction: column !important;
+        }
+
+        .criteria-footer input {
+            width: 100% !important;
+        }
+    }
 </style>
 <body>
     @*Holding entire form aka container *@
@@ -20,7 +30,7 @@
                 <div class="criteria-header">
                     <span class="criteria-value">Criteria 1</span>
                     <div id="criteria-image">
-                        <button formaction="DeleteCriteria" class="criteria-delete"><i class="fas fa-times-circle" style="color: red; font-size: xx-large" ></i></button>
+                        <button formaction="DeleteCriteria" class="criteria-delete"><i class="fas fa-times-circle" style="color: red; font-size: xx-large"></i></button>
                     </div>
                 </div>
                 <div class="criteria-content">
@@ -65,17 +75,10 @@
             }
             <div class="criteria-footer col-12 flex-row d-flex">
                 <p class="criteria-error col-7">@TempData["criteriaError"]</p>
-                <input type="submit" value="Add new criteria" class="btn background-gold btn-180 btn-login col-2 criteria-btn" formaction="AddCriteria" />
-                <input type="submit" value="Create" class="btn background-gold btn-180 btn-login col-2 criteria-btn" />
+                <input type="submit" value="Add new criteria" class="btn background-gold btn-180 btn-login criteria-btn" formaction="AddCriteria" />
+                <input type="submit" value="Create" class="btn background-gold btn-180 btn-login criteria-btn" />
             </div>
         </form>
     </div>
 
-    <div>
-        <a asp-action="Index">Back to Home</a>
-    </div>
 </body>
-
-<script>
-    $(document.getElementBy)
-</script>

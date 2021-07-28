@@ -298,3 +298,13 @@ hr.solid {
 {
 
 }
+
+/* Edit in judge */
+
+.grade-left {
+    padding-left: 0px;
+}
+
+.grade-right {
+    padding-right: 0px;
+}

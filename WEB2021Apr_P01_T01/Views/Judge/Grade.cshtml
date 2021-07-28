@@ -2,48 +2,56 @@
 
 @{
     ViewData["Title"] = "Grade";
-    int counter = 1;
 }
 
-<h1>Grade</h1>
 
-<h4>CriteriaRankViewModel</h4>
-<hr />
+<style>
+    @@media (max-width: 769px) {
+        .marks-end {
+            flex-direction: column !important;
+            width: 100% !important;
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+    }
+</style>
+
+
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Grade" enctype='multipart/form-data'>
+    <div class="container">
+        <h1>Grade</h1>
+        <hr />
+        <form asp-action="Grade" enctype='multipart/form-data' class="criteria-container">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @for (int i = 0; i < Convert.ToInt32(ViewData["criteriaNo"].ToString()); i++)
             {
                 <div class="col-sm-6">
-                    <div class="criteria-header">
-                        @*<span class="criteria-value">Criteria @counter</span>*@
-                        <span class="criteria-value">Criteria <input asp-for="CriteriaId[i]" class="form-control-plaintext" style="display: inline-block" readonly /></span>
+                    <div class="criteria-content">
+                        <span class="criteria-value d-flex">Criteria <input asp-for="CriteriaId[i]" class="form-control-plaintext" style="display: inline-block; padding-top: 0px; padding-left: 10px;" readonly /></span>
                     </div>
                     <div class="criteria-content">
-                        <div class="form-group d-flex flex-column">
-                            <label class="control-label">Score</label>
-                            <input asp-for="Score[i]" class="form-control" />
+                        <div class="form-group">
+                            <label class="control-label">Score (0 - 10)</label>
+                            <input asp-for="Score[i]" class="form-control" style="background-color: #fff" />
                             <span asp-validation-for="Score[i]" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
-                counter++;
             }
-            <div class="form-group">
-                <label asp-for="Ranking" class="control-label"></label>
-                <input asp-for="Ranking" class="form-control" />
-                <span asp-validation-for="Ranking" class="text-danger"></span>
+
+            <div class="criteria-footer col-12 flex-row d-flex">
+                <div class="form-group d-flex flex-column col-md-12 col-lg-6" style="padding-left: 0px; padding-right: 0px;">
+                    <label asp-for="Ranking" class="control-label"></label>
+                    <input asp-for="Ranking" class="form-control" style="background-color: #fff;" />
+                    <span asp-validation-for="Ranking" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
+
+            <div class="criteria-footer col-12 flex-row d-flex justify-content-end marks-end">
                 <p class="criteria-error col-7">@TempData["error"]</p>
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary col-lg-4 col-md-4" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

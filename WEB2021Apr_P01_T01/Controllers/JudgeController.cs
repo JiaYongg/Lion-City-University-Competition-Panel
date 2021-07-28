@@ -86,6 +86,7 @@ namespace WEB2021Apr_P01_T01.Controllers
             CompetitionSubmission submitModel = submitContext.GetCompetitionCompetitorSubmission(compId, id);
 
             CriteriaRankViewModel crVM = MapToCriteriaRankVM(submitModel, id);
+            
             return View("Edit", crVM);
         }
         
