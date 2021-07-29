@@ -21,6 +21,10 @@ namespace WEB2021Apr_P01_T01.Models
 
         public int AreaInterestId { get; set; }
 
+        public string? AreaInterestName { get; set; }
+
+        public List<Competition> competitionAssigned { get; set; }
+
         [Required]
         [StringLength(50)]
         public string EmailAddr { get; set; }
