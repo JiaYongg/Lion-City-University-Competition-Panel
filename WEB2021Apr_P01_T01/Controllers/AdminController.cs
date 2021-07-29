@@ -212,6 +212,7 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             judgeContext.UnassignJudgeFromComp(int.Parse(judgeId), int.Parse(compId));
 
+            TempData["JavaScriptFunction"] = string.Format("unassignJudgeSuccess();");
             return RedirectToAction("ViewJudges");
         }
     }
