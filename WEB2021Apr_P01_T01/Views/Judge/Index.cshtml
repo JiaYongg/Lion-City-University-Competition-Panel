@@ -18,23 +18,46 @@
     <div class="container vh70">
         <p>Judge Panel</p>
         <h2>Welcome,</h2>
-        <h1 class="gold">LCU Judge - Judging For @ViewData["compName"]</h1>
-        <div class="judge-container">
-            <div class="col-sm-12 col-md-6">
-                <a asp-action="JudgeCompetitor"><img class="judge-image" src="~/images/judge-left-panel.jpg" /></a>
-                <div class="judge-content">
-                    <h4>View Competitor</h4>
-                    <p>Current competitors to be judged.<br />Grade submission and edit ranking or marks.</p>
+        @if (@ViewData["compName"] is null)
+        {
+            <h1 class="gold">LCU Judge - Waiting to be assigned a competition</h1>
+            <div class="judge-container">
+                <div class="col-sm-12 col-md-6">
+                    <a><img class="judge-image" src="~/images/judge-left-panel.jpg" /></a>
+                    <div class="judge-content">
+                        <h4>View Competitor</h4>
+                        <p>You will be able to view this page after you have been assigned a competition</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <a><img class="judge-image" src="~/images/judge-hammer.png" /></a>
+                    <div class="judge-content">
+                        <h4>Create Judging Criteria</h4>
+                        <p>You will be able to view this page after you have been assigned a competition</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
-                <a asp-action="JudgeCriteria"><img class="judge-image" src="~/images/judge-hammer.png" /></a>
-                <div class="judge-content">
-                    <h4>Create Judging Criteria</h4>
-                    <p>Create the criterions and its weightage</p>
+        }
+        else
+        {
+            <h1 class="gold">LCU Judge - Judging For @ViewData["compName"]</h1>
+            <div class="judge-container">
+                <div class="col-sm-12 col-md-6">
+                    <a asp-action="JudgeCompetitor"><img class="judge-image" src="~/images/judge-left-panel.jpg" /></a>
+                    <div class="judge-content">
+                        <h4>View Competitor</h4>
+                        <p>Current competitors to be judged.<br />Grade submission and edit ranking or marks.</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <a asp-action="JudgeCriteria"><img class="judge-image" src="~/images/judge-hammer.png" /></a>
+                    <div class="judge-content">
+                        <h4>Create Judging Criteria</h4>
+                        <p>Create the criterions and its weightage</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </body>
 </html>

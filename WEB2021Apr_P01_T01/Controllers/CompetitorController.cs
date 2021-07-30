@@ -126,9 +126,7 @@ namespace WEB2021Apr_P01_T01.Controllers
 
             csContext.JoinCompetition(id, competitorId);
 
-            CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
-
-            return View(csVM); // Need to add an object modal here to use in JoinCompetition View
+            return RedirectToAction("Index"); // Need to add an object modal here to use in JoinCompetition View
         }
 
         // this method is used for viewing of competition details after they have joined the competition, used to submit file and appeal

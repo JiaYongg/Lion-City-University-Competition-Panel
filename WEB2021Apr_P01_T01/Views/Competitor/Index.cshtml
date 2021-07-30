@@ -76,17 +76,18 @@
                             </div>
                             @if (competition.Status == "Ended" && competition.ResultRelease == false)
                             {
+                                if (competition.Score.Count() != 0) // if competitor's competition has scores for criterias
+                                {
+                                    <span><b>Scores:</b></span><br />
+                                    for (int i = 0; i < competition.CriteriaName.Count(); i++)
+                                    {
+                                        <span>@competition.CriteriaName[i] Score: @competition.Score[i]/@competition.Weightage[i]%</span>
+                                        <br />
+                                    }
+                                }
                                 if (competition.Appeal == null)
                                 {
-                                    if (competition.Score.Count() != 0) // if competitor's competition has scores for criterias
-                                    {
-                                        <span>Scores:</span>
-                                        for (int i = 0; i < competition.CriteriaName.Count(); i++)
-                                        {
-                                            <span>@competition.CriteriaName[i] Score: @competition.Score[i]/@competition.Weightage[i]%</span>
-                                            <br />
-                                        }
-                                    }
+
                                     <div class="d-flex" style="justify-content: center;">
                                         <a class="btn background-gold btn-180" asp-controller="Competitor" asp-action="Appeal" asp-route-id="@competition.CompetitionId">Appeal</a>
                                     </div>
