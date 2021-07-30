@@ -90,6 +90,33 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return judgeCompList;
         }
+        
+        public List<Competition> GetJudgesFutureCompetition(int judgeId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT * FROM Competition INNER JOIN CompetitionJudge ON CompetitionJudge.CompetitionID = Competition.CompetitionID WHERE JudgeID = @selectedJudgeId AND StartDate >= LEFT(CONVERT(DATETIME,GetDate(),103),12);";
+            cmd.Parameters.AddWithValue("@selectedJudgeId", judgeId);
+
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<Competition> judgeCompList = new List<Competition>();
+            while (reader.Read())
+            {
+                judgeCompList.Add(
+                    new Competition
+                    {
+                        CompetitionId = reader.GetInt32(0),
+                        CompetitionName = reader.GetString(2),
+                    });
+            }
+
+            reader.Close();
+            conn.Close();
+
+            return judgeCompList;
+        }
 
         // Following Method Added by Jordan for populating in Competition Details View
         public List<Judge> GetCompetitionJudges(int competitionId)
@@ -126,6 +153,66 @@ namespace WEB2021Apr_P01_T01.DAL
             conn.Close();
 
             return compyJudgeList;
+        }
+
+        public bool CheckJudgeComp(int jid, int cid)
+        {
+            bool exist = false;
+
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT * FROM CompetitionJudge WHERE CompetitionID = @cid AND JudgeID = @jid;";
+            cmd.Parameters.AddWithValue("@cid", cid);
+            cmd.Parameters.AddWithValue("@jid", jid);
+
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                exist = true;
+            }
+            reader.Close();
+
+            conn.Close();
+
+            return exist;
+        }
+
+        public bool AssignJudgeToComp(int jid, int cid)
+        {
+            if(!CheckJudgeComp(jid,cid))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+
+                cmd.CommandText = @"INSERT INTO CompetitionJudge (CompetitionID, JudgeID)
+                VALUES(@cid, @jid)";
+
+                cmd.Parameters.AddWithValue("@cid", cid);
+                cmd.Parameters.AddWithValue("@jid", jid);
+
+                conn.Open();
+                cmd.ExecuteScalar();
+                conn.Close();
+                return true;
+            }
+            return false;
+        }
+
+        public bool UnassignJudgeFromComp(int jid, int cid)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"DELETE FROM CompetitionJudge WHERE CompetitionID = @cid AND JudgeID = @jid";
+
+            cmd.Parameters.AddWithValue("@cid", cid);
+            cmd.Parameters.AddWithValue("@jid", jid);
+
+            conn.Open();
+            cmd.ExecuteScalar();
+            conn.Close();
+            return true;
         }
     }
 }

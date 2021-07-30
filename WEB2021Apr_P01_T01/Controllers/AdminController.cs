@@ -16,6 +16,7 @@ namespace WEB2021Apr_P01_T01.Controllers
     {
         public CompetitionDAL compyContext = new CompetitionDAL();
         private AoiDAL aoiContext = new AoiDAL();
+        private JudgeDAL judgeContext = new JudgeDAL();
 
         // GET: AdminController
         public ActionResult Index()
@@ -139,31 +140,9 @@ namespace WEB2021Apr_P01_T01.Controllers
             return RedirectToAction("AreaOfInterest");
         }
 
-        // GET: AdminController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: AdminController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: AdminController/Delete/5
         public ActionResult Delete()
         {
-            //Console.WriteLine("test");
             return View();
         }
 
@@ -174,6 +153,67 @@ namespace WEB2021Apr_P01_T01.Controllers
         {
             aoiContext.Delete(id);
             return RedirectToAction("AreaOfInterest");
+        }
+
+        public ActionResult ViewJudges()
+        {
+            List<Judge> j = judgeContext.GetAllJudge();
+            foreach (Judge item in j)
+            {
+                item.AreaInterestName = aoiContext.GetAoiName(item.AreaInterestId);
+                item.competitionAssigned = judgeContext.GetJudgesFutureCompetition(item.JudgeId);
+            }
+            ViewData["futureComp"] = compyContext.GetFutureCompetitions();
+            return View(j);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignJudgeToComp()
+        {
+            List<string> existList = new List<string>();
+            List<string> compIds = Request.Query["cid"].ToString().Split('-').ToList();
+            List<string> judgeIds = Request.Query["jid"].ToString().Split('-').ToList();
+            foreach(string cid in compIds)
+            {
+                foreach(string jid in judgeIds)
+                {
+                    if(!judgeContext.AssignJudgeToComp(int.Parse(jid), int.Parse(cid)))
+                    {
+                        existList.Add(cid + "-" + jid);
+                    }
+                }
+            }
+
+            if(existList.Count == 0)
+            {
+                TempData["JavaScriptFunction"] = "assignJudgeSuccess('0');";
+            }
+            else
+            {
+                string str = "";
+                foreach(string s in existList)
+                {
+                    str += s + ",";
+                }
+                str = str.Substring(0, str.Length - 1);
+
+                TempData["JavaScriptFunction"] = string.Format("assignJudgeSuccess('{0}');", str);
+            }
+            return RedirectToAction("ViewJudges");
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UnassignJudgeFromComp()
+        {
+            string compId = Request.Query["cid"].ToString();
+            string judgeId = Request.Query["jid"].ToString();
+
+            judgeContext.UnassignJudgeFromComp(int.Parse(judgeId), int.Parse(compId));
+
+            TempData["JavaScriptFunction"] = string.Format("unassignJudgeSuccess();");
+            return RedirectToAction("ViewJudges");
         }
     }
 }

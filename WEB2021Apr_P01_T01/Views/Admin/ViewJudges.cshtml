@@ -1,0 +1,293 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Judge>
+
+@{
+    ViewData["Title"] = "ViewJudges";
+
+    List<Competition> futureCompetition = (List<Competition>)ViewData["futureComp"];
+
+}
+
+@section scripts {
+    <script>
+        var selectedJudge = [];
+        function assignToComp() {
+            selectedJudge = [];
+            $('#judgeCheck input:checked').each(function () {
+                selectedJudge.push($(this).attr('name'));
+            });
+            if (selectedJudge.length == 0) {
+                alert("No Judge selected");
+            } else {
+                $("#assignCompModal").modal('show');
+            }
+        }
+
+        function unassignComp(judgeId, compAssignedId) {
+            $("#compSelect").empty();
+            var compAssignedArr = compAssignedId.substring(0, compAssignedId.length - 1).split(',');
+            var select = $("#compSelect")[0];
+            $.each(@Html.Raw(Json.Serialize(Model)), function () {
+                if (this.judgeId == judgeId) {
+                    $.each(this.competitionAssigned, function () {
+                        compAssignedArr.forEach((compId) => {
+                            if (this.competitionId == compId) {
+                                select.add(new Option(this.competitionName, compId));
+                            }
+                        });
+                    });
+                }
+            });
+
+            $('#unassignedJudgeBtn').attr('onclick', 'unassignJudge(' + judgeId + ')');
+            $('#unassignModal').modal('show');
+        }
+
+        function unassignJudge(jid) {
+            var cid = $("#compSelect").val();
+            $("#unassignForm").attr('action', '/Admin/UnassignJudgeFromComp/?jid=' + jid + '&cid=' + cid);
+            $("#unassignForm").submit();
+        }
+
+        function unassignJudgeSuccess() {
+            alert('Successfully Unassigned');
+        }
+
+        function assignJudge() {
+            var compStr = '';
+            $('#compCheck input:checked').each(function () {
+                compStr += $(this).attr('name') + '-';
+            });
+            compStr = compStr.substring(0, compStr.length - 1);
+            if (compStr.length == 0) {
+                alert("Please select a competition");
+            } else {
+                var judgeStr = '';
+                selectedJudge.forEach((judge) => {
+                    judgeStr += judge + '-';
+                });
+                judgeStr = judgeStr.substring(0, judgeStr.length - 1);
+
+                $("#assignForm").attr('action', '/Admin/AssignJudgeToComp/?jid=' + judgeStr + '&cid=' + compStr);
+                $("#assignForm").submit();
+            }
+        }
+
+        function assignJudgeSuccess(str) {
+            if (str == '0') {
+                alert('Successfully Assigned');
+            } else {
+                var message = 'The following judge(s) have already been assigned to the following competition(s) and would not be assigned again.\n';
+                var list = str.split(',');
+                list.forEach((item) => {
+                    var cid = item.split('-')[0];
+                    var jid = item.split('-')[1];
+                    $.each(@Html.Raw(Json.Serialize(Model)), function () {
+                        if (this.judgeId == jid) {
+                            var judgeSalutation = this.salutation;
+                            var judgeName = this.name;
+                            $.each(this.competitionAssigned, function () {
+                                if (this.competitionId == cid) {
+                                    message += judgeSalutation + ' ' + judgeName + ' : ' + this.competitionName + '\n';
+                                }
+                            });
+                        }
+                    });
+                });
+                alert(message);
+            }
+        }
+
+        $(document).ready(function () {
+            @if (TempData["JavaScriptFunction"] != null)
+            {
+                @Html.Raw(TempData["JavaScriptFunction"])
+            }
+        });
+    </script>
+}
+
+<body>
+    <div class="container">
+        <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
+            <div class="aoi-titles">
+                <p>Manage Judges</p>
+                <h2>Judges</h2>
+            </div>
+            <div class="aoi-button">
+                <input type="submit" onclick="assignToComp()" value="Assign to Competition" style="border: none; border-radius: 10px; background: #A98F64; color: white; padding: 10px 15px;" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="selectAll" />
+                                <label class="custom-control-label" for="selectAll"></label>
+                            </div>
+                        </th>
+                        <th scope="col"></th>
+                        <th scope="col">Salutation:</th>
+                        <th scope="col">Name:</th>
+                        <th scope="col">Area of Interest:</th>
+                        <th scope="col">Email Address:</th>
+                        <th scope="col">Competition Assigned:</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="judgeCheck">
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        string text = "";
+                        foreach (Competition c in Model.ElementAt(i).competitionAssigned)
+                        {
+                            text += c.CompetitionName + "<br/>";
+                        }
+                        if (text == "")
+                        {
+                            text = "-";
+                        }
+                        <tr>
+                            <td class="align-middle">
+                                <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
+                                    <input type="checkbox" class="custom-control-input" name="@Model.ElementAt(i).JudgeId" id="@String.Format("customCheck{0}", i)">
+                                    <label class="custom-control-label" for="@String.Format("customCheck{0}", i)"></label>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <img src="~/images/img_avatar.png" alt="Judge Photo" style="width:60px;height:60px;">
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div class="aoi-table-data text-center">
+                                    <p>@Model.ElementAt(i).Salutation</p>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div class="aoi-table-data">
+                                    <p>@Model.ElementAt(i).Name</p>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div class="aoi-table-data">
+                                    <p>@Model.ElementAt(i).AreaInterestName</p>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div class="aoi-table-data">
+                                    <p>@Model.ElementAt(i).EmailAddr</p>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div class="aoi-table-data d-flex justify-content-center">
+                                    <p>@Html.Raw(text)</p>
+                                </div>
+                            </td>
+                            <td style="vertical-align:middle;">
+                                @if (Model.ElementAt(i).competitionAssigned.Count() == 0)
+                                {
+                                    <div class="aoi-table-data d-flex justify-content-center">
+                                        <p>@Html.Raw(text)</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    string compAssignedId = null;
+                                    foreach (Competition c in Model.ElementAt(i).competitionAssigned)
+                                    {
+                                        compAssignedId += c.CompetitionId + ",";
+                                    }
+                                    <button type="button" onclick="unassignComp('@Model.ElementAt(i).JudgeId', '@compAssignedId')" style="font-size:70%; border: none; border-radius: 10px; background: #F25050; color: white; padding: 10px 15px;">
+                                        Unassign<br />Competition
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal" id="assignCompModal">
+            <div class="modal-dialog" style="max-width:80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Future Competitions</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="display: flex; justify-content: center;">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="selectAll2" />
+                                            <label class="custom-control-label" for="selectAll2"></label>
+                                        </div>
+                                    </th>
+                                    <th scope="col">Name of Competition:</th>
+                                    <th scope="col">Date of Competition:</th>
+                                </tr>
+                            </thead>
+                            <tbody id="compCheck">
+                                @for (int i = 0; i < futureCompetition.Count(); i++)
+                                {
+                                    string sDate = futureCompetition.ElementAt(i).StartDate.ToString("dd/MM/yyyy hh:mm tt");
+                                    string eDate = futureCompetition.ElementAt(i).EndDate.ToString("dd/MM/yyyy");
+                                    <tr>
+                                        <td>
+                                            <div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
+                                                <input type="checkbox" name="@futureCompetition.ElementAt(i).CompetitionId" class="custom-control-input" id="@String.Format("customCheck2{0}", i)">
+                                                <label class="custom-control-label" for="@String.Format("customCheck2{0}", i)"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="aoi-table-data">
+                                                <p>@futureCompetition.ElementAt(i).CompetitionName</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="aoi-table-data">
+                                                <p>@sDate - @eDate</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="assignForm" method="post">
+                            <button type="button" onclick="assignJudge()" style="border: none; border-radius: 10px; background: #A98F64; color: white; padding: 10px 50px;">Assign</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="unassignModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Do you want to unassign judge from competition?</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="font-weight: bold;" class="col-sm-12 d-flex justify-content-center">
+                            Select Competition:
+                        </div>
+                        <div style="font-weight: bold;" class="col-sm-12 d-flex justify-content-center">
+                            <select id="compSelect" style="padding: .375rem .75rem; border: 1px solid #ced4da; border-radius: .25rem;"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="unassignForm" method="post" class="col-sm-12 d-flex justify-content-center">
+                            <button type="button" id="unassignedJudgeBtn" @*onclick="unassignJudge()"*@ class="btn btn-danger">Unassign Competition</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

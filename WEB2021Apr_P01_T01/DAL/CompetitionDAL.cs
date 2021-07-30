@@ -63,6 +63,42 @@ namespace WEB2021Apr_P01_T01.DAL
             return competitionList;
         }
 
+        public List<Competition> GetFutureCompetitions()
+        {
+            // Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+
+            // Specify the SELECT SQL Statement
+            cmd.CommandText = @"SELECT * FROM Competition WHERE StartDate > @today ORDER BY CompetitionId";
+            cmd.Parameters.AddWithValue("@today", DateTime.Today);
+
+            // Opens a Database Connection and execute the SQL statement
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<Competition> competitionList = new List<Competition>();
+            while (reader.Read())
+            {
+                competitionList.Add(
+                    new Competition
+                    {
+                        CompetitionId = reader.GetInt32(0),
+                        AoiId = reader.GetInt32(1),
+                        CompetitionName = reader.GetString(2),
+                        StartDate = reader.GetDateTime(3),
+                        EndDate = reader.GetDateTime(4),
+                        ResultsReleaseDate = reader.GetDateTime(5),
+                        SubmissionList = new List<CompetitionSubmission>()
+                    });
+            }
+
+            // Close the DataReader & DB connection
+            reader.Close();
+            conn.Close();
+
+            return competitionList;
+        }
+
         public List<Competition> GetPastCompetitions()
         {
             // Create a SqlCommand object from connection object

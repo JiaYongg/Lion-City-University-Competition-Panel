@@ -62,13 +62,13 @@
                         }
                         else
                         {
-                            if (role == "Competitor")
+                            if (role == "Competitor" && (Model.StartDate - DateTime.Now).TotalDays <= 3)
                             {
                                 <a asp-action="JoinCompetition" asp-controller="Competitor" asp-route-id="@Model.CompetitionId" class="background-gold btn font-dm">Join Competition</a>
                             }
                             else
                             {
-                                <a class="background-gold btn font-dm disabled">Join Competition</a>
+                                <a class="background-gold btn font-dm disabled" style="color:black;">Join Competition</a>
                             }
                         }
                     }
