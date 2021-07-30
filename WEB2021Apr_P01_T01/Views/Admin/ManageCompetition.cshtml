@@ -1,0 +1,127 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Competition>
+
+@{
+    ViewData["Title"] = "ManageCompetition";
+}
+
+@section scripts {
+    <script>
+        function deleteModal(name, id) {
+            $("#deleteForm").attr('action', '/Admin/DeleteComp/' + id);
+            $("#deleteModalBody").html('Name: ' + name);
+            $("#deleteModal").modal('show');
+        }
+    </script>
+}
+
+<body>
+    <div class="container">
+        <div class="d-flex" style="align-items: center; justify-content: space-between; margin: 0 15px;">
+            <div class="aoi-titles">
+                <p>Manage Competitions</p>
+                <h2>Competitions</h2>
+            </div>
+            <div class="aoi-button">
+                <input type="button" onclick="location.href = '/Admin/CreateCompetition';" value="Create Competition" style="border: none; border-radius: 10px; background: #A98F64; color: white; padding: 10px 15px;" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="justify-content: center;">
+                            <div class="custom-control">No.</div>
+                        </th>
+                        <th scope="col">Name of Competition:</th>
+                        <th scope="col">Area of Interest:</th>
+                        <th scope="col">Start Date:</th>
+                        <th scope="col">End Date:</th>
+                        <th scope="col">Result Date:</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        string sDate = Model.ElementAt(i).StartDate.ToString("dd/MM/yyyy hh:mm tt");
+                        string eDate = Model.ElementAt(i).EndDate.ToString("dd/MM/yyyy");
+                        string rDate = Model.ElementAt(i).ResultsReleaseDate.ToString("dd/MM/yyyy");
+                    <tr>
+                        <td class="align-middle">
+                            <div class="custom-control text-center">@Html.Raw(i + 1)</div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div class="aoi-table-data text-center">
+                                <a href="/Competition/CompetitionDetails/@Model.ElementAt(i).CompetitionId" class="competition-name">
+                                    <p style="color: black;">@Model.ElementAt(i).CompetitionName</p>
+                                </a>
+                            </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div class="aoi-table-data">
+                                <p>@Model.ElementAt(i).AoiName</p>
+                            </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div class="aoi-table-data">
+                                <p>@sDate</p>
+                            </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div class="aoi-table-data">
+                                <p>@eDate</p>
+                            </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div class="aoi-table-data">
+                                <p>@rDate</p>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;">
+                            @if (!Model.ElementAt(i).HaveParticipant)
+                            {
+                                <div class="aoi-table-buttons" style="padding: 0 20px;display: flex;">
+                                    <button type="button" class="btn btn-default btn-circle" onclick="location.href = '/Admin/EditCompetition/@Model.ElementAt(i).CompetitionId';" style="background: #A98F64; margin: 10px;">
+                                        <i class="fas fa-pencil" style="color: white; font-size: 16px;"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-circle" onclick="deleteModal('@Model.ElementAt(i).CompetitionName',@Model.ElementAt(i).CompetitionId)" style="background: #F25050; margin: 10px;">
+                                        <i class="fas fa-times" style="color: white; font-size: 16px;"></i>
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <p style="text-align: center;">-</p>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal" id="deleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm Delete?</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div id="deleteModalBody" style="font-weight: bold;" class="col-sm-12 d-flex justify-content-center"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteForm" method="post">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -45,6 +45,8 @@ namespace WEB2021Apr_P01_T01.Models
 
         public bool Validated { get; set; }
 
+        public bool HaveParticipant { get; set; }
+
         public List<CompetitionSubmission> SubmissionList { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

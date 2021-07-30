@@ -1,11 +1,7 @@
-﻿@model WEB2021Apr_P01_T01.Models.AreaInterest
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.AreaInterest>
+
 @{
     ViewData["Title"] = "Area of Interest";
-}
-
-@{ 
-    var name = (List<string>)ViewData["AoiName"];
-    var id = (List<int>)ViewData["AoiId"];
 }
 
 <html>
@@ -44,32 +40,31 @@
                 <thead>
                     <tr>
                         <th scope="col" style="display: flex; justify-content: center;">
-                            @*<div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="selectAll" />
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>*@
                             <div class="custom-control">No.</div>
                         </th>
                         <th scope="col">Name of Interest: </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Convert.ToInt32(ViewData["totalAOI"]); i++)
+                    @for (int i = 0; i < Model.Count(); i++)
                     {
                         <tr>
                             <td class="align-middle">
-                                @*<div class="custom-control custom-checkbox text-center" style="vertical-align: middle;">
-                                    <input type="checkbox" class="custom-control-input" id="@String.Format("customCheck{0}", i)">
-                                    <label class="custom-control-label" for="@String.Format("customCheck{0}", i)"></label>
-                                </div>*@
                                 <div class="custom-control text-center">@Html.Raw(i+1)</div>
                             </td>
                             <td class="d-flex justify-content-between align-items-center">
                                 <div class="aoi-table-data">
-                                    <p>@name[i]</p>
+                                    <p>@Model.ElementAt(i).Name</p>
                                 </div>
                                 <div class="aoi-table-buttons" style="padding: 0 20px;">
-                                    <button type="button" class="btn btn-default btn-circle" onclick="deleteModal('@name[i]',@id[i])" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
+                                    @if (!Model.ElementAt(i).AssignedToComp)
+                                    {
+                                        <button type="button" class="btn btn-default btn-circle" onclick="deleteModal('@Model.ElementAt(i).Name',@Model.ElementAt(i).AreaInterestId)" style="background: #F25050;"><i class="fas fa-times" style="color: white; font-size: 16px;"></i></button>
+                                    }
+                                    else
+                                    {
+                                        <p style="text-align: center;">-</p>
+                                    }
                                 </div>
                             </td>
                         </tr>

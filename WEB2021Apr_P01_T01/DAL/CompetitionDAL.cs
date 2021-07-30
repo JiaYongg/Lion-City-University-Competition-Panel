@@ -266,7 +266,103 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return aoi.AreaInterestId;
         }
+        public string GetAreaInterestName(int aoiId)
+        {
 
-        
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"SELECT Name FROM AreaInterest WHERE AreaInterestID = @id";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+            cmd.Parameters.AddWithValue("@id", aoiId);
+
+            conn.Open();
+
+            string aoiName = (string)cmd.ExecuteScalar();
+
+            conn.Close();
+
+            return aoiName;
+        }
+
+        public bool CompHaveParticipant(int compId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT COUNT(*) FROM CompetitionSubmission WHERE CompetitionID = @id";
+            cmd.Parameters.AddWithValue("@id", compId);
+
+            conn.Open();
+            int count = (int)cmd.ExecuteScalar();
+            conn.Close();
+
+            if (count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool EditCompetition(Competition comp)
+        {
+            int compId = comp.CompetitionId;
+            int aoiId = GetAreaInterestID(comp.AoiName);
+            string compName = comp.CompetitionName;
+            int startDay = comp.StartDate.Day;
+            int startMonth = comp.StartDate.Month;
+            int startYear = comp.StartDate.Year;
+
+            DateTime start = new DateTime(startYear, startMonth, startDay, comp.StartDate.Hour, comp.StartDate.Minute, 0);
+
+            int endDay = comp.EndDate.Day;
+            int endMonth = comp.EndDate.Month;
+            int endYear = comp.EndDate.Year;
+
+            DateTime end = new DateTime(endYear, endMonth, endDay);
+
+            int resultDay = comp.ResultsReleaseDate.Day;
+            int resultMonth = comp.ResultsReleaseDate.Month;
+            int resultYear = comp.ResultsReleaseDate.Year;
+
+            DateTime result = new DateTime(resultYear, resultMonth, resultDay);
+
+            SqlCommand cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"UPDATE Competition SET AreaInterestID = @aoi, CompetitionName = @name, StartDate = @start, EndDate = @end, ResultReleasedDate = @results
+                WHERE CompetitionID = @id";
+
+            cmd.Parameters.AddWithValue("@id", compId);
+            cmd.Parameters.AddWithValue("@aoi", aoiId);
+            cmd.Parameters.AddWithValue("@name", compName);
+            cmd.Parameters.AddWithValue("@start", start);
+            cmd.Parameters.AddWithValue("@end", end);
+            cmd.Parameters.AddWithValue("@results", result);
+
+            conn.Open();
+            cmd.ExecuteScalar();
+            conn.Close();
+
+            return true;
+        }
+
+        public bool DeleteCompetition(int id)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            SqlCommand cmd2 = conn.CreateCommand();
+
+            cmd.CommandText = @"DELETE FROM CompetitionJudge WHERE CompetitionID = @id";
+            cmd2.CommandText = @"DELETE FROM Competition WHERE CompetitionID = @id";
+
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd2.Parameters.AddWithValue("@id", id);
+
+            conn.Open();
+            cmd.ExecuteScalar();
+            cmd2.ExecuteScalar();
+            conn.Close();
+
+            return true;
+        }
     }
 }

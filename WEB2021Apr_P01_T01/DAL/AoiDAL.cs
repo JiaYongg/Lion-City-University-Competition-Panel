@@ -151,5 +151,28 @@ namespace WEB2021Apr_P01_T01.DAL
 
             return rowAffected;
         }
+
+        public bool AoiIsAssigned(int aoiId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            SqlCommand cmd2 = conn.CreateCommand();
+
+            cmd.CommandText = @"SELECT COUNT(*) FROM Competition WHERE AreaInterestID = @id";
+            cmd2.CommandText = @"SELECT COUNT(*) FROM Judge WHERE AreaInterestID = @id";
+
+            cmd.Parameters.AddWithValue("@id", aoiId);
+            cmd2.Parameters.AddWithValue("@id", aoiId);
+
+            conn.Open();
+            int count = (int)cmd.ExecuteScalar();
+            int count2 = (int)cmd2.ExecuteScalar();
+            conn.Close();
+
+            if (count > 0 || count2 > 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

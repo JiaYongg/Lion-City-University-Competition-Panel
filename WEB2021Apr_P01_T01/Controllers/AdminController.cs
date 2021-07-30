@@ -24,11 +24,29 @@ namespace WEB2021Apr_P01_T01.Controllers
             return View();
         }
 
+        public ActionResult ManageCompetition()
+        {
+            List<Competition> compList = compyContext.GetCurrentCompetitions();
+            foreach (Competition c in compList)
+            {
+                c.AoiName = compyContext.GetAreaInterestName(c.AoiId);
+                c.HaveParticipant = compyContext.CompHaveParticipant(c.CompetitionId);
+            }
+            return View(compList);
+        }
+
         // GET: AdminController/Details/5
         public ActionResult CreateCompetition()
         {
             ViewData["aoiList"] = GetAOI();
             return View();
+        }
+
+        public ActionResult EditCompetition(int id)
+        {
+            Competition c = compyContext.GetCompetitionDetails(id);
+            ViewData["aoiList"] = GetAOI();
+            return View(c);
         }
 
         [HttpPost]
@@ -90,7 +108,63 @@ namespace WEB2021Apr_P01_T01.Controllers
             int aoiID = compyContext.GetAreaInterestID(competition.AoiName);
             int compId = compyContext.AddCompetition(competition, aoiID);
 
-            return Redirect("~/Competition/CompetitionDetails/"+compId);
+            return RedirectToAction("ManageCompetition");
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCompetition(Competition competition)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelStateEntry sDate = null;
+                ModelStateEntry eDate = null;
+                ModelStateEntry rDate = null;
+                if (ModelState.TryGetValue("StartDate", out sDate))
+                {
+                    if (sDate != null && sDate.Errors.Count > 0)
+                    {
+                        ModelState.Remove("StartDate");
+                        ModelState.AddModelError("StartDate", "Start Date is invalid");
+                    }
+                }
+
+                if (ModelState.TryGetValue("EndDate", out eDate))
+                {
+                    if (eDate != null && eDate.Errors.Count > 0)
+                    {
+                        ModelState.Remove("EndDate");
+                        ModelState.AddModelError("EndDate", "End Date is invalid");
+                    }
+                }
+
+                if (ModelState.TryGetValue("ResultsReleaseDate", out rDate))
+                {
+                    if (rDate != null && rDate.Errors.Count > 0)
+                    {
+                        ModelState.Remove("ResultsReleaseDate");
+                        ModelState.AddModelError("ResultsReleaseDate", "Result Release Date is invalid");
+                    }
+                }
+
+                if (!competition.Validated)
+                {
+                    var validationResults = competition.Validate(new ValidationContext(competition, null, null));
+                    foreach (var error in validationResults)
+                    {
+                        foreach (var memberName in error.MemberNames)
+                        {
+                            ModelState.AddModelError(memberName, error.ErrorMessage);
+                        }
+                    }
+                }
+                ViewData["aoiList"] = GetAOI();
+                return View(competition);
+            }
+
+            compyContext.EditCompetition(competition);
+
+            return RedirectToAction("ManageCompetition");
         }
 
         private List<SelectListItem> GetAOI()
@@ -115,21 +189,12 @@ namespace WEB2021Apr_P01_T01.Controllers
         public ActionResult AreaOfInterest()
         {
             List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
-            List<string> aoiNames = new List<string>();
-            List<int> aoiId = new List<int>();
-            foreach (var item in aoiList)
+            foreach (AreaInterest aoi in aoiList)
             {
-                aoiNames.Add(item.Name);
-                aoiId.Add(item.AreaInterestId);
+                aoi.AssignedToComp = aoiContext.AoiIsAssigned(aoi.AreaInterestId);
             }
 
-            ViewData["totalAOI"] = aoiList.Count();
-            ViewData["AoiName"] = aoiNames;
-            ViewData["AoiId"] = aoiId;
-
-            AreaInterest areaInterest = aoiContext.GetAoi();
-
-            return View(areaInterest);
+            return View(aoiList);
         }
 
         public ActionResult AddInterest(IFormCollection formData)
@@ -155,6 +220,14 @@ namespace WEB2021Apr_P01_T01.Controllers
             return RedirectToAction("AreaOfInterest");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteComp(int id)
+        {
+            compyContext.DeleteCompetition(id);
+            return RedirectToAction("ManageCompetition");
+        }
+
         public ActionResult ViewJudges()
         {
             List<Judge> j = judgeContext.GetAllJudge();
@@ -171,35 +244,17 @@ namespace WEB2021Apr_P01_T01.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AssignJudgeToComp()
         {
-            List<string> existList = new List<string>();
             List<string> compIds = Request.Query["cid"].ToString().Split('-').ToList();
             List<string> judgeIds = Request.Query["jid"].ToString().Split('-').ToList();
             foreach(string cid in compIds)
             {
                 foreach(string jid in judgeIds)
                 {
-                    if(!judgeContext.AssignJudgeToComp(int.Parse(jid), int.Parse(cid)))
-                    {
-                        existList.Add(cid + "-" + jid);
-                    }
+                    judgeContext.AssignJudgeToComp(int.Parse(jid), int.Parse(cid));
                 }
             }
 
-            if(existList.Count == 0)
-            {
-                TempData["JavaScriptFunction"] = "assignJudgeSuccess('0');";
-            }
-            else
-            {
-                string str = "";
-                foreach(string s in existList)
-                {
-                    str += s + ",";
-                }
-                str = str.Substring(0, str.Length - 1);
-
-                TempData["JavaScriptFunction"] = string.Format("assignJudgeSuccess('{0}');", str);
-            }
+            TempData["JavaScriptFunction"] = "assignJudgeSuccess();";
             return RedirectToAction("ViewJudges");
         }
         

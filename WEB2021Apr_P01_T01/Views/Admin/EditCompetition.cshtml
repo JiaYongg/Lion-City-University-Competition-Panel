@@ -1,28 +1,36 @@
 ﻿@model WEB2021Apr_P01_T01.Models.Competition
 
 @{
-    ViewData["Title"] = "CreateCompetition";
+    ViewData["Title"] = "EditCompetition";
+
+    string aoiId = Model.AoiId.ToString();
 }
 
-@section scripts { <script> $(document).ready(function () {
-     if ($("#startDate").val().split('-')[0] == 1) {
-         $("#startDate").val("");
-     }
-     if ($("#endDate").val().split('-')[0] == 1) {
-         $("#endDate").val("");
-     }
-     if ($("#resultDate").val().split('-')[0] == 1) {
-         $("#resultDate").val("");
-     }
-    }); </script>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("aoiSelect")
+                .each(function () { this.selected = (this.text == @aoiId); });
+
+            if ($("#startDate").val().split('-')[0] == 1) {
+                $("#startDate").val("");
+            }
+            if ($("#endDate").val().split('-')[0] == 1) {
+                $("#endDate").val("");
+            }
+            if ($("#resultDate").val().split('-')[0] == 1) {
+                $("#resultDate").val("");
+            }
+        });
+    </script>
 }
 <body>
     <div class="container">
         <div class="">
-            <p> Create Competition</p>
+            <p> Edit Competition</p>
         </div>
         <div class="container" style="background: #E5E5E5; border-radius: 50px;">
-            <form asp-action="CreateCompetition">
+            <form asp-action="EditCompetition">
                 <div class="row col-sm-12">
                     <div class="form-group col-sm-6">
                         <label asp-for="CompetitionName" class="control-label"></label>
@@ -32,7 +40,7 @@
 
                     <div class="form-group col-sm-6 d-flex flex-column">
                         <label asp-for="AoiName"></label>
-                        <select asp-for="AoiName" asp-items="@ViewData["aoiList"] as List<SelectListItem>" style="padding: .375rem .75rem; border: 1px solid #ced4da; border-radius: .25rem;"></select>
+                        <select id="aoiSelect" asp-for="AoiName" asp-items="@ViewData["aoiList"] as List<SelectListItem>" style="padding: .375rem .75rem; border: 1px solid #ced4da; border-radius: .25rem;"></select>
                     </div>
                 </div>
 
@@ -44,7 +52,7 @@
                     </div>
                     <div class="form-group col-sm-6">
                         <label asp-for="EndDate" class="control-label"></label>
-                        <input id="endDate"  asp-for="EndDate" class="form-control" style="background-color: white;" />
+                        <input id="endDate" asp-for="EndDate" class="form-control" style="background-color: white;" />
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -52,7 +60,7 @@
                 <div class="row col-sm-12">
                     <div class="form-group col-sm-6">
                         <label asp-for="ResultsReleaseDate" class="control-label"></label>
-                        <input id="resultDate"  asp-for="ResultsReleaseDate" class="form-control" style="background-color: white;" />
+                        <input id="resultDate" asp-for="ResultsReleaseDate" class="form-control" style="background-color: white;" />
                         <span asp-validation-for="ResultsReleaseDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -60,7 +68,8 @@
                 <div class="row col-sm-12">
                     <div class="col-sm-6"></div>
                     <div class="form-group col-sm-6 d-flex justify-content-end">
-                        <input type="submit" value="Create" class="btn btn-primary" style="border-radius:10px; background: #A98F64; width: 50%" />
+                        <input type="hidden" asp-for="CompetitionId" />
+                        <input type="submit" value="Update" class="btn btn-primary" style="border-radius:10px; background: #A98F64; width: 50%" />
                     </div>
                 </div>
             </form>
