@@ -1,0 +1,39 @@
+﻿@model WEB2021Apr_P01_T01.Models.Contact
+
+@{
+    ViewData["Title"] = "Contact";
+}
+<div class="container-fluid p-3">
+    <h3 class="gold text-center">Drop Us a Message</h3>
+    <p class="text-center">@TempData["Message"]
+    <form asp-controller="Contact" asp-action="Index" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="Name" class="col-form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter your name" required>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label asp-for="EmailAddress" class="col-form-label"></label>
+                    <input asp-for="EmailAddress" class="form-control" placeholder="Enter your email" required>
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="PhoneNo" class="col-form-label"></label>
+                    <input asp-for="PhoneNo" class="form-control" placeholder="Enter your contact number">
+                    <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="col-form-label"></label>
+                <textarea asp-for="Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn w-100 background-gold" />
+            </div>
+        </div>
+    </form>
+</div>

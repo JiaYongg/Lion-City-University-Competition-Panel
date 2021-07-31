@@ -9,17 +9,22 @@ namespace WEB2021Apr_P01_T01.Models
     public class Contact
     {
         [Display(Name = "Name: ")]
-        [Required(ErrorMessage = "Name Required!")]
+        [Required(ErrorMessage = "Please enter your name")]
         public string Name { get; set; }
 
         [Display(Name = "Email Address: ")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
-        [Required(ErrorMessage = "Email Required!")]
-        public string Email { get; set; }
+        [EmailAddress]
+        [Required(ErrorMessage = "Please enter your email")]
+        public string EmailAddress { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number")]
-        [Required(ErrorMessage = "Phone Number Required!")]
+        [RegularExpression(@"^[89]\d{7}$", ErrorMessage = "Invalid phone number. Phone number must start with 8 or 9")]
         public string PhoneNo { get; set; }
+
+        [Required]
+        [Display(Name = "Message")]
+        [MaxLength(500, ErrorMessage = "Message cannot exceed 500 characters.")]
+        public string Message { get; set; }
     }
 }
