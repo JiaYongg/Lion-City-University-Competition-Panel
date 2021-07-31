@@ -188,7 +188,7 @@ form {
 }
 
 .admin-left-container {
-    height: 300px;
+    height: 150px;
     width: 100%;
 }
 
@@ -205,10 +205,6 @@ form {
     opacity: .3;
     border-radius: 25px;
 
-}
-
-.admin-left-text {
-    padding: 40px 0 0 40px;
 }
 
 .admin-upper-container a {

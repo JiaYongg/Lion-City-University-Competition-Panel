@@ -21,21 +21,32 @@
         </div>
         <div class="admin-container">
             <div class="col-sm-6 admin-left-container">
-                <a asp-action="ViewJudges">
-                    <img class="admin-image" src="~/images/judge-left-panel.jpg" /> 
-                    <div class="admin-left-text">
-                        <h4>View Judges</h4>
-                        <p>Assign or Unassign judges to a competition</p>
-                    </div>
-                </a>
+                <div class="admin-upper-container" style="background: #AAC1D5;">
+                    <a asp-action="ViewJudges">
+                        <div class="admin-left-text" style="padding: 20px 0 0 20px;">
+                            <h4>View Judges</h4>
+                            <p>Assign or Unassign judges to a competition</p>
+                        </div>
+                    </a>
+                </div>
+
+
+                <div class="admin-lower-container" style="background: #D188E6;">
+                    <a asp-action="ManageFeedbacks">
+                        <div class="admin-lower-text">
+                            <h4>Manage Feedbacks</h4>
+                            <p>Send & Receive feedbacks</p>
+                        </div>
+                    </a>
+                </div>
             </div>
 
             <div class="col-sm-6 admin-right-container">
-                <div class="admin-upper-container">
+                <div class="admin-upper-container" style="background: #FF6A6A;">
                     <a asp-action="ManageCompetition">
                         <div class="admin-upper-text">
                             <h4>Manage Competition</h4>
-                            <p>Organise and create a new competition</p>
+                            <p>Organise & create a new competition</p>
                         </div>
                     </a> 
                 </div>
