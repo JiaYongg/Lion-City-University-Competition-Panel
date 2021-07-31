@@ -48,5 +48,33 @@ namespace WEB2021Apr_P01_T01.Controllers
                 return View();
             }
         }
+
+        public async Task<ActionResult> ManageFeedbacks()
+        {
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("https://webassg2contact-c614.restdb.io");
+                client.DefaultRequestHeaders.Add("cache-control", "no-cache");
+                client.DefaultRequestHeaders.Add("x-apikey", "44690e8e37335dca37edd43c755a7a762715a");
+                HttpResponseMessage response = await client.GetAsync("/rest/contact-form");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    List<Contact> contactList = JsonConvert.DeserializeObject<List<Contact>>(data);
+                    return View(contactList);
+                }
+                else
+                {
+                    return View(new List<Contact>());
+                }
+            }
+        }
     }
 }

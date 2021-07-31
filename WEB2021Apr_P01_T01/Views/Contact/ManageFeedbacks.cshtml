@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WEB2021Apr_P01_T01.Models.Contact>
+
+@{
+    ViewData["Title"] = "ManageFeedbacks";
+}
+
+
+<div class="container">
+    <h4 class="PageTitle" style="text-align:center;">View Feedbacks</h4>
+    @if (Model.ToList().Count > 0)
+    {
+        <div class="table-responsive">
+            <table id="viewBook" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+                        <th>@Html.DisplayNameFor(model => model.PhoneNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.Message)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.EmailAddress</td>
+                            <td>@item.PhoneNo</td>
+                            <td>@item.Message</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <span style="color:red">No record found!</span>
+    }
+</div>
