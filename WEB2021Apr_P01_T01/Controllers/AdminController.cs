@@ -21,32 +21,64 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
-            return View();
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult ManageCompetition()
         {
-            List<Competition> compList = compyContext.GetCurrentCompetitions();
-            foreach (Competition c in compList)
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
             {
-                c.AoiName = compyContext.GetAreaInterestName(c.AoiId);
-                c.HaveParticipant = compyContext.CompHaveParticipant(c.CompetitionId);
+                return RedirectToAction("Index", "Login");
             }
-            return View(compList);
+            else
+            {
+                List<Competition> compList = compyContext.GetCurrentCompetitions();
+                foreach (Competition c in compList)
+                {
+                    c.AoiName = compyContext.GetAreaInterestName(c.AoiId);
+                    c.HaveParticipant = compyContext.CompHaveParticipant(c.CompetitionId);
+                }
+                return View(compList);
+            }
         }
 
         // GET: AdminController/Details/5
         public ActionResult CreateCompetition()
         {
-            ViewData["aoiList"] = GetAOI();
-            return View();
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewData["aoiList"] = GetAOI();
+                return View();
+            }
         }
 
         public ActionResult EditCompetition(int id)
         {
-            Competition c = compyContext.GetCompetitionDetails(id);
-            ViewData["aoiList"] = GetAOI();
-            return View(c);
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                Competition c = compyContext.GetCompetitionDetails(id);
+                ViewData["aoiList"] = GetAOI();
+                return View(c);
+            }
         }
 
         [HttpPost]
@@ -188,27 +220,51 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AdminController/Create
         public ActionResult AreaOfInterest()
         {
-            List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
-            foreach (AreaInterest aoi in aoiList)
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
             {
-                aoi.AssignedToComp = aoiContext.AoiIsAssigned(aoi.AreaInterestId);
+                return RedirectToAction("Index", "Login");
             }
+            else
+            {
+                List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
+                foreach (AreaInterest aoi in aoiList)
+                {
+                    aoi.AssignedToComp = aoiContext.AoiIsAssigned(aoi.AreaInterestId);
+                }
 
-            return View(aoiList);
+                return View(aoiList);
+            }
         }
 
         public ActionResult AddInterest(IFormCollection formData)
         {
-            string aoiName = formData["AoiName"];
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                string aoiName = formData["AoiName"];
 
-            aoiContext.AddAreaInterest(aoiName);
-            return RedirectToAction("AreaOfInterest");
+                aoiContext.AddAreaInterest(aoiName);
+                return RedirectToAction("AreaOfInterest");
+            }
         }
 
         // GET: AdminController/Delete/5
         public ActionResult Delete()
         {
-            return View();
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // POST: AdminController/Delete/5
@@ -230,14 +286,22 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult ViewJudges()
         {
-            List<Judge> j = judgeContext.GetAllJudge();
-            foreach (Judge item in j)
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
             {
-                item.AreaInterestName = aoiContext.GetAoiName(item.AreaInterestId);
-                item.competitionAssigned = judgeContext.GetJudgesFutureCompetition(item.JudgeId);
+                return RedirectToAction("Index", "Login");
             }
-            ViewData["futureComp"] = compyContext.GetFutureCompetitions();
-            return View(j);
+            else
+            {
+                List<Judge> j = judgeContext.GetAllJudge();
+                foreach (Judge item in j)
+                {
+                    item.AreaInterestName = aoiContext.GetAoiName(item.AreaInterestId);
+                    item.competitionAssigned = judgeContext.GetJudgesFutureCompetition(item.JudgeId);
+                }
+                ViewData["futureComp"] = compyContext.GetFutureCompetitions();
+                return View(j);
+            }
         }
 
         [HttpPost]

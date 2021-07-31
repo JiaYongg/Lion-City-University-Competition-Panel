@@ -20,13 +20,21 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: CompetitorController
         public ActionResult Index()
         {
-            int competitorId = (int)HttpContext.Session.GetInt32("userID");
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "Competitor")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
-            List<CompetitionSubmission> csList = csContext.CompetitorCompetitions(competitorId);
+                List<CompetitionSubmission> csList = csContext.CompetitorCompetitions(competitorId);
 
-            List<CompetitorSubmissionViewModel> csVMList = MapToCompetitorSubmissionVM(csList);
+                List<CompetitorSubmissionViewModel> csVMList = MapToCompetitorSubmissionVM(csList);
 
-            return View(csVMList);
+                return View(csVMList);
+            }
         }
 
         public List<CompetitorSubmissionViewModel> MapToCompetitorSubmissionVM(List<CompetitionSubmission> csList)
@@ -121,22 +129,37 @@ namespace WEB2021Apr_P01_T01.Controllers
         
         public ActionResult JoinCompetition(int id) // Takes in the competitionId to join the competition
         {
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "Competitor")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
-            int competitorId = (int)HttpContext.Session.GetInt32("userID");
+                csContext.JoinCompetition(id, competitorId);
 
-            csContext.JoinCompetition(id, competitorId);
-
-            return RedirectToAction("Index"); // Need to add an object modal here to use in JoinCompetition View
+                return RedirectToAction("Index"); // Need to add an object modal here to use in JoinCompetition View
+            }
         }
 
         // this method is used for viewing of competition details after they have joined the competition, used to submit file and appeal
         public ActionResult CompetitionSubmissionDetails(int id)
         {
-            int competitorId = (int)HttpContext.Session.GetInt32("userID");
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "Competitor")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                int competitorId = (int)HttpContext.Session.GetInt32("userID");
 
-            CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
+                CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
 
-            return View("JoinCompetition", csVM); // Need to add an object modal here to use in JoinCompetition View
+                return View("JoinCompetition", csVM); // Need to add an object modal here to use in JoinCompetition View
+            }
         }
 
         [HttpPost]
@@ -184,9 +207,17 @@ namespace WEB2021Apr_P01_T01.Controllers
 
         public ActionResult Appeal(int id)
         {
-            int competitorId = (int)HttpContext.Session.GetInt32("userID");
-            CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
-            return View("Appeal", csVM);
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "Competitor")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                int competitorId = (int)HttpContext.Session.GetInt32("userID");
+                CompetitorSubmissionViewModel csVM = csContext.GetCompetitorCompetitionDetails(id, competitorId);
+                return View("Appeal", csVM);
+            }
         }
 
         [HttpPost]

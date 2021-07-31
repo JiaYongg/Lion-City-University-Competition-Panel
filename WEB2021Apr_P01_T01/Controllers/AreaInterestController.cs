@@ -16,9 +16,17 @@ namespace WEB2021Apr_P01_T01.Controllers
         // GET: AreaInterestController
         public ActionResult Index()
         {
-            List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
-            
-            return View(aoiList);
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role != "LCU Admin")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                List<AreaInterest> aoiList = aoiContext.GetAreaInterests();
+
+                return View(aoiList);
+            }
         }
 
         //// GET: AreaInterestController/Details/5
