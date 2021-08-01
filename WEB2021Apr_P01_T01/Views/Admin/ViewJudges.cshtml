@@ -4,9 +4,6 @@
     ViewData["Title"] = "ViewJudges";
 
     List<Competition> futureCompetition = (List<Competition>)ViewData["futureComp"];
-
-    //string sDate = futureCompetition.ElementAt(i).StartDate.ToString("dd/MM/yyyy hh:mm tt");
-    //string eDate = futureCompetition.ElementAt(i).EndDate.ToString("dd/MM/yyyy");
 }
 
 @section scripts {
@@ -24,9 +21,6 @@
             if (selectedJudge.length == 0) {
                 alert("No Judge selected");
             }
-            else if (selectedJudge.length == 1) {
-                alert("Please select at least 2 judges");
-            }
             else {
                 var aoiIdList = [];
                 selectedJudge.forEach((judgeId) => {
@@ -38,6 +32,18 @@
                 });
                 if (aoiIdList.every((val, i, arr) => val === arr[0])) {
                     var aoiId = aoiIdList[0];
+                    var count = 0;
+                    model.forEach((m) => {
+                        if (m.areaInterestId == aoiId && m.competitionAssigned.length == 1) {
+                            count++;
+                        }
+                    });
+                    if (count < 2) {
+                        if (selectedJudge.length != 2) {
+                            alert("Please select at least 2 judges");
+                            return;
+                        }
+                    }
                     var validComp = [];
                     futureComp.forEach((c) => {
                         if (aoiId == c.aoiId) {
@@ -45,6 +51,17 @@
                         }
                     });
 
+                    var haveComp = false;
+                    validComp.forEach((c) => {
+                        if (aoiId == c.aoiId) {
+                            haveComp = true;
+                        }
+                    });
+
+                    if (!haveComp) {
+                        alert('There are no competitions for this area of interest');
+                        return;
+                    }
                     var html = "";
                     for (var i = 0; i < validComp.length; i++) {
                         var sdate = new Date(Date.parse(validComp[i].startDate));
@@ -83,7 +100,7 @@
 
         function formatDatetime(datetime, isStart) {
             var dtStr = '';
-            dtStr += datetime.getDay() + '/' + (datetime.getMonth() + 1) + '/' + datetime.getFullYear() + ' ';
+            dtStr += datetime.getDate() + '/' + (datetime.getMonth() + 1) + '/' + datetime.getFullYear() + ' ';
             if (!isStart) {
                 return dtStr;
             }
@@ -107,9 +124,23 @@
         }
 
         function unassignComp(judgeId, compId, compName) {
-            $('#unassignModalBody').html(compName);
-            $('#unassignedJudgeBtn').attr('onclick', 'unassignJudge(' + judgeId + ', ' + compId + ')');
-            $('#unassignModal').modal('show');
+            var count = 0;
+            model.forEach((judge) => {
+                if (judge.competitionAssigned.length == 1) {
+                    if (judge.competitionAssigned[0].competitionId == compId) {
+                        count++;
+                    }
+                }
+            });
+
+            if (count == 2) {
+                alert('Minimum judges for all competitions has to be 2 with no upper limit');
+            }
+            else {
+                $('#unassignModalBody').html(compName);
+                $('#unassignedJudgeBtn').attr('onclick', 'unassignJudge(' + judgeId + ', ' + compId + ')');
+                $('#unassignModal').modal('show');
+            }
         }
 
         function unassignJudge(jid, cid) {
